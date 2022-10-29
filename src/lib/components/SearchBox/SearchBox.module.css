@@ -1,0 +1,76 @@
+.sb_main {
+    @apply relative h-fit;
+}
+
+.sb_input {
+    @apply 
+    w-full 
+    h-[46px] 
+    rounded-[24px] 
+    border 
+    border-[#dfe1e5] 
+    outline-none 
+    pl-[42px] 
+    hover:border-opacity-0;
+}
+
+.sb_input:hover {
+    box-shadow: 0 1px 6px rgb(32 33 36 / 28%);
+}
+
+.sb_svg {
+    @apply absolute left-0 top-0 mt-[13px] ml-[13px] opacity-40;
+}
+
+.sb_clear {
+    @apply absolute top-0 right-0 w-[24px] mr-3.5;
+}
+
+.sb_clear div {
+    @apply w-[24px] h-[46px] flex justify-center mr-6 opacity-50;
+}
+
+.sb_dropdown {
+    @apply bg-white rounded-b-[24px] absolute top-[12px] w-full;
+    box-shadow: 0 1px 6px rgb(32 33 36 / 28%);
+}
+
+.sb_ghost {
+    @apply w-full h-[6px] bg-white absolute -top-1;
+}
+
+.sb_ghost_border {
+    @apply w-auto ml-3.5 mr-3.5 left-0 right-0 mx-auto h-[1px] bg-[#dfe1e5] absolute bottom-0;
+}
+
+.sb_result {
+    @apply hover:bg-[#eee] last:rounded-b-[24px] first:mt-1.5 flex last:h-[46px]
+}
+
+.sb_result_active {
+    @apply bg-[#eee];
+}
+
+.sb_result_image {
+    @apply w-[32px] h-[32px] ml-[7px] mt-[4px];
+}
+
+.sb_result_image_show {
+    @apply ml-[7px] mt-[4px];
+}
+
+.sb_result_button {
+    @apply ml-[6px] cursor-default w-full text-left;
+}
+
+.sb_rounded_none {
+    @apply rounded-b-none
+}
+
+.sb_shadow {
+    box-shadow: 0 1px 6px rgb(32 33 36 / 28%);
+}
+
+.sb_border_none {
+    @apply border-opacity-0;
+}
