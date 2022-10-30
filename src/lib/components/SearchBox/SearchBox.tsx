@@ -1,16 +1,17 @@
-import React, { useEffect, useRef, useState } from 'react';
-import style from './SearchBox.module.css';
+import React, { CSSProperties, useEffect, useRef, useState } from 'react';
+import style from './SearchBox.module.scss';
 
 export interface SearchBoxProps {
   onChange: (onChangeData: string) => void
   onClick: (onClickData: IOnclickData) => void
   results: ISearchResult[] | undefined
   limit?: number
+  thresHold?: number
   placeHolder?: string
   showImage?: boolean
   textColor?: string
   highlightColor?: string
-  darkModa?: boolean
+  darkMode?: boolean
 }
 export interface ISearchResult {
   id: number
@@ -25,39 +26,33 @@ const SearchBox: React.FC<SearchBoxProps> = ({
   onClick,
   results,
   limit = 10,
+  thresHold = 1,
   placeHolder,
   showImage = false,
   textColor = '#1f2937',
   highlightColor = '#1f2937',
-  darkModa = false
+  darkMode = false
 }) => {
   const dropdownRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+  const mainRef = useRef<HTMLDivElement>(null);
   const [arr, setArr] = useState<ISearchResult[]>();
   const [value, setValue] = useState('');
   const [tempVal, setTempVal] = useState('');
   const [active, setActive] = useState(-1);
 
   const highlighted = (title: string): JSX.Element => {
-    const firstPos = title.toLowerCase().search(value);
-    const lastPos = firstPos + value.length;
-    const firstText = title.substring(0, firstPos);
-    const highlightedText = title.substring(firstPos, lastPos);
-    const lastText = title.substring(lastPos, title.length);
-
-    return (
+    let span = <span>{title}</span>;
+    const splitted = title.split(new RegExp(`(${value})`, 'gi'));
+    if (splitted.length > 1) {
+      span =
       <div>
-        {firstText.length > 0 && <span style={{ color: textColor }}>
-          {firstText}
-        </span>}
-        {highlightedText.length > 0 && <span style={{ color: highlightColor, fontWeight: 700 }}>
-          {highlightedText}
-        </span>}
-        {lastText.length > 0 && <span style={{ color: textColor }} id='sp3'>
-          {lastText}
-        </span>}
-      </div>
-    );
+        <span style={{ color: !darkMode ? textColor : '#ffffff' }}>{splitted[0]}</span>
+        <span style={{ color: !darkMode ? highlightColor : '#ffffff', fontWeight: 700 }}>{splitted[1]}</span>
+        <span style={{ color: !darkMode ? textColor : '#ffffff' }}>{splitted[2]}</span>
+      </div>;
+    }
+    return span;
   };
 
   const clear = (): void => {
@@ -65,14 +60,29 @@ const SearchBox: React.FC<SearchBoxProps> = ({
     setTempVal('');
   };
 
+  const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
+    if (e !== undefined) {
+      setValue(e.target.value);
+      // setTempVal(e.target.value);
+      onChange(e.target.value);
+      // if (e.target.value.length > thresHold) {
+      // }
+    }
+  };
+
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>): void => {
+    if (e.code === 'Backspace' && value.length === 0) {
+      setArr(undefined);
+    }
     if (arr !== undefined && arr.length > 0) {
       switch (e.code) {
         case 'ArrowDown':
           e.preventDefault();
           if (active < arr.length - 1) {
             setActive(active + 1);
-            setTempVal(arr[active + 1].title);
+            // setTempVal(arr[active + 1].title);
+          } else {
+            setActive(0);
           }
           break;
 
@@ -80,7 +90,24 @@ const SearchBox: React.FC<SearchBoxProps> = ({
           e.preventDefault();
           if (active > 0) {
             setActive(active - 1);
-            setTempVal(arr[active - 1].title);
+            // setTempVal(arr[active - 1].title);
+          } else {
+            setActive(arr.length - 1);
+          }
+          break;
+
+        case 'Enter':
+          e.preventDefault();
+          if (active > -1) {
+            setArr(undefined);
+            // setTempVal(arr[active].title);
+            if (inputRef.current !== null) {
+              inputRef.current.classList.remove(!darkMode ? style.sb_shadow : style.sb_shadow_dark);
+              inputRef.current.classList.remove(style.sb_rounded_none);
+              inputRef.current.classList.remove(style.sb_border_none);
+              inputRef.current.classList.remove(style.sb_input_activebg);
+              setValue(arr[active].title);
+            }
           }
           break;
       }
@@ -91,7 +118,7 @@ const SearchBox: React.FC<SearchBoxProps> = ({
     setArr(undefined);
     onClick(onClickData);
     setValue(onClickData.title);
-    setTempVal(onClickData.title);
+    // setTempVal(onClickData.title);
   };
 
   useEffect(() => {
@@ -120,40 +147,49 @@ const SearchBox: React.FC<SearchBoxProps> = ({
   }, [arr]);
 
   useEffect(() => {
-    window.addEventListener('click', (e) => {
+    const styleListener = (e: MouseEvent): void => {
       if (inputRef.current !== null && dropdownRef.current !== null) {
         if (!inputRef.current.contains(e.target as Node) && !dropdownRef.current.contains(e.target as Node)) {
           setArr(undefined);
+          inputRef.current.classList.remove(!darkMode ? style.sb_shadow : style.sb_shadow_dark);
           inputRef.current.classList.remove(style.sb_rounded_none);
-          inputRef.current.classList.remove(style.sb_shadow);
           inputRef.current.classList.remove(style.sb_border_none);
-        } if (document.activeElement === inputRef.current) {
-          inputRef.current.classList.add(style.sb_shadow);
+          inputRef.current.classList.remove(style.sb_input_activebg);
+        } else if (document.activeElement === inputRef.current) {
+          if (darkMode) {
+            inputRef.current.classList.add(style.sb_input_activebg);
+          }
+          inputRef.current.classList.add(!darkMode ? style.sb_shadow : style.sb_shadow_dark);
           inputRef.current.classList.add(style.sb_border_none);
         }
       }
-    });
-  }, []);
+    };
+    window.addEventListener('click', styleListener);
+    return () => window.removeEventListener('click', styleListener);
+  }, [darkMode]);
 
   return (
-    <div className={style.sb_main}>
+
+    <div className={style.sb_main}
+         style={{ '--theme': !darkMode ? '#ffffff' : '#303134' } as CSSProperties}>
+          <div className='absolute -left-96'>
+            <p>val: {value}</p>
+          </div>
       <input
         type='text'
         ref={inputRef}
-        value={tempVal}
+        value={value}
         placeholder={placeHolder}
         onKeyDown={handleKeyDown}
-        onChange={e => {
-          setValue(e.target.value);
-          setTempVal(e.target.value);
-          onChange(e.target.value);
-        }}
-        className={style.sb_input} />
+        onChange={handleOnChange}
+        className={darkMode ? style.sb_input_dark : style.sb_input_light} />
       <div className={style.sb_svg}>
         <svg
           focusable='false'
           width='20'
           height='20'
+          fill={!darkMode ? '' : '#9AA0A6'}
+          fillOpacity={darkMode ? '' : '0.4'}
           xmlns='http://www.w3.org/2000/svg'
           viewBox='0 0 24 24'>
           <path d='M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z'></path>
@@ -166,16 +202,22 @@ const SearchBox: React.FC<SearchBoxProps> = ({
           className={style.sb_clear}
         >
           <div>
-            <svg focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path></svg>
+            <svg
+              focusable="false"
+              fill={!darkMode ? '' : '#9AA0A6'}
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24">
+              <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path>
+            </svg>
           </div>
         </button>
       )}
       <div id='dropdown'
         ref={dropdownRef}
-        className={style.sb_dropdown}>
+        className={darkMode ? style.sb_dropdown_dark : style.sb_dropdown_light}>
         {(arr != null) && arr.length >= 1 && (
           <div id='shadowGhost'
-            className={style.sb_ghost}>
+            className={ darkMode ? style.sb_ghost_dark : style.sb_ghost_light}>
             <div className={style.sb_ghost_border} />
           </div>
         )}
@@ -183,18 +225,17 @@ const SearchBox: React.FC<SearchBoxProps> = ({
           {arr?.map((data, index) => (
             <div
               key={data.id}
-              className={[style.sb_result, active === index ? style.sb_result_active : ''].join(' ')}>
+              className={[darkMode ? style.sb_result_dark : style.sb_result_light, active === index ? (darkMode ? style.sb_result_active_dark : style.sb_result_active) : ''].join(' ')}>
               <div className={[style.sb_result_image, !showImage ? style.sb_result_image_show : ''].join(' ')}>
                 {showImage && (
                   <img width="32" height="32" src={data.image} alt="button image" />
                 )}
               </div>
               <button
-                className={style.sb_result_button}
-                type='button'
+                className={style.sb_result_button} type='button'
                 onClick={() => handleOnClick(data)}
               >
-                {highlighted(data.title.replace(/[^a-zA-Z0-9 ]/g, ''))}
+                {highlighted(data.title)}
               </button>
             </div>
           ))}
