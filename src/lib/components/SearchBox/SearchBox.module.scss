@@ -14,8 +14,8 @@ $shadow-dark: 0 1px 6px 0 #171717;
     rounded-[24px] 
     border 
     outline-none 
-    pl-[42px] 
-    hover:border-opacity-0;
+    pl-[42px]
+    pr-[46px];
 }
 
 .sb_input_dark {
@@ -24,6 +24,7 @@ $shadow-dark: 0 1px 6px 0 #171717;
     background-color: $dark;
     &:hover,
     &:focus {
+        @apply border-opacity-0;
         background-color: $dark-active !important;
         box-shadow: $shadow-dark;
     }
@@ -35,6 +36,7 @@ $shadow-dark: 0 1px 6px 0 #171717;
     background-color: white;
     &:hover,
     &:focus {
+        @apply border-opacity-0;
         box-shadow: $shadow;
     }
 }
@@ -48,11 +50,11 @@ $shadow-dark: 0 1px 6px 0 #171717;
 }
 
 .sb_clear {
-    @apply absolute top-0 right-0 w-[24px] mr-3.5;
+    @apply absolute top-0 right-0 w-[46px];
 }
 
 .sb_clear div {
-    @apply w-[24px] h-[46px] flex justify-center mr-6 opacity-50;
+    @apply w-[24px] h-[46px] flex justify-center opacity-50 ml-[11px];
 }
 
 .sb_dropdown {
@@ -120,7 +122,19 @@ $shadow-dark: 0 1px 6px 0 #171717;
 }
 
 .sb_result_button {
-    @apply ml-[6px] cursor-default w-full text-left;
+    @apply pl-[6px] cursor-default w-full text-left pr-[12px] overflow-hidden;
+}
+
+.sb_detail {
+    @apply text-[13px] text-gray-400 truncate;
+}
+
+.sb_result_text {
+    @apply flex flex-col leading-4;
+}
+
+.sb_highlight_div {
+    @apply truncate;
 }
 
 .sb_rounded_none {
@@ -137,4 +151,18 @@ $shadow-dark: 0 1px 6px 0 #171717;
 
 .sb_border_none {
     @apply border-opacity-0;
+}
+
+.sb_button_div {
+    @apply flex justify-evenly py-3;
+    & > * {
+        @apply bg-[#F8F9FA] px-3 py-1 rounded-[4px] border border-white hover:border-gray-300 transition-all focus:border-blue-500 text-sm;
+    }
+}
+
+.sb_button_div_dark{
+    @extend .sb_button_div;
+    & > * {
+        @apply bg-white bg-opacity-20 border border-opacity-0 text-white hover:border-opacity-50 focus:border-[#ffffff80];
+    }
 }
