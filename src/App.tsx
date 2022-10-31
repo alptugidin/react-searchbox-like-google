@@ -8,12 +8,21 @@ const App = (): JSX.Element => {
   const [darkMode, setDarkMode] = useState(false);
 
   const handleOnclick = (onClickDataFromSearchBox: IOnclickData): void => {
-    // window.open(onClickDataFromSearchBox.href, '_blank');
+    window.open(onClickDataFromSearchBox.href, '_blank');
   };
 
   const handleOnChange = (onChangeDataFromSearchBox: string): void => {
     setQuery(onChangeDataFromSearchBox);
   };
+
+  const btn1handler = (): void => {
+    console.log('Button 1 clicked!');
+  };
+
+  const btn2handler = (): void => {
+    console.log('Button 2 clicked!');
+  };
+
   return (
     <div className={`flex justify-center h-screen relative ${!darkMode ? 'bg-white' : 'bg-[#202124]'}`}>
       <div className='absolute right-5 top-5'>
@@ -31,6 +40,10 @@ const App = (): JSX.Element => {
           onClick={handleOnclick}
           results={results}
           darkMode={darkMode}
+          buttons={[
+            { label: 'Button 1', handler: btn1handler },
+            { label: 'Button 2', handler: btn2handler }
+          ]}
         />
       </div>
     </div>
