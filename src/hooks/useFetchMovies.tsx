@@ -20,11 +20,12 @@ export const useFetch = (param: string): IFetchApiResponse => {
       ).then(response => {
         setLoading(true);
         response.data.results.forEach((data: any) => {
-          const el = {
+          const el: ISearchResult = {
             id: data.id,
             title: data.title,
             image: 'https://www.pngfind.com/pngs/m/685-6854994_react-logo-no-background-hd-png-download.png',
-            href: `https://www.google.com/search?q=${data.title as string}`
+            href: `https://www.google.com/search?q=${data.title as string}`,
+            detail: 'Lorem ipsumd asdasdasd asd as asd s dasd asd asd asd ad asd asd asds xxxxxxxxxxxxxxxxxx'
           };
           arr.push(el);
         });
