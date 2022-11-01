@@ -1,22 +1,24 @@
 import React, { CSSProperties, useState } from 'react';
-import SearchBox, { IOnclickData } from './lib/components/SearchBox/SearchBox';
+import SearchBox from './lib/components/SearchBox/SearchBox';
 import { useFetch } from './hooks/useFetchMovies';
+import { IOnClickData } from './lib/components/SearchBox/types';
 
 const App = (): JSX.Element => {
   const [query, setQuery] = useState<string>();
   const { results, error, loading } = useFetch(query as string);
   const [darkMode, setDarkMode] = useState(false);
 
-  const handleOnclick = (onClickDataFromSearchBox: IOnclickData): void => {
-    window.open(onClickDataFromSearchBox.href, '_blank');
+  const handleOnclick = (onClickData: IOnClickData): void => {
+    // window.open(onClickData.href, '_blank');
   };
 
-  const handleOnChange = (onChangeDataFromSearchBox: string): void => {
-    setQuery(onChangeDataFromSearchBox);
+  const handleOnChange = (onChangeData: string): void => {
+    setQuery(onChangeData);
   };
 
-  const btn1handler = (): void => {
+  const btn1handler = (onClickData: IOnClickData): void => {
     console.log('Button 1 clicked!');
+    console.log(onClickData);
   };
 
   const btn2handler = (): void => {
@@ -41,8 +43,8 @@ const App = (): JSX.Element => {
           results={results}
           darkMode={darkMode}
           buttons={[
-            { label: 'Button 1', handler: btn1handler },
-            { label: 'Button 2', handler: btn2handler }
+            { label: 'Search', handler: btn1handler },
+            { label: 'Do something', handler: btn2handler }
           ]}
         />
       </div>
