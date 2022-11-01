@@ -1,32 +1,7 @@
 import React, { CSSProperties, useEffect, useRef, useState } from 'react';
 import style from './SearchBox.module.scss';
+import { ISearchResult, SearchBoxProps } from './types';
 
-export interface SearchBoxProps {
-  onChange: (onChangeData: string) => void
-  onClick: (onClickData: IOnclickData) => void
-  results: ISearchResult[] | undefined
-  limit?: number
-  thresHold?: number
-  placeHolder?: string
-  showImage?: boolean
-  textColor?: string
-  highlightColor?: string
-  darkMode?: boolean
-  showDetail?: boolean
-  buttons?: [
-    btn1: { label: string, handler: () => void },
-    btn2: { label: string, handler: () => void }
-  ]
-}
-export interface ISearchResult {
-  id: number
-  title: string
-  image: string
-  href: string
-  detail?: string
-}
-export interface IOnclickData extends ISearchResult {
-}
 const SearchBox: React.FC<SearchBoxProps> = ({
   onChange,
   onClick,
@@ -65,6 +40,7 @@ const SearchBox: React.FC<SearchBoxProps> = ({
   const handleClear = (): void => {
     setValue('');
     setTempVal('');
+    if (inputRef.current !== null) inputRef.current.focus();
   };
 
   const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
@@ -129,12 +105,15 @@ const SearchBox: React.FC<SearchBoxProps> = ({
     setTempVal(onClickData.title);
   };
 
-  const handleButton1 = (): void => {
-
-  };
-
-  const handleButton2 = (): void => {
-
+  const handleBtn = (fn?: Function): void => {
+    if (inputRef.current !== null) inputRef.current.focus();
+    if (arr !== undefined && fn !== undefined) {
+      if (active === -1) {
+        fn(arr[0]);
+      } else {
+        fn(arr[active]);
+      }
+    }
   };
 
   useEffect(() => {
@@ -190,6 +169,7 @@ const SearchBox: React.FC<SearchBoxProps> = ({
          style={{ '--theme': !darkMode ? '#ffffff' : '#303134' } as CSSProperties}>
       <input
         type='text'
+        role='input'
         ref={inputRef}
         value={tempVal}
         placeholder={placeHolder}
@@ -258,7 +238,7 @@ const SearchBox: React.FC<SearchBoxProps> = ({
           {(buttons !== undefined && arr !== undefined && arr.length > 0) && (
             <div className={!darkMode ? style.sb_button_div : style.sb_button_div_dark}>
               {buttons.map((button) => (
-                <button type='button' onClick={button.handler} key={button.label}> {button.label} </button>
+                <button type='button' onClick={() => handleBtn(button?.handler)} key={button?.label}> {button?.label} </button>
               ))}
             </div>
           )}
