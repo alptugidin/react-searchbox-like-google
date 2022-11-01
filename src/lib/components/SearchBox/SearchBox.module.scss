@@ -3,19 +3,29 @@ $dark: #202124;
 $dark-active: #303134;
 $shadow: 0 1px 6px rgb(32 33 36 / 28%);
 $shadow-dark: 0 1px 6px 0 #171717;
-
 .sb_main {
-    @apply relative h-fit;
+    @apply h-fit 
+    ml-5 mr-5
+    relative
+    md:focus-within:relative 
+    focus-within:absolute
+    md:w-full
+    focus-within:w-full
+    md:ml-auto
+    focus-within:ml-0
+    focus-within:top-0
+    /*
+    */;
 }
 
 .sb_input {
     @apply w-full 
-    h-[46px] 
+    md:h-[46px] h-[40px]
     rounded-[24px] 
     border 
     outline-none 
     pl-[42px]
-    pr-[46px];
+    md:pr-[46px] pr-[40px];
 }
 
 .sb_input_dark {
@@ -46,7 +56,10 @@ $shadow-dark: 0 1px 6px 0 #171717;
 }
 
 .sb_svg {
-    @apply absolute left-0 top-0 mt-[13px] ml-[13px];
+    @apply absolute left-0 top-0 md:mt-[13px] md:ml-[13px] mt-[8px] ml-[8px];
+    svg {
+        @apply md:w-[20px] md:h-[20px] w-[24px] h-[24px];
+    }
 }
 
 .sb_clear {
@@ -54,7 +67,7 @@ $shadow-dark: 0 1px 6px 0 #171717;
 }
 
 .sb_clear div {
-    @apply w-[24px] h-[46px] flex justify-center opacity-50 ml-[11px];
+    @apply w-[24px] md:h-[46px] h-[40px] flex justify-center opacity-50 ml-[11px];
 }
 
 .sb_dropdown {
@@ -160,7 +173,7 @@ $shadow-dark: 0 1px 6px 0 #171717;
     }
 }
 
-.sb_button_div_dark{
+.sb_button_div_dark {
     @extend .sb_button_div;
     & > * {
         @apply bg-white bg-opacity-20 border border-opacity-0 text-white hover:border-opacity-50 focus:border-[#ffffff80];
