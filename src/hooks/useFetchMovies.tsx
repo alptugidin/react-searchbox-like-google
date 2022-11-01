@@ -1,6 +1,6 @@
-import axios from 'axios';
 import { useEffect, useState } from 'react';
-import { ISearchResult } from '../lib/components/SearchBox/SearchBox';
+import { ISearchResult } from '../lib/components/SearchBox/types';
+import axios from 'axios';
 
 interface IFetchApiResponse {
   results: ISearchResult[] | undefined
@@ -25,7 +25,7 @@ export const useFetch = (param: string): IFetchApiResponse => {
             title: data.title,
             image: 'https://www.pngfind.com/pngs/m/685-6854994_react-logo-no-background-hd-png-download.png',
             href: `https://www.google.com/search?q=${data.title as string}`,
-            detail: 'Lorem ipsumd asdasdasd asd as asd s dasd asd asd asd ad asd asd asds xxxxxxxxxxxxxxxxxx'
+            detail: 'Lorem ipsum dolor sit amet.'
           };
           arr.push(el);
         });
