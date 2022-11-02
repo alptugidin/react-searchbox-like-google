@@ -1,4 +1,6 @@
+import userEvent from '@testing-library/user-event';
 import React, { CSSProperties, useEffect, useRef, useState } from 'react';
+import useIsMobile from '../../utils/useIsMobile';
 import style from './SearchBox.module.scss';
 import { ISearchResult, SearchBoxProps } from './types';
 
@@ -18,10 +20,12 @@ const SearchBox: React.FC<SearchBoxProps> = ({
 }) => {
   const dropdownRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+  const mainRef = useRef<HTMLDivElement>(null);
   const [arr, setArr] = useState<ISearchResult[]>();
   const [value, setValue] = useState('');
   const [tempVal, setTempVal] = useState('');
   const [active, setActive] = useState(-1);
+  const { isMobile } = useIsMobile();
 
   const highlighted = (title: string): JSX.Element => {
     let span = <span className={style.sb_highlight_span} style={{ color: !darkMode ? textColor : '#ffffff' }}>{title}</span>;
@@ -41,6 +45,18 @@ const SearchBox: React.FC<SearchBoxProps> = ({
     setValue('');
     setTempVal('');
     if (inputRef.current !== null) inputRef.current.focus();
+  };
+
+  const handleClear2 = (): void => {
+    setValue('');
+    setTempVal('');
+    if (inputRef.current !== null) inputRef.current.focus();
+  };
+
+  const handleBack = (): void => {
+    console.log('handleback');
+    setValue('');
+    setTempVal('');
   };
 
   const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
@@ -166,7 +182,8 @@ const SearchBox: React.FC<SearchBoxProps> = ({
   return (
 
     <div className={style.sb_main}
-         style={{ '--theme': !darkMode ? '#ffffff' : '#303134' } as CSSProperties}>
+        ref={mainRef}
+        style={{ '--theme': !darkMode ? '#ffffff' : '#303134' } as CSSProperties}>
       <input
         type='text'
         role='input'
@@ -176,19 +193,33 @@ const SearchBox: React.FC<SearchBoxProps> = ({
         onKeyDown={handleKeyDown}
         onChange={handleOnChange}
         className={darkMode ? style.sb_input_dark : style.sb_input_light} />
+        <span className={style.sb_after_span}></span>
       <div className={style.sb_svg}>
-        <svg
-          focusable='false'
-          width='20'
-          height='20'
-          fill={!darkMode ? '' : '#9AA0A6'}
-          fillOpacity={darkMode ? '' : '0.4'}
-          xmlns='http://www.w3.org/2000/svg'
-          viewBox='0 0 24 24'>
-          <path d='M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z'></path>
-        </svg>
+          <svg
+            className={style.sb_svg1}
+            focusable='false'
+            width='20'
+            height='20'
+            fill={!darkMode ? '' : '#9AA0A6'}
+            fillOpacity={darkMode ? '' : '0.4'}
+            xmlns='http://www.w3.org/2000/svg'
+            viewBox='0 0 24 24'>
+            <path d='M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z'></path>
+          </svg>
+      </div>
+      <div className={style.sb_svg_back}>
+          <svg
+            width='24'
+            height='24'
+            fill='#1a73e8'
+            focusable="false"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24">
+            <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"></path>
+          </svg>
       </div>
       {value.length > 0 && (
+        <>
         <button
           type='button'
           onClick={handleClear}
@@ -202,8 +233,25 @@ const SearchBox: React.FC<SearchBoxProps> = ({
               viewBox="0 0 24 24">
               <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path>
             </svg>
+
           </div>
         </button>
+        <button
+          type='button'
+          onClick={handleClear2}
+          className={style.sb_clear_mobile}>
+        <div>
+            <svg
+              focusable="false"
+              fill={!darkMode ? '' : '#9AA0A6'}
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24">
+              <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path>
+            </svg>
+
+          </div>
+        </button>
+        </>
       )}
       <div id='dropdown'
         ref={dropdownRef}
@@ -214,14 +262,29 @@ const SearchBox: React.FC<SearchBoxProps> = ({
             <div className={style.sb_ghost_border} />
           </div>
         )}
+        <div id='mobileGhost' className={style.sb_mobile_ghost}></div>
         <div>
           {arr?.map((data, index) => (
             <div
               key={data.id}
               className={[darkMode ? style.sb_result_dark : style.sb_result_light, active === index ? (darkMode ? style.sb_result_active_dark : style.sb_result_active) : ''].join(' ')}>
               <div className={[style.sb_result_image, !showImage ? style.sb_result_image_show : ''].join(' ')}>
-                {showImage && (
+                {(showImage && !isMobile) && (
                   <img width="32" height="32" src={data.image} alt="button image" />
+                )}
+                {isMobile && (
+                  <div className={style.sb_svg_dropdown}>
+                    <svg
+                      focusable='false'
+                      width='20'
+                      height='20'
+                      fill={!darkMode ? '' : '#9AA0A6'}
+                      fillOpacity={darkMode ? '' : '0.4'}
+                      xmlns='http://www.w3.org/2000/svg'
+                      viewBox='0 0 24 24'>
+                      <path d='M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z'></path>
+                    </svg>
+                  </div>
                 )}
               </div>
               <button
@@ -235,7 +298,7 @@ const SearchBox: React.FC<SearchBoxProps> = ({
               </button>
             </div>
           ))}
-          {(buttons !== undefined && arr !== undefined && arr.length > 0) && (
+          {(buttons !== undefined && arr !== undefined && arr.length > 0 && !isMobile) && (
             <div className={!darkMode ? style.sb_button_div : style.sb_button_div_dark}>
               {buttons.map((button) => (
                 <button type='button' onClick={() => handleBtn(button?.handler)} key={button?.label}> {button?.label} </button>

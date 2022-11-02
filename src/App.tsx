@@ -1,13 +1,12 @@
 import React, { CSSProperties, useState } from 'react';
-import SearchBox from './lib/components/SearchBox/SearchBox';
+import { SearchBox } from './lib';
 import { useFetch } from './hooks/useFetchMovies';
 import { IOnClickData } from './lib/components/SearchBox/types';
 
 const App = (): JSX.Element => {
   const [query, setQuery] = useState<string>();
-  const { results, error, loading } = useFetch(query as string);
   const [darkMode, setDarkMode] = useState(false);
-
+  const { results, error, loading } = useFetch(query as string);
   const handleOnclick = (onClickData: IOnClickData): void => {
     // window.open(onClickData.href, '_blank');
   };
@@ -31,11 +30,11 @@ const App = (): JSX.Element => {
         <button
           type='button'
           onClick={() => setDarkMode(!darkMode)}
-          className='text-white bg-red-600 hover:bg-red-500 transition-all w-44 px-4 py-2 rounded-full font-bold'
+          className='text-white bg-red-600 hover:bg-red-500 transition-all w-44 px-4 py-2 rounded-full font-bold hidden'
           >
           Dark Mode {darkMode ? 'On' : ' Off'}
         </button>
-      </div>
+        </div>
       <div className='w-[500px] mt-20'>
         <SearchBox
           onChange={handleOnChange}

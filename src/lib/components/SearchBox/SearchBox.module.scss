@@ -3,27 +3,60 @@ $dark: #202124;
 $dark-active: #303134;
 $shadow: 0 1px 6px rgb(32 33 36 / 28%);
 $shadow-dark: 0 1px 6px 0 #171717;
+$breakpoint: 768px;
 .sb_main {
     @apply h-fit 
-    ml-5 mr-5
-    relative
-    md:focus-within:relative 
-    focus-within:absolute
-    md:w-full
-    focus-within:w-full
-    md:ml-auto
-    focus-within:ml-0
-    focus-within:top-0;
+    relative;
+    @media screen and (max-width: $breakpoint) {
+        @apply ml-3.5 mr-3.5;
+        &:focus-within {
+            @apply absolute top-0 left-0 right-0 ml-0 mr-0;
+        }
+        &:focus-within .sb_input {
+            @apply shadow-none;
+        }
+
+        &:focus-within .sb_after_span::after {
+            content: "";
+            @apply absolute h-[1px] bg-[#dfe1e5] left-3.5 right-3.5 -bottom-[2px];
+        }
+
+        &:focus-within .sb_svg1 {
+            @apply hidden;
+        }
+
+        &:focus-within .sb_svg_back {
+            @apply block;
+        }
+
+        &:focus-within .sb_clear div {
+            @apply h-[48px] mt-[1px];
+        }
+
+        &:focus-within .sb_clear_mobile div {
+            @apply h-[48px] mt-[1px];
+        }
+    }
+}
+
+.sb_svg_back {
+    @apply hidden top-3 left-3 absolute;
 }
 
 .sb_input {
     @apply w-full 
-    md:h-[46px] h-[40px]
+    h-[46px]
     rounded-[24px] 
     border 
     outline-none 
     pl-[42px]
     md:pr-[46px] pr-[40px];
+    @media screen and (max-width: $breakpoint) {
+        @apply h-[40px];
+        &:focus {
+            @apply h-[48px];
+        }
+    }
 }
 
 .sb_input_dark {
@@ -60,22 +93,55 @@ $shadow-dark: 0 1px 6px 0 #171717;
     }
 }
 
+.sb_svg_dropdown {
+    @apply relative;
+    svg {
+        @apply absolute left-1 top-1;
+    }
+}
+
 .sb_clear {
     @apply absolute top-0 right-0 w-[46px];
+    @media screen and (max-width: $breakpoint) {
+        @apply hidden;
+    }
 }
 
 .sb_clear div {
-    @apply w-[24px] md:h-[46px] h-[40px] flex justify-center opacity-50 ml-[11px];
+    @apply w-[24px] h-[46px] flex justify-center opacity-50 ml-[11px];
+    @media screen and (max-width: $breakpoint) {
+        @apply h-[40px];
+    }
+}
+
+.sb_clear_mobile {
+    @apply hidden;
+    @media screen and (max-width: $breakpoint) {
+        @apply block absolute top-0 right-0;
+    }
+}
+
+.sb_clear_mobile div {
+    @apply h-[46px] mr-[11px];
+    @media screen and (max-width: $breakpoint) {
+        @apply w-[24px] h-[40px] flex opacity-50;
+    }
 }
 
 .sb_dropdown {
     @apply rounded-b-[24px] absolute w-full;
+    @media screen and (max-width: $breakpoint) {
+        @apply rounded-none;
+    }
 }
 
 .sb_dropdown_light {
     @extend .sb_dropdown;
     @apply bg-white;
     box-shadow: $shadow;
+    @media screen and (max-width: $breakpoint) {
+        @apply shadow-none;
+    }
 }
 
 .sb_dropdown_dark {
@@ -104,6 +170,9 @@ $shadow-dark: 0 1px 6px 0 #171717;
 
 .sb_result {
     @apply last:rounded-b-[24px] first:mt-1.5 flex last:h-[46px];
+    @media screen and (max-width: $breakpoint) {
+        @apply last:h-auto last:rounded-none;
+    }
 }
 
 .sb_result_light {
