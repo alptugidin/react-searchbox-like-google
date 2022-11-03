@@ -5,139 +5,114 @@ $shadow: 0 1px 6px rgb(32 33 36 / 28%);
 $shadow-dark: 0 1px 6px 0 #171717;
 $breakpoint: 768px;
 .sb_main {
-    @apply h-fit 
-    relative;
+    @apply flex rounded-[24px] py-1 relative border;
+    // &:focus-within {
+    //     @apply border-white;
+    //     box-shadow: $shadow;
+    // }
+
+    @media screen and (min-width: $breakpoint) {
+        // &:focus-within {
+        //     @apply border-white;
+        //     box-shadow: $shadow;
+        // }
+    }
+
     @media screen and (max-width: $breakpoint) {
-        @apply ml-3.5 mr-3.5;
+        @apply ml-2 mr-2;
         &:focus-within {
-            @apply absolute top-0 left-0 right-0 ml-0 mr-0;
+            box-shadow: unset;
         }
-        &:focus-within .sb_input {
-            @apply shadow-none;
-        }
-
-        &:focus-within .sb_after_span::after {
-            content: "";
-            @apply absolute h-[1px] bg-[#dfe1e5] left-3.5 right-3.5 -bottom-[2px];
-        }
-
-        &:focus-within .sb_svg1 {
-            @apply hidden;
-        }
-
-        &:focus-within .sb_svg_back {
-            @apply block;
-        }
-
-        &:focus-within .sb_clear div {
-            @apply h-[48px] mt-[1px];
-        }
-
-        &:focus-within .sb_clear_mobile div {
-            @apply h-[48px] mt-[1px];
-        }
+        // &:focus-within {
+        //     box-shadow: unset;
+        //     @apply absolute top-0 left-0 right-0 ml-0 mr-0 rounded-none;
+        // }
     }
 }
 
-.sb_svg_back {
-    @apply hidden top-3 left-3 absolute;
-}
-
-.sb_input {
-    @apply w-full 
-    h-[46px]
-    rounded-[24px] 
-    border 
-    outline-none 
-    pl-[42px]
-    md:pr-[46px] pr-[40px];
-    @media screen and (max-width: $breakpoint) {
-        @apply h-[40px];
-        &:focus {
-            @apply h-[48px];
-        }
-    }
-}
-
-.sb_input_dark {
-    @extend .sb_input;
-    @apply border-[#5f6368] text-white;
-    background-color: $dark;
-    &:hover,
-    &:focus {
-        @apply border-opacity-0;
-        background-color: $dark-active !important;
-        box-shadow: $shadow-dark;
-    }
-}
-
-.sb_input_light {
-    @extend .sb_input;
-    @apply border-[#dfe1e5];
-    background-color: white;
-    &:hover,
-    &:focus {
-        @apply border-opacity-0;
+.sb_main_focus {
+    @media screen and (min-width: $breakpoint) {
+        @apply border-white;
         box-shadow: $shadow;
     }
 }
 
-.sb_input_activebg {
-    background-color: $dark-active;
+.main_resp {
+    @apply absolute top-0 left-0 right-0 rounded-none ml-0 mr-0;
 }
 
-.sb_svg {
-    @apply absolute left-0 top-0 md:mt-[13px] md:ml-[13px] mt-[8px] ml-[8px];
-    svg {
-        @apply md:w-[20px] md:h-[20px] w-[24px] h-[24px];
-    }
-}
-
-.sb_svg_dropdown {
+.sb_top {
     @apply relative;
+    // @media screen and (max-width: $breakpoint) {
+    //     @apply ml-2 mr-2 absolute top-0 left-0 right-0;
+    //     // &:focus-within {
+    //     //     box-shadow: unset;
+    //     //     @apply absolute top-0 left-0 right-0 ml-0 mr-0 rounded-none;
+    //     // }
+    // }
+}
+
+.sb_top_resp {
+    @apply absolute top-0 left-0 right-0 mb-0 ml-0;
+}
+
+.sb_fragment {
+    @apply border;
+}
+.back {
+    @apply w-[44px] flex justify-center items-center;
+    > svg {
+        @apply md:w-auto w-[24px] md:h-auto h-[24px];
+    }
+}
+
+.search {
+    @apply w-[44px] flex justify-center items-center;
+    > svg {
+        @apply md:w-auto w-[24px] md:h-auto h-[24px];
+    }
+}
+
+.input {
+    @apply w-full md:mb-auto;
+    input {
+        @apply md:h-[34px] h-[25px] outline-none w-full text-[16px];
+    }
+    @media screen and (max-width: $breakpoint) {
+        // & > input:focus {
+        //     @apply h-[48px];
+        // }
+    }
+}
+
+.input_resp {
+    height: 34px !important;
+}
+
+.clear {
+    @apply w-[44px] flex justify-center;
     svg {
-        @apply absolute left-1 top-1;
+        @apply w-[25px];
     }
 }
 
-.sb_clear {
-    @apply absolute top-0 right-0 w-[46px];
-    @media screen and (max-width: $breakpoint) {
-        @apply hidden;
-    }
-}
-
-.sb_clear div {
-    @apply w-[24px] h-[46px] flex justify-center opacity-50 ml-[11px];
-    @media screen and (max-width: $breakpoint) {
-        @apply h-[40px];
-    }
-}
-
-.sb_clear_mobile {
+._hidden {
     @apply hidden;
-    @media screen and (max-width: $breakpoint) {
-        @apply block absolute top-0 right-0;
-    }
 }
 
-.sb_clear_mobile div {
-    @apply h-[46px] mr-[11px];
-    @media screen and (max-width: $breakpoint) {
-        @apply w-[24px] h-[40px] flex opacity-50;
-    }
+._block {
+    @apply block;
 }
 
 .sb_dropdown {
-    @apply rounded-b-[24px] absolute w-full;
+    @apply rounded-b-[24px] bg-white absolute w-auto left-0 right-0;
     @media screen and (max-width: $breakpoint) {
-        @apply rounded-none;
+        @apply rounded-none top-[43px];
     }
 }
 
 .sb_dropdown_light {
     @extend .sb_dropdown;
-    @apply bg-white;
     box-shadow: $shadow;
     @media screen and (max-width: $breakpoint) {
         @apply shadow-none;
@@ -171,7 +146,7 @@ $breakpoint: 768px;
 .sb_result {
     @apply last:rounded-b-[24px] first:mt-1.5 flex last:h-[46px];
     @media screen and (max-width: $breakpoint) {
-        @apply last:h-auto last:rounded-none;
+        @apply last:h-auto;
     }
 }
 
