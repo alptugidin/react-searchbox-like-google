@@ -144,7 +144,7 @@ $breakpoint: 768px;
 }
 
 .sb_result {
-    @apply last:rounded-b-[24px] first:mt-1.5 flex last:h-[46px];
+    @apply last:rounded-b-[24px] first:mt-1.5 flex py-0.5 last:h-[46px];
     @media screen and (max-width: $breakpoint) {
         @apply last:h-auto;
     }
@@ -185,7 +185,7 @@ $breakpoint: 768px;
 }
 
 .sb_result_text {
-    @apply flex flex-col leading-4;
+    @apply flex flex-col;
 }
 
 .sb_highlight_div {
