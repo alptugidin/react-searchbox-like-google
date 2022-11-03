@@ -49,6 +49,7 @@ const SearchBox: React.FC<SearchBoxProps> = ({
   const handleClear = (): void => {
     setValue('');
     setTempVal('');
+    setActive(-1);
     if (inputRef.current !== null) inputRef.current.focus();
     mainRef.current?.classList.add(style.sb_main_focus);
   };
@@ -66,6 +67,7 @@ const SearchBox: React.FC<SearchBoxProps> = ({
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>): void => {
     if (e.code === 'Backspace' && value.length === 0) {
       setArr(undefined);
+      setActive(-1);
       mainRef.current?.classList.remove(style.sb_rounded_none);
     }
     if (arr !== undefined && arr.length > 0) {
@@ -77,6 +79,7 @@ const SearchBox: React.FC<SearchBoxProps> = ({
           setTempVal(arr[active + 1].title);
         } else {
           setActive(0);
+          setTempVal(arr[0].title);
         }
         break;
 
@@ -87,6 +90,7 @@ const SearchBox: React.FC<SearchBoxProps> = ({
           setTempVal(arr[active - 1].title);
         } else {
           setActive(arr.length - 1);
+          setTempVal(arr[arr.length - 1].title);
         }
         break;
 
@@ -95,10 +99,6 @@ const SearchBox: React.FC<SearchBoxProps> = ({
         if (active > -1) {
           setArr(undefined);
           setTempVal(arr[active].title);
-          // inputRef.current.classList.remove(!darkMode ? style.sb_shadow : style.sb_shadow_dark);
-          // inputRef.current.classList.remove(style.sb_rounded_none);
-          // inputRef.current.classList.remove(style.sb_border_none);
-          // inputRef.current.classList.remove(style.sb_input_activebg);
           mainRef.current?.classList.remove(style.sb_rounded_none);
           mainRef.current?.classList.remove(style.sb_main_focus);
           inputRef.current?.blur();
@@ -132,7 +132,6 @@ const SearchBox: React.FC<SearchBoxProps> = ({
   };
 
   const handleBtn = (fn?: Function): void => {
-    if (inputRef.current !== null) inputRef.current.focus();
     if (arr !== undefined && fn !== undefined) {
       if (active === -1) {
         fn(arr[0]);
@@ -152,11 +151,6 @@ const SearchBox: React.FC<SearchBoxProps> = ({
     document.getElementById('search')?.classList.remove(style._hidden);
     document.getElementById('back')?.classList.add(style._hidden);
   };
-
-  // const handleClear = (): void => {
-  //   setValue('');
-  //   inputRef.current?.focus();
-  // };
 
   const handleInputFocus = (): void => {
     mainRef.current?.classList.add(style.sb_main_focus);
@@ -178,6 +172,7 @@ const SearchBox: React.FC<SearchBoxProps> = ({
   useEffect(() => {
     if (value.length < 1 && arr !== null) {
       setArr(undefined);
+      setActive(-1);
       if (mainRef.current !== null) {
         mainRef.current.classList.remove(style.sb_rounded_none);
       }
@@ -192,6 +187,7 @@ const SearchBox: React.FC<SearchBoxProps> = ({
       } else if (arr.length < 1) {
         mainRef.current.classList.remove(style.sb_rounded_none);
         mainRef.current?.classList.remove(style.sb_main_focus);
+        setActive(-1);
       }
     }
   }, [arr]);
@@ -202,6 +198,7 @@ const SearchBox: React.FC<SearchBoxProps> = ({
         mainRef.current.classList.remove(style.sb_main_focus);
         mainRef.current.classList.remove(style.sb_rounded_none);
         setArr(undefined);
+        setActive(-1);
       }
     };
 
@@ -260,7 +257,7 @@ const SearchBox: React.FC<SearchBoxProps> = ({
           <div className={style.input}>
             <input
               ref={inputRef}
-              value={value}
+              value={tempVal}
               onKeyDown={handleKeyDown}
               onFocus={handleInputFocus}
               onChange={handleOnChange}
@@ -292,7 +289,8 @@ const SearchBox: React.FC<SearchBoxProps> = ({
             <div
               key={data.id}
               className={[darkMode ? style.sb_result_dark : style.sb_result_light, active === index ? (darkMode ? style.sb_result_active_dark : style.sb_result_active) : ''].join(' ')}>
-              <div className={[style.sb_result_image, !showImage ? style.sb_result_image_show : ''].join(' ')}>
+              <div
+                className={[style.sb_result_image, !showImage ? style.sb_result_image_show : ''].join(' ')}>
                 {showImage && (
                   <img width="32" height="32" src={data.image} alt="button image" />
                 )}
