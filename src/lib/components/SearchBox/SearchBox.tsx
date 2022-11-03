@@ -1,6 +1,8 @@
-import userEvent from '@testing-library/user-event';
-import React, { CSSProperties, useEffect, useRef, useState } from 'react';
+import React, { CSSProperties, Fragment, useEffect, useRef, useState } from 'react';
 import useIsMobile from '../../utils/useIsMobile';
+import BackSVG from '../Svg/BackSVG';
+import ClearSVG from '../Svg/ClearSVG';
+import SearchSVG from '../Svg/SearchSVG';
 import style from './SearchBox.module.scss';
 import { ISearchResult, SearchBoxProps } from './types';
 
@@ -18,14 +20,17 @@ const SearchBox: React.FC<SearchBoxProps> = ({
   showDetail = false,
   buttons = undefined
 }) => {
+  const { isMobile } = useIsMobile();
+
   const dropdownRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const mainRef = useRef<HTMLDivElement>(null);
+  const topRef = useRef<HTMLDivElement>(null);
+
   const [arr, setArr] = useState<ISearchResult[]>();
   const [value, setValue] = useState('');
   const [tempVal, setTempVal] = useState('');
   const [active, setActive] = useState(-1);
-  const { isMobile } = useIsMobile();
 
   const highlighted = (title: string): JSX.Element => {
     let span = <span className={style.sb_highlight_span} style={{ color: !darkMode ? textColor : '#ffffff' }}>{title}</span>;
@@ -45,18 +50,7 @@ const SearchBox: React.FC<SearchBoxProps> = ({
     setValue('');
     setTempVal('');
     if (inputRef.current !== null) inputRef.current.focus();
-  };
-
-  const handleClear2 = (): void => {
-    setValue('');
-    setTempVal('');
-    if (inputRef.current !== null) inputRef.current.focus();
-  };
-
-  const handleBack = (): void => {
-    console.log('handleback');
-    setValue('');
-    setTempVal('');
+    mainRef.current?.classList.add(style.sb_main_focus);
   };
 
   const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
@@ -72,46 +66,52 @@ const SearchBox: React.FC<SearchBoxProps> = ({
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>): void => {
     if (e.code === 'Backspace' && value.length === 0) {
       setArr(undefined);
-      if (inputRef.current !== null) inputRef.current.classList.remove(style.sb_rounded_none);
+      mainRef.current?.classList.remove(style.sb_rounded_none);
     }
     if (arr !== undefined && arr.length > 0) {
       switch (e.code) {
-        case 'ArrowDown':
-          e.preventDefault();
-          if (active < arr.length - 1) {
-            setActive(active + 1);
-            setTempVal(arr[active + 1].title);
-          } else {
-            setActive(0);
-          }
-          break;
+      case 'ArrowDown':
+        e.preventDefault();
+        if (active < arr.length - 1) {
+          setActive(active + 1);
+          setTempVal(arr[active + 1].title);
+        } else {
+          setActive(0);
+        }
+        break;
 
-        case 'ArrowUp':
-          e.preventDefault();
-          if (active > 0) {
-            setActive(active - 1);
-            setTempVal(arr[active - 1].title);
-          } else {
-            setActive(arr.length - 1);
-          }
-          break;
+      case 'ArrowUp':
+        e.preventDefault();
+        if (active > 0) {
+          setActive(active - 1);
+          setTempVal(arr[active - 1].title);
+        } else {
+          setActive(arr.length - 1);
+        }
+        break;
 
-        case 'Enter':
-          e.preventDefault();
-          if (active > -1) {
-            setArr(undefined);
-            setTempVal(arr[active].title);
-            if (inputRef.current !== null) {
-              inputRef.current.classList.remove(!darkMode ? style.sb_shadow : style.sb_shadow_dark);
-              inputRef.current.classList.remove(style.sb_rounded_none);
-              inputRef.current.classList.remove(style.sb_border_none);
-              inputRef.current.classList.remove(style.sb_input_activebg);
-              setValue(arr[active].title);
-            }
-          }
-          break;
+      case 'Enter':
+        e.preventDefault();
+        if (active > -1) {
+          setArr(undefined);
+          setTempVal(arr[active].title);
+          // inputRef.current.classList.remove(!darkMode ? style.sb_shadow : style.sb_shadow_dark);
+          // inputRef.current.classList.remove(style.sb_rounded_none);
+          // inputRef.current.classList.remove(style.sb_border_none);
+          // inputRef.current.classList.remove(style.sb_input_activebg);
+          mainRef.current?.classList.remove(style.sb_rounded_none);
+          mainRef.current?.classList.remove(style.sb_main_focus);
+          inputRef.current?.blur();
+          setValue(arr[active].title);
+          setActive(-1);
+        }
+        break;
       }
     }
+  };
+
+  const handleSelect = (): void => {
+
   };
 
   const handleOnClick = (onClickData: any): void => {
@@ -119,6 +119,16 @@ const SearchBox: React.FC<SearchBoxProps> = ({
     onClick(onClickData);
     setValue(onClickData.title);
     setTempVal(onClickData.title);
+    mainRef.current?.classList.remove(style.sb_rounded_none);
+    mainRef.current?.classList.remove(style.sb_main_focus);
+    if (isMobile) {
+      mainRef.current?.classList.remove(style.main_resp);
+      mainRef.current?.classList.remove(style.sb_rounded_none);
+      inputRef.current?.classList.remove(style.input_resp);
+      topRef.current?.classList.remove(style.sb_top_resp);
+      document.getElementById('search')?.classList.remove(style._hidden);
+      document.getElementById('back')?.classList.add(style._hidden);
+    }
   };
 
   const handleBtn = (fn?: Function): void => {
@@ -132,6 +142,33 @@ const SearchBox: React.FC<SearchBoxProps> = ({
     }
   };
 
+  const handleBack = (): void => {
+    setValue('');
+    if (isMobile) {
+      mainRef.current?.classList.remove(style.main_resp);
+      inputRef.current?.classList.remove(style.input_resp);
+      topRef.current?.classList.remove(style.sb_top_resp);
+    }
+    document.getElementById('search')?.classList.remove(style._hidden);
+    document.getElementById('back')?.classList.add(style._hidden);
+  };
+
+  // const handleClear = (): void => {
+  //   setValue('');
+  //   inputRef.current?.focus();
+  // };
+
+  const handleInputFocus = (): void => {
+    mainRef.current?.classList.add(style.sb_main_focus);
+    if (isMobile) {
+      mainRef.current?.classList.add(style.main_resp);
+      inputRef.current?.classList.add(style.input_resp);
+      topRef.current?.classList.add(style.sb_top_resp);
+      document.getElementById('search')?.classList.add(style._hidden);
+      document.getElementById('back')?.classList.remove(style._hidden);
+    }
+  };
+
   useEffect(() => {
     if (results != null) {
       setArr(results.splice(0, limit));
@@ -141,164 +178,138 @@ const SearchBox: React.FC<SearchBoxProps> = ({
   useEffect(() => {
     if (value.length < 1 && arr !== null) {
       setArr(undefined);
-      if (inputRef.current !== null) {
-        inputRef.current.classList.remove(style.sb_rounded_none);
+      if (mainRef.current !== null) {
+        mainRef.current.classList.remove(style.sb_rounded_none);
       }
     }
   }, [value]);
 
   useEffect(() => {
-    if (arr !== undefined && inputRef.current !== null) {
+    if (arr !== undefined && mainRef.current !== null) {
       if (arr.length >= 1) {
-        inputRef.current.classList.add(style.sb_rounded_none);
+        mainRef.current.classList.add(style.sb_rounded_none);
+        mainRef.current?.classList.add(style.sb_main_focus);
       } else if (arr.length < 1) {
-        inputRef.current.classList.remove(style.sb_rounded_none);
+        mainRef.current.classList.remove(style.sb_rounded_none);
+        mainRef.current?.classList.remove(style.sb_main_focus);
       }
     }
   }, [arr]);
 
   useEffect(() => {
-    const styleListener = (e: MouseEvent): void => {
-      if (inputRef.current !== null && dropdownRef.current !== null) {
-        if (!inputRef.current.contains(e.target as Node) && !dropdownRef.current.contains(e.target as Node)) {
-          setArr(undefined);
-          inputRef.current.classList.remove(!darkMode ? style.sb_shadow : style.sb_shadow_dark);
-          inputRef.current.classList.remove(style.sb_rounded_none);
-          inputRef.current.classList.remove(style.sb_border_none);
-          inputRef.current.classList.remove(style.sb_input_activebg);
-        } else if (document.activeElement === inputRef.current) {
-          if (darkMode) {
-            inputRef.current.classList.add(style.sb_input_activebg);
-          }
-          inputRef.current.classList.add(!darkMode ? style.sb_shadow : style.sb_shadow_dark);
-          inputRef.current.classList.add(style.sb_border_none);
-        }
+    const listener = (e: MouseEvent): void => {
+      if (mainRef.current != null && !mainRef.current?.contains(e.target as Node) && !isMobile) {
+        mainRef.current.classList.remove(style.sb_main_focus);
+        mainRef.current.classList.remove(style.sb_rounded_none);
+        setArr(undefined);
       }
     };
-    window.addEventListener('click', styleListener);
-    return () => window.removeEventListener('click', styleListener);
-  }, [darkMode]);
+
+    window.addEventListener('click', listener);
+
+    return () => window.removeEventListener('click', listener);
+  }, []);
+
+  // useEffect(() => {
+  //   const styleListener = (e: MouseEvent): void => {
+  //     if (inputRef.current !== null && dropdownRef.current !== null) {
+  //       if (!inputRef.current.contains(e.target as Node) && !dropdownRef.current.contains(e.target as Node)) {
+  //         setArr(undefined);
+  //         inputRef.current.classList.remove(!darkMode ? style.sb_shadow : style.sb_shadow_dark);
+  //         inputRef.current.classList.remove(style.sb_rounded_none);
+  //         inputRef.current.classList.remove(style.sb_border_none);
+  //         inputRef.current.classList.remove(style.sb_input_activebg);
+  //       } else if (document.activeElement === inputRef.current) {
+  //         if (darkMode) {
+  //           inputRef.current.classList.add(style.sb_input_activebg);
+  //         }
+  //         // inputRef.current.classList.add(!darkMode ? style.sb_shadow : style.sb_shadow_dark);
+  //         inputRef.current.classList.add(style.sb_border_none);
+  //       }
+  //     }
+  //   };
+  //   window.addEventListener('click', styleListener);
+  //   return () => window.removeEventListener('click', styleListener);
+  // }, [darkMode]);
 
   return (
-
-    <div className={style.sb_main}
+    <div ref={topRef} className={style.sb_top}>
+      <div
         ref={mainRef}
-        style={{ '--theme': !darkMode ? '#ffffff' : '#303134' } as CSSProperties}>
-      <input
-        type='text'
-        role='input'
-        ref={inputRef}
-        value={tempVal}
-        placeholder={placeHolder}
-        onKeyDown={handleKeyDown}
-        onChange={handleOnChange}
-        className={darkMode ? style.sb_input_dark : style.sb_input_light} />
-        <span className={style.sb_after_span}></span>
-      <div className={style.sb_svg}>
-          <svg
-            className={style.sb_svg1}
-            focusable='false'
-            width='20'
-            height='20'
-            fill={!darkMode ? '' : '#9AA0A6'}
-            fillOpacity={darkMode ? '' : '0.4'}
-            xmlns='http://www.w3.org/2000/svg'
-            viewBox='0 0 24 24'>
-            <path d='M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z'></path>
-          </svg>
-      </div>
-      <div className={style.sb_svg_back}>
-          <svg
-            width='24'
-            height='24'
-            fill='#1a73e8'
-            focusable="false"
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 24 24">
-            <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"></path>
-          </svg>
-      </div>
-      {value.length > 0 && (
-        <>
-        <button
-          type='button'
-          onClick={handleClear}
-          className={style.sb_clear}
-        >
-          <div>
-            <svg
-              focusable="false"
-              fill={!darkMode ? '' : '#9AA0A6'}
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 24 24">
-              <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path>
-            </svg>
+        className={style.sb_main}>
 
+        <Fragment>
+          {isMobile
+            ? (
+              <Fragment>
+                <div id='search' className={style.search}>
+                  <SearchSVG />
+                </div>
+                <button id='back' onClick={handleBack} className={[style.back, style._hidden].join(' ')}>
+                  <BackSVG />
+                </button>
+              </Fragment>
+            )
+            : (
+              <Fragment>
+                <div className={style.search}>
+                  <SearchSVG />
+                </div>
+              </Fragment>
+            )}
+          <div className={style.input}>
+            <input
+              ref={inputRef}
+              value={value}
+              onKeyDown={handleKeyDown}
+              onFocus={handleInputFocus}
+              onChange={handleOnChange}
+              type="text" />
           </div>
-        </button>
-        <button
-          type='button'
-          onClick={handleClear2}
-          className={style.sb_clear_mobile}>
-        <div>
-            <svg
-              focusable="false"
-              fill={!darkMode ? '' : '#9AA0A6'}
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 24 24">
-              <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path>
-            </svg>
-
+          <div className={style.clear}>
+            <button
+              type='button'
+              style={{ opacity: value.length > 0 ? 1 : 0 }}
+              onClick={handleClear}>
+              <div>
+                <ClearSVG />
+              </div>
+            </button>
           </div>
-        </button>
-        </>
-      )}
+        </Fragment>
+      </div >
       <div id='dropdown'
         ref={dropdownRef}
         className={darkMode ? style.sb_dropdown_dark : style.sb_dropdown_light}>
-        {(arr != null) && arr.length >= 1 && (
+        {(arr != null) && arr.length >= 1 && !isMobile && (
           <div id='shadowGhost'
             className={ darkMode ? style.sb_ghost_dark : style.sb_ghost_light}>
             <div className={style.sb_ghost_border} />
           </div>
         )}
-        <div id='mobileGhost' className={style.sb_mobile_ghost}></div>
         <div>
           {arr?.map((data, index) => (
             <div
               key={data.id}
               className={[darkMode ? style.sb_result_dark : style.sb_result_light, active === index ? (darkMode ? style.sb_result_active_dark : style.sb_result_active) : ''].join(' ')}>
               <div className={[style.sb_result_image, !showImage ? style.sb_result_image_show : ''].join(' ')}>
-                {(showImage && !isMobile) && (
+                {showImage && (
                   <img width="32" height="32" src={data.image} alt="button image" />
-                )}
-                {isMobile && (
-                  <div className={style.sb_svg_dropdown}>
-                    <svg
-                      focusable='false'
-                      width='20'
-                      height='20'
-                      fill={!darkMode ? '' : '#9AA0A6'}
-                      fillOpacity={darkMode ? '' : '0.4'}
-                      xmlns='http://www.w3.org/2000/svg'
-                      viewBox='0 0 24 24'>
-                      <path d='M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z'></path>
-                    </svg>
-                  </div>
                 )}
               </div>
               <button
-                className={style.sb_result_button} type='button'
+                type='button'
+                className={style.sb_result_button}
                 onClick={() => handleOnClick(data)}
               >
                 <div className={style.sb_result_text}>
-                {highlighted(data.title)}
-                {showDetail && <span className={style.sb_detail}>{data.detail}</span>}
+                  {highlighted(data.title)}
+                  {showDetail && <span className={style.sb_detail}>{data.detail}</span>}
                 </div>
               </button>
             </div>
           ))}
-          {(buttons !== undefined && arr !== undefined && arr.length > 0 && !isMobile) && (
+          {(buttons !== undefined && arr !== undefined && arr.length > 0) && (
             <div className={!darkMode ? style.sb_button_div : style.sb_button_div_dark}>
               {buttons.map((button) => (
                 <button type='button' onClick={() => handleBtn(button?.handler)} key={button?.label}> {button?.label} </button>
@@ -307,7 +318,7 @@ const SearchBox: React.FC<SearchBoxProps> = ({
           )}
         </div>
       </div>
-    </div >
+    </div>
   );
 };
 
