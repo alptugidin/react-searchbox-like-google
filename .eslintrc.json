@@ -28,7 +28,9 @@
     "@typescript-eslint/consistent-type-assertions": "off",
     "no-trailing-spaces": "warn",
     "padded-blocks": "warn",
-    "no-multiple-empty-lines": "warn"
+    "no-multiple-empty-lines": "warn",
+    "indent": ["warn", 2],
+    "@typescript-eslint/indent": "off"
   },
   "ignorePatterns": [
     "dist"
