@@ -51,6 +51,12 @@ const App = (): JSX.Element => {
           onChange={handleOnChange}
           onClick={handleOnclick}
           results={results}
+          showDetail
+          showImage
+          buttons={[
+            { label: 'Search', handler: btn1handler },
+            { label: 'Do something', handler: btn2handler }
+          ]}
         />
       </div>
     </div>
