@@ -1,31 +1,29 @@
-import React, { CSSProperties, Fragment, useEffect, useRef, useState } from 'react';
-import useIsMobile from '../../utils/useIsMobile';
+import React, { CSSProperties, Fragment, useEffect, useRef, useState, memo } from 'react';
+import useIsMobile from '../../hooks/useIsMobile';
 import addWhite from '../../utils/addWhite';
-import BackSVG from '../Svg/BackSVG';
-import ClearSVG from '../Svg/ClearSVG';
-import SearchSVG from '../Svg/SearchSVG';
+import { BackSVG, ClearSVG, SearchSVG } from '../Svg';
 import style from './SearchBox.module.scss';
 import { ISearchResult, SearchBoxProps } from './types';
 const SearchBox: React.FC<SearchBoxProps> = ({
   onChange,
   onClick,
   results,
-  limit = 10,
-  thresHold = 1,
   placeHolder,
-  showImage = false,
   darkMode = false,
+  showImage = false,
   showDetail = false,
   buttons = undefined,
+  limit = 10,
+  thresHold = 1,
+  duration = 150,
   colors = {
     text: '#1f2937',
     highlightText: '#1f2937',
-    darkPrimary: '#202124',
-    darkSecondary: '#303134'
+    darkTheme: '#202124'
   }
 }) => {
   const { isMobile } = useIsMobile();
-  const { lightDark } = addWhite(colors.darkPrimary as string, 30);
+  const { lightDark } = addWhite(colors.darkTheme as string, 30);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const mainRef = useRef<HTMLDivElement>(null);
@@ -170,7 +168,7 @@ const SearchBox: React.FC<SearchBoxProps> = ({
 
   useEffect(() => {
     if (results != null) {
-      setArr(results.splice(0, limit));
+      setArr(results.splice(0, (isMobile ? limit - 3 : limit)));
     }
   }, [results]);
 
@@ -200,7 +198,6 @@ const SearchBox: React.FC<SearchBoxProps> = ({
   useEffect(() => {
     const listener = (e: MouseEvent): void => {
       if (mainRef.current != null && !mainRef.current?.contains(e.target as Node) && !isMobile) {
-        // mainRef.current.classList.remove(darkMode ? style.sb_main_focus_dark : style.sb_main_focus_light);
         mainRef.current.classList.remove(style.sb_main_focus_dark);
         mainRef.current.classList.remove(style.sb_main_focus_light);
         mainRef.current.classList.remove(style.sb_rounded_none);
@@ -214,12 +211,21 @@ const SearchBox: React.FC<SearchBoxProps> = ({
     return () => window.removeEventListener('click', listener);
   }, []);
 
+  useEffect(() => {
+    // transitino effect
+    mainRef.current?.classList.add(style.border_transition);
+    setTimeout(() => {
+      mainRef.current?.classList.remove(style.border_transition);
+    }, duration);
+  }, [darkMode]);
+
   return (
     <div ref={topRef} style={{
       '--text': darkMode ? '#ffffff' : colors.text,
       '--highlightText': darkMode ? '#ffffff' : colors.highlightText,
-      '--darkPrimary': colors.darkPrimary,
+      '--darkPrimary': colors.darkTheme,
       '--darkSecondary': lightDark,
+      '--duration': duration.toString().concat('ms'),
       position: !isMobile ? 'relative' : ''
     } as CSSProperties}>
       <div
@@ -251,6 +257,7 @@ const SearchBox: React.FC<SearchBoxProps> = ({
               onKeyDown={handleKeyDown}
               onFocus={handleInputFocus}
               onChange={handleOnChange}
+              placeholder={placeHolder}
               type="text" />
           </div>
           <div className={style.clear}>
@@ -293,6 +300,7 @@ const SearchBox: React.FC<SearchBoxProps> = ({
                     </div>
                   )}
               </div>
+
               <button
                 type='button'
                 className={style.sb_result_button}
@@ -300,7 +308,10 @@ const SearchBox: React.FC<SearchBoxProps> = ({
               >
                 <div className={style.sb_result_text}>
                   {highlighted(data.title)}
-                  {showDetail && <span className={style.sb_detail}>{data.detail}</span>}
+                  {showDetail &&
+                  <span className={style.sb_detail}>
+                    {data.detail}
+                  </span>}
                 </div>
               </button>
             </div>
@@ -318,4 +329,4 @@ const SearchBox: React.FC<SearchBoxProps> = ({
   );
 };
 
-export default SearchBox;
+export default memo(SearchBox);
