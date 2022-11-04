@@ -6,11 +6,24 @@ export interface SearchBoxProps {
   thresHold?: number
   placeHolder?: string
   showImage?: boolean
-  textColor?: string
-  highlightColor?: string
   darkMode?: boolean
   showDetail?: boolean
   buttons?: [
+    btn1?: { label: string, handler: (onChangeData: IOnClickData) => void },
+    btn2?: { label: string, handler: (onChangeData: IOnClickData) => void },
+  ]
+  colors?: ISearchBoxColors
+}
+
+export interface ISearchBoxColors {
+  text?: string
+  highlightText?: string
+  darkPrimary?: string
+  darkSecondary?: string
+}
+
+export interface ISearchBoxButtons {
+  [
     btn1?: { label: string, handler: (onChangeData: IOnClickData) => void },
     btn2?: { label: string, handler: (onChangeData: IOnClickData) => void },
   ]
