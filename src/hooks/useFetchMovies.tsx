@@ -14,10 +14,11 @@ export const useFetch = (param: string): IFetchApiResponse => {
   const [loading, setLoading] = useState<boolean>(false);
 
   useEffect(() => {
+    const controller = new AbortController();
     if (param !== undefined && param.length > 0) {
       const arr: ISearchResult[] = [];
       axios.get(`https://api.themoviedb.org/3/search/movie?api_key=204f2cebe811d76c47a873f7233cf17a&language=en-US&query=${param}&page=1&include_adult=false`
-      ).then(response => {
+        , { signal: controller.signal }).then(response => {
         setLoading(true);
         response.data.results.forEach((data: any) => {
           const el: ISearchResult = {
@@ -37,6 +38,8 @@ export const useFetch = (param: string): IFetchApiResponse => {
         setResults(arr);
       });
     }
+
+    return () => controller.abort();
   }, [param]);
   return { results, error, loading };
 };
