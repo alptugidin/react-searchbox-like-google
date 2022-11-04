@@ -1,11 +1,12 @@
 import React, { CSSProperties, Fragment, useEffect, useRef, useState } from 'react';
 import useIsMobile from '../../utils/useIsMobile';
+import addWhite from '../../utils/addWhite';
 import BackSVG from '../Svg/BackSVG';
 import ClearSVG from '../Svg/ClearSVG';
 import SearchSVG from '../Svg/SearchSVG';
 import style from './SearchBox.module.scss';
 import { ISearchResult, SearchBoxProps } from './types';
-
+import { relative } from 'path';
 const SearchBox: React.FC<SearchBoxProps> = ({
   onChange,
   onClick,
@@ -14,14 +15,18 @@ const SearchBox: React.FC<SearchBoxProps> = ({
   thresHold = 1,
   placeHolder,
   showImage = false,
-  textColor = '#1f2937',
-  highlightColor = '#1f2937',
   darkMode = false,
   showDetail = false,
-  buttons = undefined
+  buttons = undefined,
+  colors = {
+    text: '#1f2937',
+    highlightText: '#1f2937',
+    darkPrimary: '#202124',
+    darkSecondary: '#303134'
+  }
 }) => {
   const { isMobile } = useIsMobile();
-
+  const { lightDark } = addWhite(colors.darkPrimary as string, 30);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const mainRef = useRef<HTMLDivElement>(null);
@@ -31,16 +36,15 @@ const SearchBox: React.FC<SearchBoxProps> = ({
   const [value, setValue] = useState('');
   const [tempVal, setTempVal] = useState('');
   const [active, setActive] = useState(-1);
-
   const highlighted = (title: string): JSX.Element => {
-    let span = <span className={style.sb_highlight_span} style={{ color: !darkMode ? textColor : '#ffffff' }}>{title}</span>;
+    let span = <span className={style.sb_highlight_span} style={{ color: !darkMode ? colors.text : '#ffffff' }}>{title}</span>;
     const splitted = title.split(new RegExp(`(${value})`, 'gi'));
     if (splitted.length > 1) {
       span =
       <div className={style.sb_highlight_div}>
-        <span style={{ color: !darkMode ? textColor : '#ffffff' }}>{splitted[0]}</span>
-        <span style={{ color: !darkMode ? highlightColor : '#ffffff', fontWeight: 700 }}>{splitted[1]}</span>
-        <span style={{ color: !darkMode ? textColor : '#ffffff' }}>{splitted[2]}</span>
+        <span style={{ color: !darkMode ? colors.text : '#ffffff' }}>{splitted[0]}</span>
+        <span style={{ color: !darkMode ? colors.highlightText : '#ffffff', fontWeight: 700 }}>{splitted[1]}</span>
+        <span style={{ color: !darkMode ? colors.text : '#ffffff' }}>{splitted[2]}</span>
       </div>;
     }
     return span;
@@ -51,7 +55,7 @@ const SearchBox: React.FC<SearchBoxProps> = ({
     setTempVal('');
     setActive(-1);
     if (inputRef.current !== null) inputRef.current.focus();
-    mainRef.current?.classList.add(style.sb_main_focus);
+    mainRef.current?.classList.add(darkMode ? style.sb_main_focus_dark : style.sb_main_focus_light);
   };
 
   const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
@@ -100,7 +104,7 @@ const SearchBox: React.FC<SearchBoxProps> = ({
           setArr(undefined);
           setTempVal(arr[active].title);
           mainRef.current?.classList.remove(style.sb_rounded_none);
-          mainRef.current?.classList.remove(style.sb_main_focus);
+          mainRef.current?.classList.remove(darkMode ? style.sb_main_focus_dark : style.sb_main_focus_light);
           inputRef.current?.blur();
           setValue(arr[active].title);
           setActive(-1);
@@ -110,19 +114,16 @@ const SearchBox: React.FC<SearchBoxProps> = ({
     }
   };
 
-  const handleSelect = (): void => {
-
-  };
-
   const handleOnClick = (onClickData: any): void => {
     setArr(undefined);
     onClick(onClickData);
     setValue(onClickData.title);
     setTempVal(onClickData.title);
     mainRef.current?.classList.remove(style.sb_rounded_none);
-    mainRef.current?.classList.remove(style.sb_main_focus);
+    mainRef.current?.classList.remove(darkMode ? style.sb_main_focus_dark : style.sb_main_focus_light);
     if (isMobile) {
-      mainRef.current?.classList.remove(style.main_resp);
+      mainRef.current?.classList.remove(style.main_resp_dark);
+      mainRef.current?.classList.remove(style.main_resp_light);
       mainRef.current?.classList.remove(style.sb_rounded_none);
       inputRef.current?.classList.remove(style.input_resp);
       topRef.current?.classList.remove(style.sb_top_resp);
@@ -135,8 +136,12 @@ const SearchBox: React.FC<SearchBoxProps> = ({
     if (arr !== undefined && fn !== undefined) {
       if (active === -1) {
         fn(arr[0]);
+        setValue(arr[0].title);
+        setTempVal(arr[0].title);
       } else {
         fn(arr[active]);
+        setValue(arr[active].title);
+        setTempVal(arr[active].title);
       }
     }
   };
@@ -144,7 +149,8 @@ const SearchBox: React.FC<SearchBoxProps> = ({
   const handleBack = (): void => {
     setValue('');
     if (isMobile) {
-      mainRef.current?.classList.remove(style.main_resp);
+      mainRef.current?.classList.remove(style.main_resp_light);
+      mainRef.current?.classList.remove(style.main_resp_dark);
       inputRef.current?.classList.remove(style.input_resp);
       topRef.current?.classList.remove(style.sb_top_resp);
     }
@@ -153,9 +159,9 @@ const SearchBox: React.FC<SearchBoxProps> = ({
   };
 
   const handleInputFocus = (): void => {
-    mainRef.current?.classList.add(style.sb_main_focus);
+    mainRef.current?.classList.add(darkMode ? style.sb_main_focus_dark : style.sb_main_focus_light);
     if (isMobile) {
-      mainRef.current?.classList.add(style.main_resp);
+      mainRef.current?.classList.add(darkMode ? style.main_resp_dark : style.main_resp_light);
       inputRef.current?.classList.add(style.input_resp);
       topRef.current?.classList.add(style.sb_top_resp);
       document.getElementById('search')?.classList.add(style._hidden);
@@ -183,10 +189,10 @@ const SearchBox: React.FC<SearchBoxProps> = ({
     if (arr !== undefined && mainRef.current !== null) {
       if (arr.length >= 1) {
         mainRef.current.classList.add(style.sb_rounded_none);
-        mainRef.current?.classList.add(style.sb_main_focus);
+        mainRef.current?.classList.add(darkMode ? style.sb_main_focus_dark : style.sb_main_focus_light);
       } else if (arr.length < 1) {
         mainRef.current.classList.remove(style.sb_rounded_none);
-        mainRef.current?.classList.remove(style.sb_main_focus);
+        mainRef.current?.classList.remove(style.sb_main_focus_light);
         setActive(-1);
       }
     }
@@ -195,7 +201,9 @@ const SearchBox: React.FC<SearchBoxProps> = ({
   useEffect(() => {
     const listener = (e: MouseEvent): void => {
       if (mainRef.current != null && !mainRef.current?.contains(e.target as Node) && !isMobile) {
-        mainRef.current.classList.remove(style.sb_main_focus);
+        // mainRef.current.classList.remove(darkMode ? style.sb_main_focus_dark : style.sb_main_focus_light);
+        mainRef.current.classList.remove(style.sb_main_focus_dark);
+        mainRef.current.classList.remove(style.sb_main_focus_light);
         mainRef.current.classList.remove(style.sb_rounded_none);
         setArr(undefined);
         setActive(-1);
@@ -207,34 +215,17 @@ const SearchBox: React.FC<SearchBoxProps> = ({
     return () => window.removeEventListener('click', listener);
   }, []);
 
-  // useEffect(() => {
-  //   const styleListener = (e: MouseEvent): void => {
-  //     if (inputRef.current !== null && dropdownRef.current !== null) {
-  //       if (!inputRef.current.contains(e.target as Node) && !dropdownRef.current.contains(e.target as Node)) {
-  //         setArr(undefined);
-  //         inputRef.current.classList.remove(!darkMode ? style.sb_shadow : style.sb_shadow_dark);
-  //         inputRef.current.classList.remove(style.sb_rounded_none);
-  //         inputRef.current.classList.remove(style.sb_border_none);
-  //         inputRef.current.classList.remove(style.sb_input_activebg);
-  //       } else if (document.activeElement === inputRef.current) {
-  //         if (darkMode) {
-  //           inputRef.current.classList.add(style.sb_input_activebg);
-  //         }
-  //         // inputRef.current.classList.add(!darkMode ? style.sb_shadow : style.sb_shadow_dark);
-  //         inputRef.current.classList.add(style.sb_border_none);
-  //       }
-  //     }
-  //   };
-  //   window.addEventListener('click', styleListener);
-  //   return () => window.removeEventListener('click', styleListener);
-  // }, [darkMode]);
-
   return (
-    <div ref={topRef} className={style.sb_top}>
+    <div ref={topRef} style={{
+      '--text': darkMode ? '#ffffff' : colors.text,
+      '--highlightText': darkMode ? '#ffffff' : colors.highlightText,
+      '--darkPrimary': colors.darkPrimary,
+      '--darkSecondary': lightDark,
+      position: !isMobile ? 'relative' : ''
+    } as CSSProperties}>
       <div
         ref={mainRef}
-        className={style.sb_main}>
-
+        className={darkMode ? style.sb_main_dark : style.sb_main_light}>
         <Fragment>
           {isMobile
             ? (
@@ -254,7 +245,7 @@ const SearchBox: React.FC<SearchBoxProps> = ({
                 </div>
               </Fragment>
             )}
-          <div className={style.input}>
+          <div className={darkMode ? style.input_dark : style.input_light}>
             <input
               ref={inputRef}
               value={tempVal}
@@ -307,7 +298,7 @@ const SearchBox: React.FC<SearchBoxProps> = ({
               </button>
             </div>
           ))}
-          {(buttons !== undefined && arr !== undefined && arr.length > 0) && (
+          {(buttons !== undefined && arr !== undefined && arr.length > 0 && !isMobile) && (
             <div className={!darkMode ? style.sb_button_div : style.sb_button_div_dark}>
               {buttons.map((button) => (
                 <button type='button' onClick={() => handleBtn(button?.handler)} key={button?.label}> {button?.label} </button>
