@@ -280,10 +280,18 @@ const SearchBox: React.FC<SearchBoxProps> = ({
               key={data.id}
               className={[darkMode ? style.sb_result_dark : style.sb_result_light, active === index ? (darkMode ? style.sb_result_active_dark : style.sb_result_active) : ''].join(' ')}>
               <div
-                className={[style.sb_result_image, !showImage ? style.sb_result_image_show : ''].join(' ')}>
-                {showImage && (
-                  <img width="32" height="32" src={data.image} alt="button image" />
-                )}
+                className={style.sb_result_image_div}>
+                {showImage
+                  ? (
+                    <div className={style.sb_result_image}>
+                      <img src={data.image} alt="button image" />
+                    </div>
+                  )
+                  : (
+                    <div className={style.sb_result_svg}>
+                      <SearchSVG/>
+                    </div>
+                  )}
               </div>
               <button
                 type='button'

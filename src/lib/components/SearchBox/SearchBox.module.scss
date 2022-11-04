@@ -103,7 +103,7 @@ $testColor: #ff0000;
 }
 
 .search {
-    @apply w-[44px] flex justify-center items-center;
+    @apply w-[44px] flex justify-center items-center ml-[6.5px];
     > svg {
         @apply md:w-auto w-[24px] md:h-auto h-[24px];
     }
@@ -112,7 +112,7 @@ $testColor: #ff0000;
 .input {
     @apply w-full md:mb-auto;
     input {
-        @apply md:h-[34px] h-[25px] outline-none w-full text-[16px];
+        @apply md:h-[34px] h-[25px] outline-none w-full text-[16px] ml-[4.5px];
     }
 }
 
@@ -192,7 +192,7 @@ $testColor: #ff0000;
 }
 
 .sb_ghost_border {
-    @apply w-auto ml-3.5 mr-3.5 left-0 right-0 mx-auto h-[1px] bg-[#dfe1e5] absolute bottom-0;
+    @apply w-auto ml-[11px] mr-[11px] left-0 right-0 mx-auto h-[1px] bg-[#dfe1e5] absolute bottom-0;
 }
 
 .sb_result {
@@ -217,16 +217,28 @@ $testColor: #ff0000;
     @apply bg-white bg-opacity-20;
 }
 
+.sb_result_image_div {
+    @apply w-[44px] ml-[6px] flex justify-center ;
+}
+
 .sb_result_image {
-    @apply ml-[7px] flex items-center;
+    @apply w-[32px] h-[32px] 
+}
+
+.sb_result_svg {
+
+}
+
+.sb_result_image_not_show {
+    @apply w-[44px] flex justify-center;
 }
 
 .sb_result_image_show {
-    @apply ml-[36px];
+    @apply ml-[7px] mr-[7px];
 }
 
 .sb_result_button {
-    @apply pl-[6px] cursor-default w-full text-left pr-[12px] overflow-hidden min-h-[30px] md:py-0 py-1;
+    @apply cursor-default w-full text-left pr-[12px] pl-[3px] overflow-hidden min-h-[30px] md:py-0 py-1;
 }
 
 .upper_dropdown {
