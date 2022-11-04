@@ -4,52 +4,88 @@ $dark-active: #303134;
 $shadow: 0 1px 6px rgb(32 33 36 / 28%);
 $shadow-dark: 0 1px 6px 0 #171717;
 $breakpoint: 768px;
+$darkPrimary: #{var(--darkPrimary)};
+$darkSecondary: #{var(--darkSecondary)};
+$testColor: #ff0000;
 .sb_main {
-    @apply flex rounded-[24px] py-1 relative border;
-    // &:focus-within {
-    //     @apply border-white;
-    //     box-shadow: $shadow;
-    // }
-
-    @media screen and (min-width: $breakpoint) {
-        // &:focus-within {
-        //     @apply border-white;
-        //     box-shadow: $shadow;
-        // }
-    }
-
+    @apply flex rounded-[24px] py-1 relative bg-white;
     @media screen and (max-width: $breakpoint) {
         @apply ml-2 mr-2;
-        &:focus-within {
-            box-shadow: unset;
-        }
         // &:focus-within {
         //     box-shadow: unset;
-        //     @apply absolute top-0 left-0 right-0 ml-0 mr-0 rounded-none;
         // }
     }
 }
 
-.sb_main_focus {
+.sb_main_dark {
+    @extend .sb_main;
+    @apply border;
+    background-color: $darkPrimary !important;
+    border-color: $darkSecondary;
     @media screen and (min-width: $breakpoint) {
-        @apply border-white;
+        &:hover {
+            background-color: $darkSecondary !important;
+            box-shadow: $shadow-dark;
+        }
+        &:hover input {
+            background-color: $darkSecondary;
+        }
+    }
+}
+
+.sb_main_light {
+    @apply border border-gray-200;
+    @extend .sb_main;
+    background-color: white;
+    @media screen and (min-width: $breakpoint) {
+        &:hover {
+            @apply border-white;
+            box-shadow: $shadow;
+        }
+    }
+}
+
+.sb_main_focus_light {
+    @media screen and (min-width: $breakpoint) {
+        border-color: white;
         box-shadow: $shadow;
+    }
+}
+
+.sb_main_focus_dark {
+    @media screen and (min-width: $breakpoint) {
+        @apply border;
+        border-color: $darkSecondary;
+        box-shadow: $shadow-dark;
+        background-color: $darkSecondary !important;
+        input {
+            background-color: $darkSecondary !important;
+        }
     }
 }
 
 .main_resp {
     @apply absolute top-0 left-0 right-0 rounded-none ml-0 mr-0;
+    // background-color: $darkSecondary !important;
+    // input {
+    //     background-color: $darkSecondary !important;
+    // }
 }
 
-.sb_top {
-    @apply relative;
-    // @media screen and (max-width: $breakpoint) {
-    //     @apply ml-2 mr-2 absolute top-0 left-0 right-0;
-    //     // &:focus-within {
-    //     //     box-shadow: unset;
-    //     //     @apply absolute top-0 left-0 right-0 ml-0 mr-0 rounded-none;
-    //     // }
-    // }
+.main_resp_light {
+    @extend .main_resp;
+    background-color: white !important;
+    input {
+        background-color: white !important;
+    }
+}
+
+.main_resp_dark {
+    @extend .main_resp;
+    background-color: $darkSecondary !important;
+    input {
+        background-color: $darkSecondary !important;
+    }
 }
 
 .sb_top_resp {
@@ -78,11 +114,24 @@ $breakpoint: 768px;
     input {
         @apply md:h-[34px] h-[25px] outline-none w-full text-[16px];
     }
-    @media screen and (max-width: $breakpoint) {
-        // & > input:focus {
-        //     @apply h-[48px];
-        // }
+}
+
+.input_light {
+    @extend .input;
+    input {
+        background-color: white;
     }
+}
+
+.input_dark {
+    @extend .input;
+    input {
+        background-color: $darkPrimary;
+        color: white;
+    }
+    // input:hover {
+    // background-color: $darkSecondary !important;
+    // }
 }
 
 .input_resp {
@@ -105,7 +154,7 @@ $breakpoint: 768px;
 }
 
 .sb_dropdown {
-    @apply rounded-b-[24px] bg-white absolute w-auto left-0 right-0;
+    @apply rounded-b-[24px] bg-white absolute w-full left-0 right-0;
     @media screen and (max-width: $breakpoint) {
         @apply rounded-none top-[43px];
     }
@@ -121,8 +170,11 @@ $breakpoint: 768px;
 
 .sb_dropdown_dark {
     @extend .sb_dropdown;
-    background-color: $dark-active;
+    background-color: $darkSecondary;
     box-shadow: $shadow-dark;
+    @media screen and (max-width: $breakpoint) {
+        @apply shadow-none;
+    }
 }
 
 .sb_ghost {
@@ -136,7 +188,7 @@ $breakpoint: 768px;
 
 .sb_ghost_dark {
     @extend .sb_ghost;
-    background-color: $dark-active;
+    background-color: $darkSecondary;
 }
 
 .sb_ghost_border {
@@ -144,10 +196,7 @@ $breakpoint: 768px;
 }
 
 .sb_result {
-    @apply last:rounded-b-[24px] first:mt-1.5 flex py-0.5 last:h-[46px];
-    @media screen and (max-width: $breakpoint) {
-        @apply last:h-auto;
-    }
+    @apply md:last:rounded-b-[24px] first:mt-1.5 flex py-0.5 md:last:h-[46px] last:h-auto;
 }
 
 .sb_result_light {
@@ -169,15 +218,19 @@ $breakpoint: 768px;
 }
 
 .sb_result_image {
-    @apply w-[32px] h-[32px] ml-[7px] mt-[4px];
+    @apply ml-[7px] flex items-center;
 }
 
 .sb_result_image_show {
-    @apply ml-[7px] mt-[4px];
+    @apply ml-[36px];
 }
 
 .sb_result_button {
-    @apply pl-[6px] cursor-default w-full text-left pr-[12px] overflow-hidden;
+    @apply pl-[6px] cursor-default w-full text-left pr-[12px] overflow-hidden min-h-[30px] md:py-0 py-1;
+}
+
+.upper_dropdown {
+    @apply relative;
 }
 
 .sb_detail {
@@ -185,7 +238,7 @@ $breakpoint: 768px;
 }
 
 .sb_result_text {
-    @apply flex flex-col;
+    @apply flex flex-col leading-4;
 }
 
 .sb_highlight_div {
