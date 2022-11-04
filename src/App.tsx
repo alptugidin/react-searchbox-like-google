@@ -1,5 +1,4 @@
 import React, { CSSProperties, useEffect, useState } from 'react';
-// import { SearchBox } from './lib';
 import { useFetch } from './hooks/useFetchMovies';
 import { IOnClickData } from './lib/components/SearchBox/types';
 import { SearchBox } from './lib';
@@ -7,6 +6,7 @@ const App = (): JSX.Element => {
   const [query, setQuery] = useState<string>();
   const [darkMode, setDarkMode] = useState(false);
   const { results, error, loading } = useFetch(query as string);
+
   const handleOnclick = (onClickData: IOnClickData): void => {
     // window.open(onClickData.href, '_blank');
   };
@@ -25,8 +25,9 @@ const App = (): JSX.Element => {
   };
 
   return (
-    <div className={`flex justify-center h-screen relative ${!darkMode ? 'bg-white' : 'bg-[#202124]'}`}>
-      <div className='absolute right-5 bottom-5 rounded-full drop-shadow-md'>
+    <div
+      className={`flex justify-center h-screen relative transition-all ${!darkMode ? 'bg-white' : 'bg-[#202124]'}`}>
+      <div className='absolute right-5 bottom-5 rounded-full drop-shadow-md flex gap-10'>
         <button
           id='nightMode'
           type='button'
@@ -41,17 +42,10 @@ const App = (): JSX.Element => {
           onChange={handleOnChange}
           onClick={handleOnclick}
           results={results}
-          // showImage
-          // showDetail
-          darkMode={darkMode}
           buttons={[
             { label: 'Search', handler: btn1handler },
             { label: 'Do something', handler: btn2handler }
           ]}
-          // colors={{
-          //   darkPrimary: '#202124', // default #202124
-          //   darkSecondary: '#303134' // default #303134
-          // }}
         />
       </div>
     </div>
