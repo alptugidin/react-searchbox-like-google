@@ -1,19 +1,24 @@
-$light: #ffffff;
-$dark: #202124;
-$dark-active: #303134;
 $shadow: 0 1px 6px rgb(32 33 36 / 28%);
-$shadow-dark: 0 1px 6px 0 #171717;
-$breakpoint: 768px;
+$shadowDark: 0 1px 6px 0 #171717;
 $darkPrimary: #{var(--darkPrimary)};
 $darkSecondary: #{var(--darkSecondary)};
-$testColor: #ff0000;
+$duration: #{var(--duration)};
+
+* {
+    -webkit-tap-highlight-color: transparent;
+}
+
+@mixin transition {
+    transition-property: color, background-color, text-decoration-color, fill, stroke;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: $duration;
+}
+
 .sb_main {
-    @apply flex rounded-[24px] py-1 relative bg-white;
-    @media screen and (max-width: $breakpoint) {
+    @include transition;
+    @apply flex rounded-[24px] py-1 relative;
+    @media screen and (max-width: 768px) {
         @apply ml-2 mr-2;
-        // &:focus-within {
-        //     box-shadow: unset;
-        // }
     }
 }
 
@@ -22,10 +27,10 @@ $testColor: #ff0000;
     @apply border;
     background-color: $darkPrimary !important;
     border-color: $darkSecondary;
-    @media screen and (min-width: $breakpoint) {
+    @media screen and (min-width: 768px) {
         &:hover {
             background-color: $darkSecondary !important;
-            box-shadow: $shadow-dark;
+            box-shadow: $shadowDark;
         }
         &:hover input {
             background-color: $darkSecondary;
@@ -33,11 +38,16 @@ $testColor: #ff0000;
     }
 }
 
+.border_transition {
+    transition-property: color, background-color, text-decoration-color, fill, stroke, border-color;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: $duration;
+}
+
 .sb_main_light {
-    @apply border border-gray-200;
+    @apply border border-gray-200 bg-white;
     @extend .sb_main;
-    background-color: white;
-    @media screen and (min-width: $breakpoint) {
+    @media screen and (min-width: 768px) {
         &:hover {
             @apply border-white;
             box-shadow: $shadow;
@@ -46,17 +56,17 @@ $testColor: #ff0000;
 }
 
 .sb_main_focus_light {
-    @media screen and (min-width: $breakpoint) {
+    @media screen and (min-width: 768px) {
         border-color: white;
         box-shadow: $shadow;
     }
 }
 
 .sb_main_focus_dark {
-    @media screen and (min-width: $breakpoint) {
+    @media screen and (min-width: 768px) {
         @apply border;
         border-color: $darkSecondary;
-        box-shadow: $shadow-dark;
+        box-shadow: $shadowDark;
         background-color: $darkSecondary !important;
         input {
             background-color: $darkSecondary !important;
@@ -66,10 +76,9 @@ $testColor: #ff0000;
 
 .main_resp {
     @apply absolute top-0 left-0 right-0 rounded-none ml-0 mr-0;
-    // background-color: $darkSecondary !important;
-    // input {
-    //     background-color: $darkSecondary !important;
-    // }
+    input {
+        height: 38px !important;
+    }
 }
 
 .main_resp_light {
@@ -96,7 +105,7 @@ $testColor: #ff0000;
     @apply border;
 }
 .back {
-    @apply w-[44px] flex justify-center items-center;
+    @apply w-[44px] flex justify-center items-center ml-[6px];
     > svg {
         @apply md:w-auto w-[24px] md:h-auto h-[24px];
     }
@@ -112,7 +121,8 @@ $testColor: #ff0000;
 .input {
     @apply w-full md:mb-auto;
     input {
-        @apply md:h-[34px] h-[25px] outline-none w-full text-[16px] ml-[4.5px];
+        @include transition;
+        @apply md:h-[34px] h-[28px] outline-none w-full text-[16px] ml-[4.5px];
     }
 }
 
@@ -129,9 +139,6 @@ $testColor: #ff0000;
         background-color: $darkPrimary;
         color: white;
     }
-    // input:hover {
-    // background-color: $darkSecondary !important;
-    // }
 }
 
 .input_resp {
@@ -139,7 +146,7 @@ $testColor: #ff0000;
 }
 
 .clear {
-    @apply w-[44px] flex justify-center;
+    @apply w-[44px] flex justify-start;
     svg {
         @apply w-[25px];
     }
@@ -155,7 +162,7 @@ $testColor: #ff0000;
 
 .sb_dropdown {
     @apply rounded-b-[24px] bg-white absolute w-full left-0 right-0;
-    @media screen and (max-width: $breakpoint) {
+    @media screen and (max-width: 768px) {
         @apply rounded-none top-[43px];
     }
 }
@@ -163,7 +170,7 @@ $testColor: #ff0000;
 .sb_dropdown_light {
     @extend .sb_dropdown;
     box-shadow: $shadow;
-    @media screen and (max-width: $breakpoint) {
+    @media screen and (max-width: 768px) {
         @apply shadow-none;
     }
 }
@@ -171,14 +178,15 @@ $testColor: #ff0000;
 .sb_dropdown_dark {
     @extend .sb_dropdown;
     background-color: $darkSecondary;
-    box-shadow: $shadow-dark;
-    @media screen and (max-width: $breakpoint) {
+    box-shadow: $shadowDark;
+    @media screen and (max-width: 768px) {
         @apply shadow-none;
     }
 }
 
 .sb_ghost {
     @apply w-full h-[6px] absolute -top-1;
+    @include transition;
 }
 
 .sb_ghost_light {
@@ -192,11 +200,11 @@ $testColor: #ff0000;
 }
 
 .sb_ghost_border {
-    @apply w-auto ml-[11px] mr-[11px] left-0 right-0 mx-auto h-[1px] bg-[#dfe1e5] absolute bottom-0;
+    @apply w-auto mx-[11px] left-0 right-0 h-[1px] bg-[#dfe1e5] absolute bottom-0;
 }
 
 .sb_result {
-    @apply md:last:rounded-b-[24px] first:mt-1.5 flex py-0.5 md:last:h-[46px] last:h-auto;
+    @apply md:last:rounded-b-[24px] first:mt-1.5 flex md:last:h-[46px] last:h-auto md:last:pb-0 last:pb-3.5;
 }
 
 .sb_result_light {
@@ -218,15 +226,16 @@ $testColor: #ff0000;
 }
 
 .sb_result_image_div {
-    @apply w-[44px] ml-[6px] flex justify-center ;
+    @apply w-[44px] ml-[6px] flex justify-center items-center;
 }
 
 .sb_result_image {
-    @apply w-[32px] h-[32px] 
+    @apply w-[32px] my-1;
+    @apply rounded-md overflow-hidden;
 }
 
 .sb_result_svg {
-
+    @apply flex justify-center items-center;
 }
 
 .sb_result_image_not_show {
@@ -238,7 +247,7 @@ $testColor: #ff0000;
 }
 
 .sb_result_button {
-    @apply cursor-default w-full text-left pr-[12px] pl-[3px] overflow-hidden min-h-[30px] md:py-0 py-1;
+    @apply cursor-default w-full text-left pr-[12px] pl-[3px] overflow-hidden min-h-[30px] md:py-1 py-3.5;
 }
 
 .upper_dropdown {
@@ -266,7 +275,7 @@ $testColor: #ff0000;
 }
 
 .sb_shadow_dark {
-    box-shadow: $shadow-dark;
+    box-shadow: $shadowDark;
 }
 
 .sb_border_none {
@@ -276,7 +285,8 @@ $testColor: #ff0000;
 .sb_button_div {
     @apply flex justify-evenly py-3;
     & > * {
-        @apply bg-[#F8F9FA] px-3 py-1 rounded-[4px] border border-white hover:border-gray-300 transition-all focus:border-blue-500 text-sm;
+        @apply bg-[#F8F9FA] px-3 py-1 rounded-[4px] border border-white hover:border-gray-300  focus:border-blue-500 text-sm;
+        @include transition;
     }
 }
 
@@ -284,5 +294,6 @@ $testColor: #ff0000;
     @extend .sb_button_div;
     & > * {
         @apply bg-white bg-opacity-20 border border-opacity-0 text-white hover:border-opacity-50 focus:border-[#ffffff80];
+        @include transition;
     }
 }
