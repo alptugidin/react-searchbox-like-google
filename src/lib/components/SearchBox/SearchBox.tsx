@@ -6,7 +6,6 @@ import ClearSVG from '../Svg/ClearSVG';
 import SearchSVG from '../Svg/SearchSVG';
 import style from './SearchBox.module.scss';
 import { ISearchResult, SearchBoxProps } from './types';
-import { relative } from 'path';
 const SearchBox: React.FC<SearchBoxProps> = ({
   onChange,
   onClick,
