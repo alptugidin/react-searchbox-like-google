@@ -60,7 +60,7 @@ const SearchBox: React.FC<SearchBoxProps> = ({
       setValue(e.target.value);
       setTempVal(e.target.value);
       if (e.target.value.length > thresHold) {
-        onChange(e.target.value);
+        onChange(e.target.value); // export onchange data
       }
     }
   };
@@ -183,8 +183,9 @@ const SearchBox: React.FC<SearchBoxProps> = ({
   }, [value]);
 
   useEffect(() => {
+    console.log(arr?.length);
     if (arr !== undefined && mainRef.current !== null) {
-      if (arr.length >= 1) {
+      if (arr.length >= 1 && results !== undefined) {
         mainRef.current.classList.add(style.sb_rounded_none);
         mainRef.current?.classList.add(darkMode ? style.sb_main_focus_dark : style.sb_main_focus_light);
       } else if (arr.length < 1) {
@@ -272,59 +273,58 @@ const SearchBox: React.FC<SearchBoxProps> = ({
           </div>
         </Fragment>
       </div >
-      <div id='dropdown'
-        ref={dropdownRef}
-        className={darkMode ? style.sb_dropdown_dark : style.sb_dropdown_light}>
-        {(arr != null) && arr.length >= 1 && !isMobile && (
+      {arr !== undefined && arr?.length > 0 && (
+        <div id='dropdown'
+          ref={dropdownRef}
+          className={darkMode ? style.sb_dropdown_dark : style.sb_dropdown_light}>
           <div id='shadowGhost'
             className={ darkMode ? style.sb_ghost_dark : style.sb_ghost_light}>
             <div className={style.sb_ghost_border} />
           </div>
-        )}
-        <div>
-          {arr?.map((data, index) => (
-            <div
-              key={data.id}
-              className={[darkMode ? style.sb_result_dark : style.sb_result_light, active === index ? (darkMode ? style.sb_result_active_dark : style.sb_result_active) : ''].join(' ')}>
+          <div>
+            {arr?.map((data, index) => (
               <div
-                className={style.sb_result_image_div}>
-                {showImage
-                  ? (
-                    <div className={style.sb_result_image}>
-                      <img src={data.image} alt="button image" />
-                    </div>
-                  )
-                  : (
-                    <div className={style.sb_result_svg}>
-                      <SearchSVG/>
-                    </div>
-                  )}
-              </div>
-
-              <button
-                type='button'
-                className={style.sb_result_button}
-                onClick={() => handleOnClick(data)}
-              >
-                <div className={style.sb_result_text}>
-                  {highlighted(data.title)}
-                  {showDetail &&
+                key={data.id}
+                className={[darkMode ? style.sb_result_dark : style.sb_result_light, active === index ? (darkMode ? style.sb_result_active_dark : style.sb_result_active) : ''].join(' ')}>
+                <div
+                  className={style.sb_result_image_div}>
+                  {showImage
+                    ? (
+                      <div className={style.sb_result_image}>
+                        <img src={data.image} alt="button image" />
+                      </div>
+                    )
+                    : (
+                      <div className={style.sb_result_svg}>
+                        <SearchSVG/>
+                      </div>
+                    )}
+                </div>
+                <button
+                  type='button'
+                  className={style.sb_result_button}
+                  onClick={() => handleOnClick(data)}
+                >
+                  <div className={style.sb_result_text}>
+                    {highlighted(data.title)}
+                    {showDetail &&
                   <span className={style.sb_detail}>
                     {data.detail}
                   </span>}
-                </div>
-              </button>
-            </div>
-          ))}
-          {(buttons !== undefined && arr !== undefined && arr.length > 0 && !isMobile) && (
-            <div className={!darkMode ? style.sb_button_div : style.sb_button_div_dark}>
-              {buttons.map((button) => (
-                <button type='button' onClick={() => handleBtn(button?.handler)} key={button?.label}> {button?.label} </button>
-              ))}
-            </div>
-          )}
+                  </div>
+                </button>
+              </div>
+            ))}
+            {(buttons !== undefined && arr !== undefined && arr.length > 0 && !isMobile) && (
+              <div className={!darkMode ? style.sb_button_div : style.sb_button_div_dark}>
+                {buttons.map((button) => (
+                  <button type='button' onClick={() => handleBtn(button?.handler)} key={button?.label}> {button?.label} </button>
+                ))}
+              </div>
+            )}
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 };
