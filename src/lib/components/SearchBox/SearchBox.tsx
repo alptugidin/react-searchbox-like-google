@@ -315,7 +315,7 @@ const SearchBox: React.FC<SearchBoxProps> = ({
                 </button>
               </div>
             ))}
-            {(buttons !== undefined && arr !== undefined && arr.length > 0 && !isMobile) && (
+            {(buttons !== undefined && !isMobile) && (
               <div className={!darkMode ? style.sb_button_div : style.sb_button_div_dark}>
                 {buttons.map((button) => (
                   <button type='button' onClick={() => handleBtn(button?.handler)} key={button?.label}> {button?.label} </button>
