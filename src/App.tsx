@@ -51,7 +51,6 @@ const App = (): JSX.Element => {
           onClick={handleOnclick}
           results={asyncResults}
           darkMode={darkMode}
-          isAsync={true}
           buttons={[
             { label: 'Search', handler: btn1handler },
             { label: 'Do something', handler: btn2handler }
