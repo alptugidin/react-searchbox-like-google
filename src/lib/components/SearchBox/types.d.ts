@@ -1,8 +1,9 @@
-export interface SearchBoxProps {
+export interface ISearchBoxProps {
   onChange: (onChangeData: string) => void
   onClick: (onClickData: IOnclickData) => void
   results: ISearchResult[] | undefined
   limit?: number
+  isAsync?: boolean
   thresHold?: number
   placeHolder?: string
   showImage?: boolean
@@ -15,6 +16,22 @@ export interface SearchBoxProps {
     btn1?: { label: string, handler: (onChangeData: IOnClickData) => void },
     btn2?: { label: string, handler: (onChangeData: IOnClickData) => void },
   ]
+}
+
+export interface IProviderValues extends ISearchBoxProps {
+  arr: ISearchResults[] | undefined
+  setArr: React.Dispatch<React.SetStateAction<ISearchResults[] | undefined>>
+  value: string
+  setValue: React.Dispatch<React.SetStateAction<string>>
+  tempVal: string
+  setTempVal: React.Dispatch<React.SetStateAction<string>>
+  active: number
+  setActive: React.Dispatch<React.SetStateAction<number>>
+  mainRef: React.RefObject<HTMLDivElement>
+  inputRef: React.RefObject<HTMLInputElement>
+  topRef: React.RefObject<HTMLDivElement>
+  dropdownRef: React.RefObject<HTMLDivElement>
+
 }
 
 export interface ISearchBoxColors {
@@ -34,7 +51,7 @@ export interface IButtonHandlers {
   label: string
   handler: (onClickData: IOnclickData) => void
 }
-export interface ISearchResult {
+export interface ISearchResults {
   id: number
   title: string
   image?: string

@@ -1,12 +1,20 @@
 import React, { CSSProperties, useEffect, useState } from 'react';
 import { useFetch } from './hooks/useFetchMovies';
-import { IOnClickData } from './lib/components/SearchBox/types';
+import { IOnClickData, ISearchResults } from './lib/components/SearchBox/types';
 import { SearchBox } from './lib';
 const App = (): JSX.Element => {
   const [query, setQuery] = useState<string>();
   const [darkMode, setDarkMode] = useState(false);
-  const { results, error, loading } = useFetch(query as string);
-
+  const { asyncResults, error, loading } = useFetch(query as string);
+  const results: ISearchResults[] = [
+    { id: 1, title: 'Javascript language' },
+    { id: 2, title: 'Java language' },
+    { id: 3, title: 'Kotlin language' },
+    { id: 4, title: 'Swift language' },
+    { id: 5, title: 'Dart language' },
+    { id: 6, title: 'Pythın language' },
+    { id: 7, title: 'Rust Language' }
+  ];
   const handleOnclick = (onClickData: IOnClickData): void => {
     // window.open(onClickData.href, '_blank');
   };
@@ -41,7 +49,9 @@ const App = (): JSX.Element => {
         <SearchBox
           onChange={handleOnChange}
           onClick={handleOnclick}
-          results={results}
+          results={asyncResults}
+          darkMode={darkMode}
+          isAsync={true}
           buttons={[
             { label: 'Search', handler: btn1handler },
             { label: 'Do something', handler: btn2handler }
