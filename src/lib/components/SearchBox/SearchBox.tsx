@@ -1,8 +1,10 @@
 import React, { CSSProperties, Fragment, useEffect, useRef, useState, memo } from 'react';
 import useIsMobile from '../../hooks/useIsMobile';
 import addWhite from '../../utils/addWhite';
+import { filterCondition } from '../../utils/filterCondition';
 import { BackSVG, ClearSVG, SearchSVG } from '../Svg';
 import style from './SearchBox.module.scss';
+import SearchResults from './SearchResults';
 import { ISearchResults, ISearchBoxProps } from './types';
 const SearchBox: React.FC<ISearchBoxProps> = ({
   onChange,
@@ -12,6 +14,7 @@ const SearchBox: React.FC<ISearchBoxProps> = ({
   darkMode = false,
   showImage = false,
   showDetail = false,
+  isAsync,
   buttons = undefined,
   limit = 10,
   thresHold = 1,
@@ -24,28 +27,18 @@ const SearchBox: React.FC<ISearchBoxProps> = ({
 }) => {
   const { isMobile } = useIsMobile();
   const { lightDark } = addWhite(colors.darkTheme as string, 30);
+
   const dropdownRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const mainRef = useRef<HTMLDivElement>(null);
   const topRef = useRef<HTMLDivElement>(null);
 
+  const [filterLen, setFilterLen] = useState(0);
   const [arr, setArr] = useState<ISearchResults[]>();
+  const [filteredArr, setFilteredArr] = useState<ISearchResults[]>();
   const [value, setValue] = useState('');
   const [tempVal, setTempVal] = useState('');
   const [active, setActive] = useState(-1);
-  const highlighted = (title: string): JSX.Element => {
-    let span = <span className={style.sb_highlight_span} style={{ color: !darkMode ? colors.text : '#ffffff' }}>{title}</span>;
-    const splitted = title.split(new RegExp(`(${value})`, 'gi'));
-    if (splitted.length > 1) {
-      span =
-      <div className={style.sb_highlight_div}>
-        <span style={{ color: !darkMode ? colors.text : '#ffffff' }}>{splitted[0]}</span>
-        <span style={{ color: !darkMode ? colors.highlightText : '#ffffff', fontWeight: 700 }}>{splitted[1]}</span>
-        <span style={{ color: !darkMode ? colors.text : '#ffffff' }}>{splitted[2]}</span>
-      </div>;
-    }
-    return span;
-  };
 
   const handleClear = (): void => {
     setValue('');
@@ -56,7 +49,7 @@ const SearchBox: React.FC<ISearchBoxProps> = ({
   };
 
   const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
-    if (e !== undefined) {
+    if (e !== undefined && e.target.value[0] !== '') {
       setValue(e.target.value);
       setTempVal(e.target.value);
       if (e.target.value.length > thresHold) {
@@ -167,35 +160,37 @@ const SearchBox: React.FC<ISearchBoxProps> = ({
   };
 
   useEffect(() => {
-    if (results != null) {
-      setArr(results.splice(0, (isMobile ? limit - 3 : limit)));
-    }
-  }, [results]);
-
-  useEffect(() => {
-    if (value.length < 1 && arr !== null) {
+    if (value.length < 2) {
       setArr(undefined);
-      setActive(-1);
-      if (mainRef.current !== null) {
-        mainRef.current.classList.remove(style.sb_rounded_none);
+      mainRef.current?.classList.remove(style.sb_rounded_none);
+    } else {
+      if (active === -1) {
+        setArr(results?.slice(0, limit).filter(item => filterCondition(item, value)));
       }
     }
-  }, [value]);
+  }, [results, value]);
 
   useEffect(() => {
-    if (arr !== undefined && mainRef.current !== null) {
-      if (arr.length >= 1 && results !== undefined) {
-        mainRef.current.classList.add(style.sb_rounded_none);
-        mainRef.current?.classList.add(darkMode ? style.sb_main_focus_dark : style.sb_main_focus_light);
-      } else if (arr.length < 1) {
-        mainRef.current.classList.remove(style.sb_rounded_none);
-        mainRef.current?.classList.remove(style.sb_main_focus_light);
-        setActive(-1);
+    if (arr !== undefined) {
+      if (arr.length > 0) {
+        mainRef.current?.classList.add(style.sb_rounded_none);
+      } else {
+        mainRef.current?.classList.remove(style.sb_rounded_none);
       }
     }
   }, [arr]);
 
   useEffect(() => {
+    setArr(undefined);
+    mainRef.current?.classList.add(style.border_transition);
+    setTimeout(() => {
+      mainRef.current?.classList.remove(style.border_transition);
+    }, duration);
+  }, [darkMode]);
+
+  // outside click Listener
+  useEffect(() => {
+    inputRef.current?.focus();
     const listener = (e: MouseEvent): void => {
       if (mainRef.current != null && !mainRef.current?.contains(e.target as Node) && !isMobile) {
         mainRef.current.classList.remove(style.sb_main_focus_dark);
@@ -205,19 +200,9 @@ const SearchBox: React.FC<ISearchBoxProps> = ({
         setActive(-1);
       }
     };
-
     window.addEventListener('click', listener);
-
     return () => window.removeEventListener('click', listener);
   }, []);
-
-  useEffect(() => {
-    // transitino effect
-    mainRef.current?.classList.add(style.border_transition);
-    setTimeout(() => {
-      mainRef.current?.classList.remove(style.border_transition);
-    }, duration);
-  }, [darkMode]);
 
   return (
     <div ref={topRef} style={{
@@ -272,58 +257,23 @@ const SearchBox: React.FC<ISearchBoxProps> = ({
           </div>
         </Fragment>
       </div >
-      {arr !== undefined && arr?.length > 0 && (
-        <div id='dropdown'
-          ref={dropdownRef}
-          className={darkMode ? style.sb_dropdown_dark : style.sb_dropdown_light}>
-          <div id='shadowGhost'
-            className={ darkMode ? style.sb_ghost_dark : style.sb_ghost_light}>
-            <div className={style.sb_ghost_border} />
-          </div>
-          <div>
-            {arr?.map((data, index) => (
-              <div
-                key={data.id}
-                className={[darkMode ? style.sb_result_dark : style.sb_result_light, active === index ? (darkMode ? style.sb_result_active_dark : style.sb_result_active) : ''].join(' ')}>
-                <div
-                  className={style.sb_result_image_div}>
-                  {showImage
-                    ? (
-                      <div className={style.sb_result_image}>
-                        <img src={data.image} alt="button image" />
-                      </div>
-                    )
-                    : (
-                      <div className={style.sb_result_svg}>
-                        <SearchSVG/>
-                      </div>
-                    )}
-                </div>
-                <button
-                  type='button'
-                  className={style.sb_result_button}
-                  onClick={() => handleOnClick(data)}
-                >
-                  <div className={style.sb_result_text}>
-                    {highlighted(data.title)}
-                    {showDetail &&
-                  <span className={style.sb_detail}>
-                    {data.detail}
-                  </span>}
-                  </div>
-                </button>
-              </div>
-            ))}
-            {(buttons !== undefined && arr !== undefined && arr.length > 0 && !isMobile) && (
-              <div className={!darkMode ? style.sb_button_div : style.sb_button_div_dark}>
-                {buttons.map((button) => (
-                  <button type='button' onClick={() => handleBtn(button?.handler)} key={button?.label}> {button?.label} </button>
-                ))}
-              </div>
-            )}
-          </div>
-        </div>
-      )}
+      <SearchResults {...{
+        arr,
+        dropdownRef,
+        active,
+        isMobile,
+        handleOnClick,
+        // highlighted,
+        handleBtn,
+        darkMode,
+        showImage,
+        showDetail,
+        buttons,
+        isAsync,
+        value,
+        filterCondition,
+        filterLen
+      }} />
     </div>
   );
 };
