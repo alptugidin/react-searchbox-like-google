@@ -45,7 +45,7 @@ const App = (): JSX.Element => {
           Dark Mode {darkMode ? 'On' : ' Off'}
         </button>
       </div>
-      <div className='w-[500px] mt-20'>
+      <div className='w-[500px] mt-56'>
         <SearchBox
           onChange={handleOnChange}
           onClick={handleOnclick}
