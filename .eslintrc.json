@@ -29,11 +29,13 @@
     "no-trailing-spaces": "warn",
     "padded-blocks": "warn",
     "no-multiple-empty-lines": "warn",
-    "indent": ["warn", 2],
+    "indent": [
+      "warn",
+      2
+    ],
     "@typescript-eslint/indent": "off",
     "@typescript-eslint/strict-boolean-expressions": "off"
-    // "@typescript-eslint/strict-boolean-expressions": ["error", { "allowNullable": true, "ignoreRhs": true }]
-  },  
+  },
   "ignorePatterns": [
     "dist"
   ]
