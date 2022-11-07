@@ -160,15 +160,15 @@ const SearchBox: React.FC<ISearchBoxProps> = ({
   };
 
   useEffect(() => {
+    setArr(results?.slice(0, limit).filter(item => filterCondition(item, value)));
+  }, [results]);
+
+  useEffect(() => {
     if (value.length < 2) {
       setArr(undefined);
       mainRef.current?.classList.remove(style.sb_rounded_none);
-    } else {
-      if (active === -1) {
-        setArr(results?.slice(0, limit).filter(item => filterCondition(item, value)));
-      }
     }
-  }, [results, value]);
+  }, [value]);
 
   useEffect(() => {
     if (arr !== undefined) {
@@ -263,7 +263,6 @@ const SearchBox: React.FC<ISearchBoxProps> = ({
         active,
         isMobile,
         handleOnClick,
-        // highlighted,
         handleBtn,
         darkMode,
         showImage,
