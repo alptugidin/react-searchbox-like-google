@@ -2,8 +2,8 @@ export interface ISearchBoxProps {
   onChange: (onChangeData: string) => void
   onClick: (onClickData: IOnclickData) => void
   results: ISearchResult[] | undefined
-  limit?: number
   isAsync?: boolean
+  limit?: number
   thresHold?: number
   placeHolder?: string
   showImage?: boolean
@@ -59,3 +59,18 @@ export interface ISearchResults {
   detail?: string
 }
 export interface IOnClickData extends ISearchResult { }
+
+export interface ISearchResultsProps extends Pick<ISearchBoxProps,
+ 'darkMode' | 'showImage' | 'showDetail' | 'buttons' | 'colors'
+ > {
+  arr: ISearchResults[] | undefined
+  value: string
+  dropdownRef: React.RefObject<HTMLDivElement>
+  active: number
+  isMobile: boolean
+  isAsync?: boolean
+  filterLen: number
+  handleOnClick: (onClickData: any) => void
+  handleBtn: (fn?: Function) => void
+  filterCondition: (param: ISearchResults, value: string) => any
+}
