@@ -14,7 +14,6 @@ const SearchBox: React.FC<ISearchBoxProps> = ({
   darkMode = false,
   showImage = false,
   showDetail = false,
-  isAsync,
   buttons = undefined,
   limit = 10,
   thresHold = 1,
@@ -32,10 +31,10 @@ const SearchBox: React.FC<ISearchBoxProps> = ({
   const inputRef = useRef<HTMLInputElement>(null);
   const mainRef = useRef<HTMLDivElement>(null);
   const topRef = useRef<HTMLDivElement>(null);
+  const searchRef = useRef<HTMLDivElement>(null);
+  const backRef = useRef<HTMLButtonElement>(null);
 
-  const [filterLen, setFilterLen] = useState(0);
   const [arr, setArr] = useState<ISearchResults[]>();
-  const [filteredArr, setFilteredArr] = useState<ISearchResults[]>();
   const [value, setValue] = useState('');
   const [tempVal, setTempVal] = useState('');
   const [active, setActive] = useState(-1);
@@ -59,7 +58,7 @@ const SearchBox: React.FC<ISearchBoxProps> = ({
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>): void => {
-    if (e.code === 'Backspace' && value.length === 0) {
+    if (e.code === 'Backspace' && tempVal.length < 1) {
       setArr(undefined);
       setActive(-1);
       mainRef.current?.classList.remove(style.sb_rounded_none);
@@ -117,8 +116,8 @@ const SearchBox: React.FC<ISearchBoxProps> = ({
       mainRef.current?.classList.remove(style.sb_rounded_none);
       inputRef.current?.classList.remove(style.input_resp);
       topRef.current?.classList.remove(style.sb_top_resp);
-      document.getElementById('search')?.classList.remove(style._hidden);
-      document.getElementById('back')?.classList.add(style._hidden);
+      searchRef.current?.classList.remove(style._hidden);
+      backRef.current?.classList.remove(style._hidden);
     }
   };
 
@@ -144,8 +143,8 @@ const SearchBox: React.FC<ISearchBoxProps> = ({
       inputRef.current?.classList.remove(style.input_resp);
       topRef.current?.classList.remove(style.sb_top_resp);
     }
-    document.getElementById('search')?.classList.remove(style._hidden);
-    document.getElementById('back')?.classList.add(style._hidden);
+    searchRef.current?.classList.remove(style._hidden);
+    backRef.current?.classList.remove(style._hidden);
   };
 
   const handleInputFocus = (): void => {
@@ -154,14 +153,24 @@ const SearchBox: React.FC<ISearchBoxProps> = ({
       mainRef.current?.classList.add(darkMode ? style.main_resp_dark : style.main_resp_light);
       inputRef.current?.classList.add(style.input_resp);
       topRef.current?.classList.add(style.sb_top_resp);
-      document.getElementById('search')?.classList.add(style._hidden);
-      document.getElementById('back')?.classList.remove(style._hidden);
+      searchRef.current?.classList.add(style._hidden);
+      backRef.current?.classList.add(style._hidden);
     }
   };
 
   useEffect(() => {
     setArr(results?.slice(0, limit).filter(item => filterCondition(item, value)));
-  }, [results]);
+  }, [results, tempVal]);
+
+  useEffect(() => {
+    if (arr !== undefined) {
+      if (arr.length > 0 && value.length > 0) {
+        mainRef.current?.classList.add(style.sb_rounded_none);
+      } else {
+        mainRef.current?.classList.remove(style.sb_rounded_none);
+      }
+    }
+  }, [arr]);
 
   useEffect(() => {
     if (value.length < 2) {
@@ -171,16 +180,6 @@ const SearchBox: React.FC<ISearchBoxProps> = ({
   }, [value]);
 
   useEffect(() => {
-    if (arr !== undefined) {
-      if (arr.length > 0) {
-        mainRef.current?.classList.add(style.sb_rounded_none);
-      } else {
-        mainRef.current?.classList.remove(style.sb_rounded_none);
-      }
-    }
-  }, [arr]);
-
-  useEffect(() => {
     setArr(undefined);
     mainRef.current?.classList.add(style.border_transition);
     setTimeout(() => {
@@ -188,9 +187,7 @@ const SearchBox: React.FC<ISearchBoxProps> = ({
     }, duration);
   }, [darkMode]);
 
-  // outside click Listener
   useEffect(() => {
-    inputRef.current?.focus();
     const listener = (e: MouseEvent): void => {
       if (mainRef.current != null && !mainRef.current?.contains(e.target as Node) && !isMobile) {
         mainRef.current.classList.remove(style.sb_main_focus_dark);
@@ -220,10 +217,10 @@ const SearchBox: React.FC<ISearchBoxProps> = ({
           {isMobile
             ? (
               <Fragment>
-                <div id='search' className={style.search}>
+                <div ref={searchRef} className={style.search}>
                   <SearchSVG />
                 </div>
-                <button id='back' onClick={handleBack} className={[style.back, style._hidden].join(' ')}>
+                <button ref={backRef} onClick={handleBack} className={[style.back, style._hidden].join(' ')}>
                   <BackSVG />
                 </button>
               </Fragment>
@@ -248,7 +245,7 @@ const SearchBox: React.FC<ISearchBoxProps> = ({
           <div className={style.clear}>
             <button
               type='button'
-              style={{ opacity: value.length > 0 ? 1 : 0 }}
+              style={{ display: value.length > 0 ? 'block' : 'none' }}
               onClick={handleClear}>
               <div>
                 <ClearSVG />
@@ -264,14 +261,10 @@ const SearchBox: React.FC<ISearchBoxProps> = ({
         isMobile,
         handleOnClick,
         handleBtn,
-        darkMode,
-        showImage,
-        showDetail,
-        buttons,
-        isAsync,
         value,
-        filterCondition,
-        filterLen
+        showDetail,
+        showImage,
+        darkMode
       }} />
     </div>
   );
