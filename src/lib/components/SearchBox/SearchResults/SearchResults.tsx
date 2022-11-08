@@ -1,12 +1,12 @@
 /* eslint  @typescript-eslint/restrict-template-expressions: 0 */
-import React, { useEffect, useState } from 'react';
+import React, { CSSProperties, Fragment, useEffect, useState } from 'react';
 import { SearchSVG } from '../../Svg';
 import style from '../SearchBox.module.scss';
 import { ISearchResultsProps } from '../types';
 
 const SearchResults: React.FC<ISearchResultsProps> = (props) => {
   const {
-    darkMode = false,
+    darkMode,
     showImage,
     showDetail,
     buttons,
@@ -17,11 +17,14 @@ const SearchResults: React.FC<ISearchResultsProps> = (props) => {
     isMobile,
     colors,
     handleBtn,
-    isAsync,
-    value,
-    filterCondition,
-    filterLen
+    value
   } = props;
+
+  const [imgLoad, setImgLoad] = useState(false);
+
+  const handleOnLoad = (): void => {
+    setImgLoad(true);
+  };
 
   const highlighted = (title: string): JSX.Element => {
     let span = <span className={style.sb_highlight_span} style={{ color: !darkMode ? colors?.text : '#ffffff' }}>{title}</span>;
@@ -39,7 +42,7 @@ const SearchResults: React.FC<ISearchResultsProps> = (props) => {
 
   return (
     <div>
-      {arr !== undefined && arr.length > 0 && (
+      {arr !== undefined && arr.length > 0 && value.length > 1 && (
         <div id='dropdown'
           ref={dropdownRef}
           className={darkMode ? style.sb_dropdown_dark : style.sb_dropdown_light}>
@@ -48,16 +51,27 @@ const SearchResults: React.FC<ISearchResultsProps> = (props) => {
             <div className={style.sb_ghost_border} />
           </div>
           <div>
-            {arr?.map((data, index) => (
+            {value.length > 1 && (arr !== undefined) && arr?.map((data, index) => (
               <div
-                key={data.id}
+                key={data.id.toString() + data.title}
                 className={[darkMode ? style.sb_result_dark : style.sb_result_light, active === index ? (darkMode ? style.sb_result_active_dark : style.sb_result_active) : ''].join(' ')}>
                 <div
                   className={style.sb_result_image_div}>
                   {showImage
                     ? (
                       <div className={style.sb_result_image}>
-                        <img src={data.image} alt="button image" />
+                        {data.image !== undefined
+                          ? (
+                            <Fragment>
+                              {!imgLoad && <div className={style.img_skeleton}></div>}
+                              <img onLoad={handleOnLoad} src={data.image} alt="button image" />
+                            </Fragment>
+                          )
+                          : (
+                            <div className={style.sb_result_svg}>
+                              <SearchSVG/>
+                            </div>
+                          )}
                       </div>
                     )
                     : (
@@ -66,6 +80,7 @@ const SearchResults: React.FC<ISearchResultsProps> = (props) => {
                       </div>
                     )}
                 </div>
+
                 <button
                   type='button'
                   className={style.sb_result_button}
@@ -81,7 +96,7 @@ const SearchResults: React.FC<ISearchResultsProps> = (props) => {
                 </button>
               </div>
             ))}
-            {(buttons !== undefined && arr !== undefined && filterLen > 0 && !isMobile) && (
+            {(buttons !== undefined && arr !== undefined && !isMobile) && (
               <div className={!darkMode ? style.sb_button_div : style.sb_button_div_dark}>
                 {buttons.map((button) => (
                   <button type='button' onClick={() => handleBtn(button?.handler)} key={button?.label}> {button?.label} </button>
