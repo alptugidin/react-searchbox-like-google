@@ -42,7 +42,7 @@ const SearchResults: React.FC<ISearchResultsProps> = (props) => {
 
   return (
     <div>
-      {arr !== undefined && arr.length > 0 && value.length > 1 && (
+      {arr !== undefined && arr.length > 0 && (
         <div id='dropdown'
           ref={dropdownRef}
           className={darkMode ? style.sb_dropdown_dark : style.sb_dropdown_light}>
@@ -57,28 +57,29 @@ const SearchResults: React.FC<ISearchResultsProps> = (props) => {
                 className={[darkMode ? style.sb_result_dark : style.sb_result_light, active === index ? (darkMode ? style.sb_result_active_dark : style.sb_result_active) : ''].join(' ')}>
                 <div
                   className={style.sb_result_image_div}>
-                  {showImage
-                    ? (
-                      <div className={style.sb_result_image}>
-                        {data.image !== undefined
-                          ? (
-                            <Fragment>
-                              {!imgLoad && <div className={style.img_skeleton}></div>}
+
+                  {showImage && (
+                    <div className={style.sb_result_image}>
+                      {data.image !== undefined
+                        ? (
+                          <div>
+                            {!imgLoad && <div className={style.img_skeleton}></div>}
+                            <div style={{
+                              width: 32,
+                              height: 32,
+                              display: imgLoad ? 'block' : 'none'
+                            } as CSSProperties}>
                               <img onLoad={handleOnLoad} src={data.image} alt="button image" />
-                            </Fragment>
-                          )
-                          : (
-                            <div className={style.sb_result_svg}>
-                              <SearchSVG/>
                             </div>
-                          )}
-                      </div>
-                    )
-                    : (
-                      <div className={style.sb_result_svg}>
-                        <SearchSVG/>
-                      </div>
-                    )}
+                          </div>
+                        )
+                        : (
+                          <div className={style.sb_result_svg}>
+                            <SearchSVG/>
+                          </div>
+                        )}
+                    </div>
+                  )}
                 </div>
 
                 <button
