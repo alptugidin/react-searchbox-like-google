@@ -2,7 +2,6 @@ export interface ISearchBoxProps {
   onChange: (onChangeData: string) => void
   onClick: (onClickData: IOnclickData) => void
   results: ISearchResult[] | undefined
-  isAsync?: boolean
   limit?: number
   thresHold?: number
   placeHolder?: string
@@ -68,9 +67,6 @@ export interface ISearchResultsProps extends Pick<ISearchBoxProps,
   dropdownRef: React.RefObject<HTMLDivElement>
   active: number
   isMobile: boolean
-  isAsync?: boolean
-  filterLen: number
   handleOnClick: (onClickData: any) => void
   handleBtn: (fn?: Function) => void
-  filterCondition: (param: ISearchResults, value: string) => any
 }
