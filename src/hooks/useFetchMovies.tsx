@@ -25,9 +25,9 @@ export const useFetch = (param: string): IFetchApiResponse => {
           const el: ISearchResults = {
             id: data.id,
             title: data.title,
-            image: 'https://www.pngfind.com/pngs/m/685-6854994_react-logo-no-background-hd-png-download.png',
-            href: `https://www.google.com/search?q=${data.title as string}`,
-            detail: 'Lorem ipsum dolor sit amet.'
+            detail: data.overview,
+            image: 'https://www.themoviedb.org/t/p/w600_and_h900_bestv2/' + (data.poster_path as string),
+            href: `https://www.google.com/search?q=${data.title as string}`
           };
           arr.push(el);
         });
