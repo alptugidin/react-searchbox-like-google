@@ -24,7 +24,11 @@ const App = (): JSX.Element => {
       },
       { id: 4, title: 'Swift language' },
       { id: 5, title: 'Dart language' },
-      { id: 6, title: 'Pythın language' },
+      {
+        id: 6,
+        title: 'Python language',
+        image: 'https://upload.wikimedia.org/wikipediasdsds/commons/7/74/Kotlin_Icon.png'
+      },
       {
         id: 7,
         title: 'Rust Language',
@@ -66,7 +70,7 @@ const App = (): JSX.Element => {
       <button
         type='button'
         onClick={() => setDarkMode(!darkMode)}
-        className='absolute right-5 top-5 w-14 h-14 rounded-full bg-red-600 overflow-hidden'>
+        className='absolute right-5 bottom-5 md:top-5 w-14 h-14 rounded-full bg-red-600 overflow-hidden'>
         <img
           src="/sun.svg"
           alt="sun"
@@ -79,14 +83,14 @@ const App = (): JSX.Element => {
         />
       </button>
       <div className='mt-56 flex gap-20'>
-        <div className='w-[400px]'>
+        <div className='w-[400px] md:block hidden'>
           <SearchBox
             onChange={handleOnChange}
             onClick={handleOnclick}
             results={asyncResults}
             darkMode={darkMode}
+            // showDetail
             showImage
-            showDetail
             buttons={[
               { label: 'Search', handler: btn1handler },
               { label: 'Do something', handler: btn2handler }
