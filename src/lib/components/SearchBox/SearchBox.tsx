@@ -1,7 +1,7 @@
+import useIsMobile from 'lib/hooks/useIsMobile';
+import addWhite from 'lib/utils/addWhite';
+import { filterCondition } from 'lib/utils/filterCondition';
 import React, { CSSProperties, Fragment, useEffect, useRef, useState, memo } from 'react';
-import useIsMobile from '../../hooks/useIsMobile';
-import addWhite from '../../utils/addWhite';
-import { filterCondition } from '../../utils/filterCondition';
 import { BackSVG, ClearSVG, SearchSVG } from '../Svg';
 import style from './SearchBox.module.scss';
 import SearchResults from './SearchResults';
@@ -53,6 +53,7 @@ const SearchBox: React.FC<ISearchBoxProps> = ({
       setTempVal(e.target.value);
       if (e.target.value.length > thresHold) {
         onChange(e.target.value); // export onchange data
+        setArr(results?.slice(0, limit).filter(item => filterCondition(item, e.target.value)));
       }
     }
   };
@@ -117,7 +118,7 @@ const SearchBox: React.FC<ISearchBoxProps> = ({
       inputRef.current?.classList.remove(style.input_resp);
       topRef.current?.classList.remove(style.sb_top_resp);
       searchRef.current?.classList.remove(style._hidden);
-      backRef.current?.classList.remove(style._hidden);
+      backRef.current?.classList.add(style._hidden);
     }
   };
 
@@ -144,7 +145,7 @@ const SearchBox: React.FC<ISearchBoxProps> = ({
       topRef.current?.classList.remove(style.sb_top_resp);
     }
     searchRef.current?.classList.remove(style._hidden);
-    backRef.current?.classList.remove(style._hidden);
+    backRef.current?.classList.add(style._hidden);
   };
 
   const handleInputFocus = (): void => {
@@ -154,14 +155,15 @@ const SearchBox: React.FC<ISearchBoxProps> = ({
       inputRef.current?.classList.add(style.input_resp);
       topRef.current?.classList.add(style.sb_top_resp);
       searchRef.current?.classList.add(style._hidden);
-      backRef.current?.classList.add(style._hidden);
+      backRef.current?.classList.remove(style._hidden);
     }
   };
 
   useEffect(() => {
-    setArr(results?.slice(0, limit).filter(item => filterCondition(item, value)));
-  }, [results, tempVal]);
+    setArr(results?.slice(0, limit).filter(async item => filterCondition(item, value)));
+  }, [results]);
 
+  /** @WARN not properly working on responsive */
   useEffect(() => {
     if (arr !== undefined) {
       if (arr.length > 0 && value.length > 0) {
@@ -254,6 +256,7 @@ const SearchBox: React.FC<ISearchBoxProps> = ({
           </div>
         </Fragment>
       </div >
+
       <SearchResults {...{
         arr,
         dropdownRef,
