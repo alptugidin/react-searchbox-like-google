@@ -1,6 +1,6 @@
 /* eslint  @typescript-eslint/restrict-template-expressions: 0 */
-import React, { CSSProperties, Fragment, useEffect, useState } from 'react';
-import { SearchSVG } from '../../Svg';
+import React, { CSSProperties, Fragment, FunctionComponent, useEffect, useState } from 'react';
+import ImageLoader from '../ImageLoader/imageLoader';
 import style from '../SearchBox.module.scss';
 import { ISearchResultsProps } from '../types';
 
@@ -42,7 +42,7 @@ const SearchResults: React.FC<ISearchResultsProps> = (props) => {
 
   return (
     <div>
-      {arr !== undefined && arr.length > 0 && (
+      {arr !== undefined && (
         <div id='dropdown'
           ref={dropdownRef}
           className={darkMode ? style.sb_dropdown_dark : style.sb_dropdown_light}>
@@ -51,37 +51,14 @@ const SearchResults: React.FC<ISearchResultsProps> = (props) => {
             <div className={style.sb_ghost_border} />
           </div>
           <div>
-            {value.length > 1 && (arr !== undefined) && arr?.map((data, index) => (
+            {arr?.map((data, index) => (
               <div
                 key={data.id.toString() + data.title}
                 className={[darkMode ? style.sb_result_dark : style.sb_result_light, active === index ? (darkMode ? style.sb_result_active_dark : style.sb_result_active) : ''].join(' ')}>
                 <div
                   className={style.sb_result_image_div}>
-
-                  {showImage && (
-                    <div className={style.sb_result_image}>
-                      {data.image !== undefined
-                        ? (
-                          <div>
-                            {!imgLoad && <div className={style.img_skeleton}></div>}
-                            <div style={{
-                              width: 32,
-                              height: 32,
-                              display: imgLoad ? 'block' : 'none'
-                            } as CSSProperties}>
-                              <img onLoad={handleOnLoad} src={data.image} alt="button image" />
-                            </div>
-                          </div>
-                        )
-                        : (
-                          <div className={style.sb_result_svg}>
-                            <SearchSVG/>
-                          </div>
-                        )}
-                    </div>
-                  )}
+                  <ImageLoader {...{ showImage, data }} />
                 </div>
-
                 <button
                   type='button'
                   className={style.sb_result_button}
