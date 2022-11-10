@@ -27,12 +27,14 @@ const App = (): JSX.Element => {
       {
         id: 6,
         title: 'Python language',
+        detail: 'Lorem ipsum dolor sit amet.',
         image: 'https://upload.wikimedia.org/wikipediasdsds/commons/7/74/Kotlin_Icon.png'
       },
       {
         id: 7,
         title: 'Rust Language',
-        detail: 'Lorem ipsum dolor sit amet.'
+        detail: 'Lorem ipsum dolor sit amet.',
+        image: ''
       }
     ]
   );
@@ -83,13 +85,13 @@ const App = (): JSX.Element => {
         />
       </button>
       <div className='mt-56 flex gap-20'>
-        <div className='w-[400px] md:block hidden'>
+        <div className='w-[400px]'>
           <SearchBox
             onChange={handleOnChange}
             onClick={handleOnclick}
             results={asyncResults}
             darkMode={darkMode}
-            // showDetail
+            showDetail
             showImage
             buttons={[
               { label: 'Search', handler: btn1handler },
@@ -97,7 +99,7 @@ const App = (): JSX.Element => {
             ]}
           />
         </div>
-        <div className='w-[400px]'>
+        <div className='w-[400px] md:block hidden'>
           <SearchBox
             onChange={handleOnChange2}
             onClick={handleOnclick2}
