@@ -20,12 +20,6 @@ const SearchResults: React.FC<ISearchResultsProps> = (props) => {
     value
   } = props;
 
-  const [imgLoad, setImgLoad] = useState(false);
-
-  const handleOnLoad = (): void => {
-    setImgLoad(true);
-  };
-
   const highlighted = (title: string): JSX.Element => {
     let span = <span className={style.sb_highlight_span} style={{ color: !darkMode ? colors?.text : '#ffffff' }}>{title}</span>;
     const splitted = title.split(new RegExp(`(${value})`, 'gi'));
@@ -42,7 +36,7 @@ const SearchResults: React.FC<ISearchResultsProps> = (props) => {
 
   return (
     <div>
-      {arr !== undefined && (
+      {arr !== undefined && arr.length > 0 && (
         <div id='dropdown'
           ref={dropdownRef}
           className={darkMode ? style.sb_dropdown_dark : style.sb_dropdown_light}>
@@ -64,7 +58,9 @@ const SearchResults: React.FC<ISearchResultsProps> = (props) => {
                   className={style.sb_result_button}
                   onClick={() => handleOnClick(data)}
                 >
-                  <div className={style.sb_result_text}>
+                  <div
+                    style={{ padding: data.detail ? '2px 0 2px 0' : 0 }}
+                    className={style.sb_result_text}>
                     {highlighted(data.title)}
                     {showDetail &&
                   <span className={style.sb_detail}>
