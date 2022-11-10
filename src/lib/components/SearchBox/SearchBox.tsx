@@ -1,9 +1,9 @@
+import React, { CSSProperties, Fragment, useEffect, useRef, useState, memo } from 'react';
+import style from './SearchBox.module.scss';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import addWhite from 'lib/utils/addWhite';
 import { filterCondition } from 'lib/utils/filterCondition';
-import React, { CSSProperties, Fragment, useEffect, useRef, useState, memo } from 'react';
 import { BackSVG, ClearSVG, SearchSVG } from '../Svg';
-import style from './SearchBox.module.scss';
 import SearchResults from './SearchResults';
 import { ISearchResults, ISearchBoxProps } from './types';
 const SearchBox: React.FC<ISearchBoxProps> = ({
@@ -160,7 +160,7 @@ const SearchBox: React.FC<ISearchBoxProps> = ({
   };
 
   useEffect(() => {
-    setArr(results?.slice(0, limit).filter(async item => filterCondition(item, value)));
+    setArr(results?.slice(0, !isMobile ? limit : 7).filter(async item => filterCondition(item, value)));
   }, [results]);
 
   /** @WARN not properly working on responsive */
