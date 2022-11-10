@@ -14,7 +14,7 @@ export const useFetch = (param: string): IFetchApiResponse => {
   const [loading, setLoading] = useState<boolean>(false);
 
   useEffect(() => {
-    // const controller = new AbortController();
+    const controller = new AbortController();
     if (param !== undefined && param.length > 0) {
       const arr: ISearchResults[] = [];
       axios.get(`https://api.themoviedb.org/3/search/movie?api_key=204f2cebe811d76c47a873f7233cf17a&language=en-US&query=${param}&page=1&include_adult=false`
@@ -26,7 +26,7 @@ export const useFetch = (param: string): IFetchApiResponse => {
             id: data.id,
             title: data.title,
             detail: data.overview,
-            image: 'https://www.themoviedb.org/t/p/w600_and_h900_bestv2/' + (data.poster_path as string),
+            image: 'https://www.themoviedb.org/t/p/w600_and_h900_bestv2' + (data.poster_path as string),
             href: `https://www.google.com/search?q=${data.title as string}`
           };
           arr.push(el);
