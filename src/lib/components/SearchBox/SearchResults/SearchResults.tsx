@@ -1,5 +1,5 @@
 /* eslint  @typescript-eslint/restrict-template-expressions: 0 */
-import React, { CSSProperties, Fragment, FunctionComponent, useEffect, useState } from 'react';
+import React from 'react';
 import ImageLoader from '../ImageLoader/imageLoader';
 import style from '../SearchBox.module.scss';
 import { ISearchResultsProps } from '../types';
