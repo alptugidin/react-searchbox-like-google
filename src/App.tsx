@@ -67,8 +67,7 @@ const App = (): JSX.Element => {
 
   return (
     <div
-      className={`flex justify-center h-screen relative transition-all ${!darkMode ? 'bg-white' : 'bg-[#202124]'}`}>
-
+      className={`flex justify-center h-screen relative transition-all ${!darkMode ? 'bg-pink-400' : 'bg-[#202124]'}`}>
       <button
         type='button'
         onClick={() => setDarkMode(!darkMode)}
@@ -84,12 +83,13 @@ const App = (): JSX.Element => {
           className={`absolute right-0 left-0 ml-auto mr-auto transition-all ${darkMode ? 'bottom-[16px]' : '-bottom-[38px]'}`}
         />
       </button>
-      <div className='mt-56 flex gap-20'>
-        <div className='w-[400px]'>
+      <div className='mt-56 flex md:flex-row flex-col gap-20 w-11/12 md:w-auto'>
+        <div className='md:w-[400px] w-full'>
           <SearchBox
             onChange={handleOnChange}
             onClick={handleOnclick}
             results={asyncResults}
+            placeHolder='Search Movies e.g. Star Wars'
             darkMode={darkMode}
             showDetail
             showImage
@@ -99,11 +99,12 @@ const App = (): JSX.Element => {
             ]}
           />
         </div>
-        <div className='w-[400px] md:block hidden'>
+        <div className='md:w-[400px] w-full'>
           <SearchBox
             onChange={handleOnChange2}
             onClick={handleOnclick2}
             results={results}
+            placeHolder='Search languages'
             darkMode={darkMode}
             showDetail
             showImage
