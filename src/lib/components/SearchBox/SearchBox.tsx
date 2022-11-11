@@ -11,7 +11,7 @@ const SearchBox: React.FC<ISearchBoxProps> = ({
   onClick,
   results,
   placeHolder,
-  darkMode = false,
+  darkMode,
   showImage = false,
   showDetail = false,
   buttons = undefined,
@@ -33,11 +33,13 @@ const SearchBox: React.FC<ISearchBoxProps> = ({
   const topRef = useRef<HTMLDivElement>(null);
   const searchRef = useRef<HTMLDivElement>(null);
   const backRef = useRef<HTMLButtonElement>(null);
+  const respBgRef = useRef<HTMLDivElement>(null);
 
   const [arr, setArr] = useState<ISearchResults[]>();
   const [value, setValue] = useState('');
   const [tempVal, setTempVal] = useState('');
   const [active, setActive] = useState(-1);
+  const [showRespBg, setShowRespBg] = useState(false);
 
   const handleClear = (): void => {
     setValue('');
@@ -45,6 +47,9 @@ const SearchBox: React.FC<ISearchBoxProps> = ({
     setActive(-1);
     if (inputRef.current !== null) inputRef.current.focus();
     mainRef.current?.classList.add(darkMode ? style.sb_main_focus_dark : style.sb_main_focus_light);
+    if (isMobile) {
+      setShowRespBg(true);
+    }
   };
 
   const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
@@ -119,6 +124,7 @@ const SearchBox: React.FC<ISearchBoxProps> = ({
       topRef.current?.classList.remove(style.sb_top_resp);
       searchRef.current?.classList.remove(style._hidden);
       backRef.current?.classList.add(style._hidden);
+      setShowRespBg(false);
     }
   };
 
@@ -143,6 +149,7 @@ const SearchBox: React.FC<ISearchBoxProps> = ({
       mainRef.current?.classList.remove(style.main_resp_dark);
       inputRef.current?.classList.remove(style.input_resp);
       topRef.current?.classList.remove(style.sb_top_resp);
+      setShowRespBg(false);
     }
     searchRef.current?.classList.remove(style._hidden);
     backRef.current?.classList.add(style._hidden);
@@ -156,6 +163,7 @@ const SearchBox: React.FC<ISearchBoxProps> = ({
       topRef.current?.classList.add(style.sb_top_resp);
       searchRef.current?.classList.add(style._hidden);
       backRef.current?.classList.remove(style._hidden);
+      setShowRespBg(true);
     }
   };
 
@@ -212,6 +220,7 @@ const SearchBox: React.FC<ISearchBoxProps> = ({
       '--duration': duration.toString().concat('ms'),
       position: !isMobile ? 'relative' : ''
     } as CSSProperties}>
+
       <div
         ref={mainRef}
         className={darkMode ? style.sb_main_dark : style.sb_main_light}>
@@ -243,6 +252,7 @@ const SearchBox: React.FC<ISearchBoxProps> = ({
               onChange={handleOnChange}
               placeholder={placeHolder}
               type="text" />
+            {/* {showRespBg && <div className={style.resp_bg}></div>} */}
           </div>
           <div className={style.clear}>
             <button
@@ -269,6 +279,7 @@ const SearchBox: React.FC<ISearchBoxProps> = ({
         showImage,
         darkMode
       }} />
+      {showRespBg && <div className={style.resp_bg}></div>}
     </div>
   );
 };
