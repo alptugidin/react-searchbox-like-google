@@ -8,8 +8,8 @@ export interface ISearchBoxProps {
   showImage?: boolean
   darkMode?: boolean
   showDetail?: boolean
-  duration?: number
   breakPoint?: number
+  duration?: number
   colors?: ISearchBoxColors
   buttons?: [
     btn1?: { label: string, handler: (onChangeData: IOnClickData) => void },
