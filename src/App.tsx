@@ -104,7 +104,7 @@ const App = (): JSX.Element => {
             onChange={handleOnChange2}
             onClick={handleOnclick2}
             results={results}
-            placeHolder='Search languages'
+            placeHolder='Search languages e.g. Javascript'
             darkMode={darkMode}
             showDetail
             showImage
