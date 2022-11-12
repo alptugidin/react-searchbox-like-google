@@ -15,15 +15,19 @@ $duration: #{var(--duration)};
 }
 
 .sb_main {
-    @include transition;
     @apply flex rounded-[24px] py-1 relative;
+
     @media screen and (max-width: 768px) {
         @apply ml-2 mr-2;
     }
+    // @media screen and (min-width: 768px) {
+        // @include transition;
+    // }
 }
 
 .sb_main_dark {
     @extend .sb_main;
+    @include transition;
     @apply border;
     background-color: $darkPrimary !important;
     border-color: $darkSecondary;
@@ -36,12 +40,6 @@ $duration: #{var(--duration)};
             background-color: $darkSecondary;
         }
     }
-}
-
-.border_transition {
-    transition-property: color, background-color, text-decoration-color, fill, stroke, border-color;
-    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-    transition-duration: $duration;
 }
 
 .sb_main_light {
@@ -60,6 +58,12 @@ $duration: #{var(--duration)};
         border-color: white;
         box-shadow: $shadow;
     }
+}
+
+.border_transition {
+    transition-property: color, background-color, text-decoration-color, fill, stroke, border-color;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: $duration;
 }
 
 .sb_main_focus_dark {
@@ -123,6 +127,9 @@ $duration: #{var(--duration)};
     input {
         @include transition;
         @apply md:h-[34px] h-[28px] outline-none w-full text-[16px] ml-[4.5px];
+        // @media screen and (min-width: 768px) {
+        //     @include transition;
+        // }
     }
 }
 
@@ -305,5 +312,15 @@ $duration: #{var(--duration)};
 }
 
 .resp_bg {
-    @apply bg-white absolute left-0 right-0 ml-0 mr-0 top-[45px] h-screen z-30;
+    @apply absolute left-0 right-0 ml-0 mr-0 top-[45px] h-screen z-30;
+}
+
+.resp_bg_light {
+    @extend .resp_bg;
+    @apply bg-white;
+}
+
+.resp_bg_dark {
+    @extend .resp_bg;
+    background-color: $darkSecondary;
 }
