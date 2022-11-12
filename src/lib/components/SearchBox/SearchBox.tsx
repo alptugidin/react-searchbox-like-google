@@ -45,10 +45,10 @@ const SearchBox: React.FC<ISearchBoxProps> = ({
     setValue('');
     setTempVal('');
     setActive(-1);
-    if (inputRef.current !== null) inputRef.current.focus();
-    mainRef.current?.classList.add(darkMode ? style.sb_main_focus_dark : style.sb_main_focus_light);
-    if (isMobile) {
-      setShowRespBg(true);
+
+    if (inputRef.current !== null && !isMobile) {
+      mainRef.current?.classList.add(darkMode ? style.sb_main_focus_dark : style.sb_main_focus_light);
+      inputRef.current.focus();
     }
   };
 
@@ -279,7 +279,7 @@ const SearchBox: React.FC<ISearchBoxProps> = ({
         showImage,
         darkMode
       }} />
-      {showRespBg && <div className={style.resp_bg}></div>}
+      {showRespBg && <div className={darkMode ? style.resp_bg_dark : style.resp_bg_light}></div>}
     </div>
   );
 };
