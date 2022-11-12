@@ -2,6 +2,7 @@ import React, { useState, memo, CSSProperties } from 'react';
 import { useFetch } from './hooks/useFetchMovies';
 import { IOnClickData, ISearchResults } from './lib/components/SearchBox/types';
 import { SearchBox } from './lib';
+import NightModeButton from 'components/NightModeButton';
 
 const App = (): JSX.Element => {
   const [query, setQuery] = useState<string>();
@@ -67,29 +68,15 @@ const App = (): JSX.Element => {
 
   return (
     <div
-      className={`flex justify-center h-screen relative transition-all ${!darkMode ? 'bg-pink-400' : 'bg-[#202124]'}`}>
-      <button
-        type='button'
-        onClick={() => setDarkMode(!darkMode)}
-        className='absolute right-5 bottom-5 md:top-5 w-14 h-14 rounded-full bg-red-600 overflow-hidden'>
-        <img
-          src="/sun.svg"
-          alt="sun"
-          className={`absolute right-0 left-0 ml-auto mr-auto transition-all ${darkMode ? '-bottom-[38px]' : 'bottom-[16px]'}`}
-        />
-        <img
-          src="/moon.svg"
-          alt="moon"
-          className={`absolute right-0 left-0 ml-auto mr-auto transition-all ${darkMode ? 'bottom-[16px]' : '-bottom-[38px]'}`}
-        />
-      </button>
+      className={`flex justify-center h-screen relative transition-all ${!darkMode ? 'bg-white' : 'bg-[#202124]'}`}>
+      <NightModeButton {...{ setDarkMode, darkMode }} />
       <div className='mt-56 flex md:flex-row flex-col gap-20 w-11/12 md:w-auto'>
         <div className='md:w-[400px] w-full'>
           <SearchBox
             onChange={handleOnChange}
             onClick={handleOnclick}
             results={asyncResults}
-            placeHolder='Search Movies e.g. Star Wars'
+            placeHolder='Search Movies e.g. The Matrix'
             darkMode={darkMode}
             showDetail
             showImage
