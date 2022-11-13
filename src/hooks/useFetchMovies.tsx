@@ -26,7 +26,7 @@ export const useFetch = (param: string): IFetchApiResponse => {
             id: data.id,
             title: data.title,
             detail: data.overview,
-            image: 'https://www.themoviedb.org/t/p/w600_and_h900_bestv2' + (data.poster_path as string),
+            image: 'https://image.tmdb.org/t/p/original' + (data.poster_path as string), // backdrop_path
             href: `https://www.google.com/search?q=${data.title as string}`
           };
           arr.push(el);
