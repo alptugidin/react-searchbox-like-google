@@ -9,26 +9,25 @@ const SearchResults: React.FC<ISearchResultsProps> = (props) => {
     darkMode,
     showImage,
     showDetail,
-    buttons,
     handleOnClick,
     arr,
     dropdownRef,
     active,
     isMobile,
-    colors,
+    sx,
     handleBtn,
     value
   } = props;
 
   const highlighted = (title: string): JSX.Element => {
-    let span = <span className={style.sb_highlight_span} style={{ color: !darkMode ? colors?.text : '#ffffff' }}>{title}</span>;
+    let span = <span className={style.sb_highlight_span} style={{ color: !darkMode ? sx?.textColor : '#ffffff' }}>{title}</span>;
     const splitted = title.split(new RegExp(`(${value})`, 'gi'));
     if (splitted.length > 1) {
       span =
       <div className={style.sb_highlight_div}>
-        <span style={{ color: !darkMode ? colors?.text : '#ffffff' }}>{splitted[0]}</span>
-        <span style={{ color: !darkMode ? colors?.highlightText : '#ffffff', fontWeight: 700 }}>{splitted[1]}</span>
-        <span style={{ color: !darkMode ? colors?.text : '#ffffff' }}>{splitted[2]}</span>
+        <span style={{ color: !darkMode ? sx?.textColor : '#ffffff' }}>{splitted[0]}</span>
+        <span style={{ color: !darkMode ? sx?.highlightColor : '#ffffff', fontWeight: 700 }}>{splitted[1]}</span>
+        <span style={{ color: !darkMode ? sx?.textColor : '#ffffff' }}>{splitted[2]}</span>
       </div>;
     }
     return span;
@@ -39,6 +38,7 @@ const SearchResults: React.FC<ISearchResultsProps> = (props) => {
       {arr !== undefined && arr.length > 0 && (
         <div id='dropdown'
           ref={dropdownRef}
+          style={{ padding: props.buttons === undefined ? '0 0 24px 0' : '0' }}
           className={darkMode ? style.sb_dropdown_dark : style.sb_dropdown_light}>
           <div id='shadowGhost'
             className={ darkMode ? style.sb_ghost_dark : style.sb_ghost_light}>
@@ -70,9 +70,9 @@ const SearchResults: React.FC<ISearchResultsProps> = (props) => {
                 </button>
               </div>
             ))}
-            {(buttons !== undefined && arr !== undefined && !isMobile) && (
+            {(props.buttons !== undefined && arr !== undefined && !isMobile) && (
               <div className={!darkMode ? style.sb_button_div : style.sb_button_div_dark}>
-                {buttons.map((button) => (
+                {props.buttons.map((button) => (
                   <button type='button' onClick={() => handleBtn(button?.handler)} key={button?.label}> {button?.label} </button>
                 ))}
               </div>
