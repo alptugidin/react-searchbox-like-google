@@ -8,9 +8,13 @@ export interface ISearchBoxProps {
   showImage?: boolean
   darkMode?: boolean
   showDetail?: boolean
-  breakPoint?: number
-  duration?: number
-  colors?: ISearchBoxColors
+  sx?: {
+    textColor?: string
+    highlightColor?: string
+    darkThemeColor?: string
+    borderRadius?: BorderRadiusRange
+    transitionDuraiton?: number
+  }
   buttons?: [
     btn1?: { label: string, handler: (onChangeData: IOnClickData) => void },
     btn2?: { label: string, handler: (onChangeData: IOnClickData) => void },
@@ -60,7 +64,7 @@ export interface ISearchResults {
 export interface IOnClickData extends ISearchResult { }
 
 export interface ISearchResultsProps extends Pick<ISearchBoxProps,
- 'darkMode' | 'showImage' | 'showDetail' | 'buttons' | 'colors'
+ 'darkMode' | 'showImage' | 'showDetail' | 'buttons' | 'sx'
  > {
   arr: ISearchResults[] | undefined
   value: string
@@ -70,3 +74,20 @@ export interface ISearchResultsProps extends Pick<ISearchBoxProps,
   handleOnClick: (onClickData: any) => void
   handleBtn: (fn?: Function) => void
 }
+
+type CreateArrayWithLengthX<
+    LENGTH extends number,
+    ACC extends unknown[] = [],
+> = ACC['length'] extends LENGTH
+    ? ACC
+    : CreateArrayWithLengthX<LENGTH, [...ACC, 1]>
+
+type NumericRange<
+   START_ARR extends number[],
+   END extends number,
+   ACC extends number=never>
+= START_ARR['length'] extends END
+   ? ACC | END
+   : NumericRange<[...START_ARR, 1], END, ACC | START_ARR['length']>
+
+type BorderRadiusRange = NumericRange<CreateArrayWithLengthX<0>, 24>
