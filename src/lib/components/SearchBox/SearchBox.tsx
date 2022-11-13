@@ -6,6 +6,7 @@ import { filterCondition } from 'lib/utils/filterCondition';
 import { BackSVG, ClearSVG, SearchSVG } from '../Svg';
 import SearchResults from './SearchResults';
 import { ISearchResults, ISearchBoxProps } from './types';
+
 const SearchBox: React.FC<ISearchBoxProps> = ({
   onChange,
   onClick,
@@ -17,16 +18,10 @@ const SearchBox: React.FC<ISearchBoxProps> = ({
   buttons = undefined,
   limit = 10,
   thresHold = 1,
-  duration = 150,
-  colors = {
-    text: '#1f2937',
-    highlightText: '#1f2937',
-    darkTheme: '#202124'
-  }
+  sx
 }) => {
   const { isMobile } = useIsMobile();
-  const { lightDark } = addWhite(colors.darkTheme as string, 30);
-
+  const { lightDark } = addWhite((sx?.darkThemeColor ?? '#202124'), 30);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const mainRef = useRef<HTMLDivElement>(null);
@@ -144,6 +139,7 @@ const SearchBox: React.FC<ISearchBoxProps> = ({
 
   const handleBack = (): void => {
     setValue('');
+    setTempVal('');
     if (isMobile) {
       mainRef.current?.classList.remove(style.main_resp_light);
       mainRef.current?.classList.remove(style.main_resp_dark);
@@ -194,7 +190,7 @@ const SearchBox: React.FC<ISearchBoxProps> = ({
     mainRef.current?.classList.add(style.border_transition);
     setTimeout(() => {
       mainRef.current?.classList.remove(style.border_transition);
-    }, duration);
+    }, sx?.transitionDuraiton ?? 150);
   }, [darkMode]);
 
   useEffect(() => {
@@ -213,11 +209,12 @@ const SearchBox: React.FC<ISearchBoxProps> = ({
 
   return (
     <div ref={topRef} style={{
-      '--text': darkMode ? '#ffffff' : colors.text,
-      '--highlightText': darkMode ? '#ffffff' : colors.highlightText,
-      '--darkPrimary': colors.darkTheme,
+      '--text': darkMode ? '#ffffff' : sx?.textColor ?? '#1f2937',
+      '--highlightText': darkMode ? '#ffffff' : sx?.highlightColor ?? '#1f2937',
+      '--darkPrimary': sx?.darkThemeColor ?? '#202124',
       '--darkSecondary': lightDark,
-      '--duration': duration.toString().concat('ms'),
+      '--duration': (sx?.transitionDuraiton ?? 150).toString().concat('ms'),
+      '--borderRadius': (sx?.borderRadius ?? '24').toString().concat('px'),
       position: !isMobile ? 'relative' : ''
     } as CSSProperties}>
 
@@ -277,7 +274,9 @@ const SearchBox: React.FC<ISearchBoxProps> = ({
         value,
         showDetail,
         showImage,
-        darkMode
+        darkMode,
+        buttons,
+        sx
       }} />
       {showRespBg && <div className={darkMode ? style.resp_bg_dark : style.resp_bg_light}></div>}
     </div>
