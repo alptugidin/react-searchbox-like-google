@@ -17,20 +17,35 @@ const App = (): JSX.Element => {
         detail: 'Lorem ipsum dolor sit amet.',
         image: 'https://www.sistemkod.com/images/blog/javascriptlogo.png'
       },
-      { id: 2, title: 'Java language' },
+
+      {
+        id: 2,
+        title: 'Java language'
+      },
+
       {
         id: 3,
         title: 'Kotlin language',
         image: 'https://upload.wikimedia.org/wikipedia/commons/7/74/Kotlin_Icon.png'
       },
-      { id: 4, title: 'Swift language' },
-      { id: 5, title: 'Dart language' },
+
+      {
+        id: 4,
+        title: 'Swift language'
+      },
+
+      {
+        id: 5,
+        title: 'Dart language'
+      },
+
       {
         id: 6,
         title: 'Python language',
         detail: 'Lorem ipsum dolor sit amet.',
         image: 'https://upload.wikimedia.org/wikipediasdsds/commons/7/74/Kotlin_Icon.png'
       },
+
       {
         id: 7,
         title: 'Rust Language',
@@ -66,6 +81,16 @@ const App = (): JSX.Element => {
     console.log('Button 2 clicked!');
   };
 
+  const btn1handler2 = (onClickData: IOnClickData): void => {
+    console.log('Button 1 clicked!');
+    console.log(onClickData);
+    //
+  };
+
+  const btn2handler2 = (): void => {
+    console.log('Button 2 clicked!');
+  };
+
   return (
     <div
       className={`flex justify-center h-screen relative transition-all ${!darkMode ? 'bg-white' : 'bg-[#202124]'}`}>
@@ -76,8 +101,8 @@ const App = (): JSX.Element => {
             onChange={handleOnChange}
             onClick={handleOnclick}
             results={asyncResults}
-            placeHolder='Search Movies e.g. The Matrix'
             darkMode={darkMode}
+            placeHolder='Search Movies e.g. The Matrix'
             showDetail
             showImage
             buttons={[
@@ -91,13 +116,13 @@ const App = (): JSX.Element => {
             onChange={handleOnChange2}
             onClick={handleOnclick2}
             results={results}
-            placeHolder='Search languages e.g. Javascript'
             darkMode={darkMode}
+            placeHolder='Search languages e.g. Javascript'
             showDetail
             showImage
             buttons={[
-              { label: 'Search', handler: btn1handler },
-              { label: 'Do something', handler: btn2handler }
+              { label: 'Search', handler: btn1handler2 },
+              { label: 'Do something', handler: btn2handler2 }
             ]}
           />
         </div>
