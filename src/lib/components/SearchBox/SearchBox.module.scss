@@ -3,7 +3,7 @@ $shadowDark: 0 1px 6px 0 #171717;
 $darkPrimary: #{var(--darkPrimary)};
 $darkSecondary: #{var(--darkSecondary)};
 $duration: #{var(--duration)};
-
+$borderRadius: #{var(--borderRadius)};
 * {
     -webkit-tap-highlight-color: transparent;
 }
@@ -15,23 +15,20 @@ $duration: #{var(--duration)};
 }
 
 .sb_main {
-    @apply flex rounded-[24px] py-1 relative;
-
+    @apply flex py-1 relative;
+    border-radius: $borderRadius;
     @media screen and (max-width: 768px) {
         @apply ml-2 mr-2;
     }
-    // @media screen and (min-width: 768px) {
-        // @include transition;
-    // }
 }
 
 .sb_main_dark {
     @extend .sb_main;
-    @include transition;
     @apply border;
     background-color: $darkPrimary !important;
     border-color: $darkSecondary;
     @media screen and (min-width: 768px) {
+        @include transition;
         &:hover {
             background-color: $darkSecondary !important;
             box-shadow: $shadowDark;
@@ -125,11 +122,10 @@ $duration: #{var(--duration)};
 .input {
     @apply w-full md:mb-auto;
     input {
-        @include transition;
         @apply md:h-[34px] h-[28px] outline-none w-full text-[16px] ml-[4.5px];
-        // @media screen and (min-width: 768px) {
-        //     @include transition;
-        // }
+        @media screen and (min-width: 768px) {
+            @include transition;
+        }
     }
 }
 
@@ -168,7 +164,9 @@ $duration: #{var(--duration)};
 }
 
 .sb_dropdown {
-    @apply rounded-b-[24px] bg-white absolute w-full left-0 right-0 pb-[24px] md:h-auto h-screen z-40;
+    @apply bg-white absolute w-full left-0 right-0 md:h-auto h-screen z-40;
+    border-bottom-left-radius: $borderRadius;
+    border-bottom-right-radius: $borderRadius;
     @media screen and (max-width: 768px) {
         @apply rounded-none top-[43px];
     }
@@ -271,9 +269,6 @@ $duration: #{var(--duration)};
     @apply flex flex-col leading-4;
 }
 
-// .sb_highlight_div {
-// @apply truncate;
-// }
 
 .sb_rounded_none {
     @apply rounded-b-none;
