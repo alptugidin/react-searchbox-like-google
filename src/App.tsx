@@ -1,9 +1,8 @@
 import React, { useState, memo, CSSProperties } from 'react';
 import { useFetch } from './hooks/useFetchMovies';
 import { IOnClickData, ISearchResults } from './lib/components/SearchBox/types';
-import { SearchBox } from './lib';
 import NightModeButton from 'components/NightModeButton';
-
+import { SearchBox } from 'lib';
 const App = (): JSX.Element => {
   const [query, setQuery] = useState<string>();
   const [darkMode, setDarkMode] = useState(false);
@@ -126,6 +125,7 @@ const App = (): JSX.Element => {
             ]}
           />
         </div>
+
       </div>
     </div>
   );
