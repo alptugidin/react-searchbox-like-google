@@ -37,6 +37,8 @@
     "@typescript-eslint/strict-boolean-expressions": "off"
   },
   "ignorePatterns": [
-    "dist"
+    "dist",
+    "tsup.config.js"
+
   ]
 }
