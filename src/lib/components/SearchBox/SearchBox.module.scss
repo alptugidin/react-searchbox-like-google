@@ -15,16 +15,20 @@ $borderRadius: #{var(--borderRadius)};
 }
 
 .sb_main {
-    @apply flex py-1 relative;
+    display: flex;
+    padding-top: 0.25rem;
+    padding-bottom: 0.25rem;
+    position: relative;
     border-radius: $borderRadius;
     @media screen and (max-width: 768px) {
-        @apply ml-2 mr-2;
+        margin-left: 8px;
+        margin-right: 8px;
     }
 }
 
 .sb_main_dark {
     @extend .sb_main;
-    @apply border;
+    border-width: 1px;
     background-color: $darkPrimary !important;
     border-color: $darkSecondary;
     @media screen and (min-width: 768px) {
@@ -40,11 +44,12 @@ $borderRadius: #{var(--borderRadius)};
 }
 
 .sb_main_light {
-    @apply border border-gray-200 bg-white;
+    border: 1px solid rgb(229 231 235);
+    background-color: white;
     @extend .sb_main;
     @media screen and (min-width: 768px) {
         &:hover {
-            @apply border-white;
+            border: 1px solid white;
             box-shadow: $shadow;
         }
     }
@@ -65,7 +70,7 @@ $borderRadius: #{var(--borderRadius)};
 
 .sb_main_focus_dark {
     @media screen and (min-width: 768px) {
-        @apply border;
+        border-width: 1px;
         border-color: $darkSecondary;
         box-shadow: $shadowDark;
         background-color: $darkSecondary !important;
@@ -76,7 +81,12 @@ $borderRadius: #{var(--borderRadius)};
 }
 
 .main_resp {
-    @apply absolute top-0 left-0 right-0 rounded-none ml-0 mr-0;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    border-radius: 0;
+    margin: 0 0 0 0;
     input {
         height: 38px !important;
     }
@@ -99,32 +109,63 @@ $borderRadius: #{var(--borderRadius)};
 }
 
 .sb_top_resp {
-    @apply absolute top-0 left-0 right-0 mb-0 ml-0;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    margin-bottom: 0;
+    margin-left: 0;
 }
 
 .sb_fragment {
-    @apply border;
+    border-width: 1px;
 }
 .back {
-    @apply w-[44px] flex justify-center items-center ml-[6px];
+    width: 44px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: 6px;
     > svg {
-        @apply md:w-auto w-[24px] md:h-auto h-[24px];
+        width: 24px;
+        height: 24px;
+        @media (min-width: 768px) {
+            width: auto;
+            height: auto;
+        }
     }
 }
 
 .search {
-    @apply w-[44px] flex justify-center items-center ml-[6.5px];
+    width: 44px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: 6.5px;
     > svg {
-        @apply md:w-auto w-[24px] md:h-auto h-[24px];
+        width: 24px;
+        height: 24px;
+        @media (min-width: 768px) {
+            width: auto;
+            height: auto;
+        }
     }
 }
 
 .input {
-    @apply w-full md:mb-auto;
+    width: 100%;
+    @media (min-width: 768px) {
+        margin-bottom: auto;
+    }
     input {
-        @apply md:h-[34px] h-[28px] outline-none w-full text-[16px] ml-[4.5px];
+        height: 28px;
+        outline: 0;
+        width: 100%;
+        font-size: 16px;
+        margin-left: 4.5px;
         @media screen and (min-width: 768px) {
             @include transition;
+            height: 34px;
         }
     }
 }
@@ -149,26 +190,36 @@ $borderRadius: #{var(--borderRadius)};
 }
 
 .clear {
-    @apply w-[44px] flex justify-start;
+    width: 44px;
+    display: flex;
+    justify-content: flex-start;
     svg {
-        @apply w-[25px];
+        width: 25px;
     }
 }
 
 ._hidden {
-    @apply hidden;
+    display: none;
 }
 
 ._block {
-    @apply block;
+    display: block;
 }
 
 .sb_dropdown {
-    @apply bg-white absolute w-full left-0 right-0 md:h-auto h-screen z-40;
+    background-color: white;
+    width: 100%;
+    z-index: 40;
+    position: absolute;
+    left: 0;
+    right: 0;
     border-bottom-left-radius: $borderRadius;
     border-bottom-right-radius: $borderRadius;
+    height: auto;
     @media screen and (max-width: 768px) {
-        @apply rounded-none top-[43px];
+        height: 100vh;
+        border-radius: 0;
+        top: 43px;
     }
 }
 
@@ -176,7 +227,7 @@ $borderRadius: #{var(--borderRadius)};
     @extend .sb_dropdown;
     box-shadow: $shadow;
     @media screen and (max-width: 768px) {
-        @apply shadow-none;
+        box-shadow: none;
     }
 }
 
@@ -185,18 +236,21 @@ $borderRadius: #{var(--borderRadius)};
     background-color: $darkSecondary;
     box-shadow: $shadowDark;
     @media screen and (max-width: 768px) {
-        @apply shadow-none;
+        box-shadow: none;
     }
 }
 
 .sb_ghost {
-    @apply w-full h-[6px] absolute -top-1;
     @include transition;
+    width: 100%;
+    height: 6px;
+    position: absolute;
+    top: -4px;
 }
 
 .sb_ghost_light {
     @extend .sb_ghost;
-    @apply bg-white;
+    background-color: white;
 }
 
 .sb_ghost_dark {
@@ -205,73 +259,125 @@ $borderRadius: #{var(--borderRadius)};
 }
 
 .sb_ghost_border {
-    @apply w-auto mx-[11px] left-0 right-0 h-[1px] bg-[#dfe1e5] absolute bottom-0;
+    width: auto ;
+    height: 1px;
+    margin-left: 11px;
+    margin-right: 11px;
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #dfe1e5;
 }
 
 .sb_result {
-    @apply first:mt-1.5 flex md:last:pb-0 last:pb-3.5;
+    // @apply first:mt-1.5 flex md:last:pb-0 last:pb-3.5;
+    display: flex;
+    &:first-child {
+        margin-top: 6px;
+    }
+    &:last-child {
+        padding-bottom: 14px;
+    }
+
+    @media (min-width: 768px) {
+        &:last-child {
+            padding-bottom: 0;
+        }
+    }
 }
+
 
 .sb_result_light {
     @extend .sb_result;
-    @apply hover:bg-[#eee];
+    &:hover {
+        background-color: #eee;
+    }
 }
 
 .sb_result_dark {
     @extend .sb_result;
-    @apply hover:bg-white hover:bg-opacity-20;
+    &:hover {
+        background-color: rgba(255, 255, 255, 0.2);
+    }
 }
 
 .sb_result_active {
-    @apply bg-[#eee];
+    background-color: white;
 }
 
 .sb_result_active_dark {
-    @apply bg-white bg-opacity-20;
+    background-color: rgba(255, 255, 255, 0.2);
 }
 
 .sb_result_image_div {
-    @apply w-[44px] ml-[6px] flex justify-center items-center;
+    width: 44px;
+    margin-left: 6px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .sb_result_image {
-    @apply rounded-md overflow-hidden h-[32px] my-1;
+    border-radius: 6px;
+    overflow: hidden;
+    height: 32px;
+    margin: 4px 0 4px 0;
     img {
-        @apply object-cover h-[32px];
+        object-fit: cover;
+        height: 32px;
     }
 }
 
 .sb_result_svg {
-    @apply flex justify-center items-center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .sb_result_image_not_show {
-    @apply w-[44px] flex justify-center;
+    width: 44px;
+    display: flex;
+    justify-content: center;
 }
 
 .sb_result_image_show {
-    @apply ml-[7px] mr-[7px];
+    margin: 0 7px 0 7px;
 }
 
 .sb_result_button {
-    @apply cursor-default w-full text-left pr-[12px] pl-[3px] overflow-hidden min-h-[30px] md:py-0 py-3.5;
+    cursor: default;
+    width: 100%;
+    text-align: left;
+    padding: 14px 12px 14px 3px;
+    overflow: hidden;
+    min-height: 30px;
+    @media (min-width: 768px) {
+        padding: 0 12px 0 3px;
+    }
 }
 
 .upper_dropdown {
-    @apply relative;
+    position: relative;
 }
 
 .sb_detail {
-    @apply text-[13px] text-gray-400 truncate;
+    font-size: 13px;
+    color: rgb(156, 163, 175);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 .sb_result_text {
-    @apply flex flex-col leading-4;
+    display: flex;
+    flex-direction: column;
+    line-height: 16px;
 }
 
-
 .sb_rounded_none {
-    @apply rounded-b-none;
+    border-bottom-right-radius: 0px;
+    border-bottom-left-radius: 0px;
 }
 
 .sb_shadow {
@@ -283,36 +389,68 @@ $borderRadius: #{var(--borderRadius)};
 }
 
 .sb_border_none {
-    @apply border-opacity-0;
+    border: 1px solid rgba(255, 255, 255, 0);
 }
 
 .sb_button_div {
-    @apply flex justify-evenly py-3;
+    @include transition;
+    display: flex;
+    justify-content: space-evenly;
+    padding: 12px 0 12px 0;
     & > * {
-        @apply bg-[#F8F9FA] px-3 py-1 rounded-[4px] border border-white hover:border-gray-300  focus:border-blue-500 text-sm;
-        @include transition;
+        background-color: #f8f9fa;
+        padding: 4px 12px 4px 12px;
+        border-radius: 4px;
+        border: 1px solid white;
+        font-size: 14px;
+        line-height: 20px;
+        &:hover {
+            border: 1px solid rgb(209, 213, 219);
+        }
+        &:focus {
+            border: 1px solid rgb(59 130 246);
+        }
     }
 }
 
 .sb_button_div_dark {
     @extend .sb_button_div;
     & > * {
-        @apply bg-white bg-opacity-20 border border-opacity-0 text-white hover:border-opacity-50 focus:border-[#ffffff80];
         @include transition;
+        background-color: rgba(255, 255, 255, 0.2);
+        border: 1px solid rgba(255, 255, 255, 0);
+        color: white;
+        &:hover {
+            border: 1px solid #ffffff50;
+        }
+        &:focus {
+            border: 1px solid #ffffff80;
+        }
     }
 }
 
 .img_skeleton {
-    @apply w-[32px] h-[32px] rounded-md animate-pulse bg-gray-300;
+    width: 32px;
+    height: 32px;
+    border-radius: 6px;
+    animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    background-color: rgb(209 213 219);
 }
 
 .resp_bg {
-    @apply absolute left-0 right-0 ml-0 mr-0 top-[45px] h-screen z-30;
+    position: absolute;
+    top: 45px;
+    left: 0;
+    right: 0;
+    margin-left: 0;
+    margin-right: 0;
+    height: 100vh;
+    z-index: 30;
 }
 
 .resp_bg_light {
     @extend .resp_bg;
-    @apply bg-white;
+    background-color: white;
 }
 
 .resp_bg_dark {
