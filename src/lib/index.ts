@@ -1,1 +1,3 @@
-export * from './components';
+import { SearchBox } from './components';
+
+export default SearchBox;
