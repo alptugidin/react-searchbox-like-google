@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
-import { ISearchResults } from '../lib/components/SearchBox/types';
 import axios from 'axios';
+import { ISearchResults } from 'lib/components/SearchBox/types';
 
 interface IFetchApiResponse {
   asyncResults: ISearchResults[] | undefined
