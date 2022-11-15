@@ -1,9 +1,12 @@
 $shadow: 0 1px 6px rgb(32 33 36 / 28%);
 $shadowDark: 0 1px 6px 0 #171717;
+$dropdownShadow: 0 4px 6px rgb(32 33 36 / 28%);
+$dropdownShadowDark: 0 4px 6px 0 #171717;
 $darkPrimary: #{var(--darkPrimary)};
 $darkSecondary: #{var(--darkSecondary)};
 $duration: #{var(--duration)};
 $borderRadius: #{var(--borderRadius)};
+
 * {
     -webkit-tap-highlight-color: transparent;
 }
@@ -14,7 +17,11 @@ $borderRadius: #{var(--borderRadius)};
     transition-duration: $duration;
 }
 
-.sb_main {
+.transition {
+    @include transition;
+}
+
+.sb-main {
     display: flex;
     padding-top: 0.25rem;
     padding-bottom: 0.25rem;
@@ -26,8 +33,8 @@ $borderRadius: #{var(--borderRadius)};
     }
 }
 
-.sb_main_dark {
-    @extend .sb_main;
+.sb-main-dark {
+    @extend .sb-main;
     border-width: 1px;
     background-color: $darkPrimary !important;
     border-color: $darkSecondary;
@@ -43,10 +50,10 @@ $borderRadius: #{var(--borderRadius)};
     }
 }
 
-.sb_main_light {
+.sb-main-light {
     border: 1px solid rgb(229 231 235);
     background-color: white;
-    @extend .sb_main;
+    @extend .sb-main;
     @media screen and (min-width: 768px) {
         &:hover {
             border: 1px solid white;
@@ -55,20 +62,20 @@ $borderRadius: #{var(--borderRadius)};
     }
 }
 
-.sb_main_focus_light {
+.sb-main-focus-light {
     @media screen and (min-width: 768px) {
         border-color: white;
         box-shadow: $shadow;
     }
 }
 
-.border_transition {
+.border-transition {
     transition-property: color, background-color, text-decoration-color, fill, stroke, border-color;
     transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
     transition-duration: $duration;
 }
 
-.sb_main_focus_dark {
+.sb-main-focus-dark {
     @media screen and (min-width: 768px) {
         border-width: 1px;
         border-color: $darkSecondary;
@@ -80,7 +87,7 @@ $borderRadius: #{var(--borderRadius)};
     }
 }
 
-.main_resp {
+.main-resp {
     position: absolute;
     top: 0;
     left: 0;
@@ -92,23 +99,23 @@ $borderRadius: #{var(--borderRadius)};
     }
 }
 
-.main_resp_light {
-    @extend .main_resp;
+.main-resp-light {
+    @extend .main-resp;
     background-color: white !important;
     input {
         background-color: white !important;
     }
 }
 
-.main_resp_dark {
-    @extend .main_resp;
+.main-resp-dark {
+    @extend .main-resp;
     background-color: $darkSecondary !important;
     input {
         background-color: $darkSecondary !important;
     }
 }
 
-.sb_top_resp {
+.sb-top-resp {
     position: absolute;
     top: 0;
     left: 0;
@@ -117,7 +124,7 @@ $borderRadius: #{var(--borderRadius)};
     margin-left: 0;
 }
 
-.sb_fragment {
+.sb-fragment {
     border-width: 1px;
 }
 .back {
@@ -158,26 +165,28 @@ $borderRadius: #{var(--borderRadius)};
         margin-bottom: auto;
     }
     input {
-        height: 28px;
+        height: 34px;
         outline: 0;
         width: 100%;
         font-size: 16px;
         margin-left: 4.5px;
         @media screen and (min-width: 768px) {
             @include transition;
-            height: 34px;
+        }
+        @media screen and (max-width: 768px) {
+            height: 28px;
         }
     }
 }
 
-.input_light {
+.input-light {
     @extend .input;
     input {
         background-color: white;
     }
 }
 
-.input_dark {
+.input-dark {
     @extend .input;
     input {
         background-color: $darkPrimary;
@@ -185,7 +194,7 @@ $borderRadius: #{var(--borderRadius)};
     }
 }
 
-.input_resp {
+.input-resp {
     height: 34px !important;
 }
 
@@ -198,15 +207,15 @@ $borderRadius: #{var(--borderRadius)};
     }
 }
 
-._hidden {
+.sb-hidden {
     display: none;
 }
 
-._block {
+.sb-block {
     display: block;
 }
 
-.sb_dropdown {
+.sb-dropdown {
     background-color: white;
     width: 100%;
     z-index: 40;
@@ -223,24 +232,24 @@ $borderRadius: #{var(--borderRadius)};
     }
 }
 
-.sb_dropdown_light {
-    @extend .sb_dropdown;
-    box-shadow: $shadow;
+.sb-dropdown-light {
+    @extend .sb-dropdown;
+    box-shadow: $dropdownShadow;
     @media screen and (max-width: 768px) {
         box-shadow: none;
     }
 }
 
-.sb_dropdown_dark {
-    @extend .sb_dropdown;
+.sb-dropdown-dark {
+    @extend .sb-dropdown;
     background-color: $darkSecondary;
-    box-shadow: $shadowDark;
+    box-shadow: $dropdownShadowDark;
     @media screen and (max-width: 768px) {
         box-shadow: none;
     }
 }
 
-.sb_ghost {
+.sb-ghost {
     @include transition;
     width: 100%;
     height: 6px;
@@ -248,18 +257,18 @@ $borderRadius: #{var(--borderRadius)};
     top: -4px;
 }
 
-.sb_ghost_light {
-    @extend .sb_ghost;
+.sb-ghost-light {
+    @extend .sb-ghost;
     background-color: white;
 }
 
-.sb_ghost_dark {
-    @extend .sb_ghost;
+.sb-ghost-dark {
+    @extend .sb-ghost;
     background-color: $darkSecondary;
 }
 
-.sb_ghost_border {
-    width: auto ;
+.sb-ghost-border {
+    width: auto;
     height: 1px;
     margin-left: 11px;
     margin-right: 11px;
@@ -270,7 +279,7 @@ $borderRadius: #{var(--borderRadius)};
     background-color: #dfe1e5;
 }
 
-.sb_result {
+.sb-result {
     // @apply first:mt-1.5 flex md:last:pb-0 last:pb-3.5;
     display: flex;
     &:first-child {
@@ -279,7 +288,6 @@ $borderRadius: #{var(--borderRadius)};
     &:last-child {
         padding-bottom: 14px;
     }
-
     @media (min-width: 768px) {
         &:last-child {
             padding-bottom: 0;
@@ -287,30 +295,29 @@ $borderRadius: #{var(--borderRadius)};
     }
 }
 
-
-.sb_result_light {
-    @extend .sb_result;
+.sb-result-light {
+    @extend .sb-result;
     &:hover {
         background-color: #eee;
     }
 }
 
-.sb_result_dark {
-    @extend .sb_result;
+.sb-result-dark {
+    @extend .sb-result;
     &:hover {
         background-color: rgba(255, 255, 255, 0.2);
     }
 }
 
-.sb_result_active {
+.sb-result-active {
     background-color: white;
 }
 
-.sb_result_active_dark {
+.sb-result-active-dark {
     background-color: rgba(255, 255, 255, 0.2);
 }
 
-.sb_result_image_div {
+.sb-result-image-div {
     width: 44px;
     margin-left: 6px;
     display: flex;
@@ -318,7 +325,7 @@ $borderRadius: #{var(--borderRadius)};
     align-items: center;
 }
 
-.sb_result_image {
+.sb-result-image {
     border-radius: 6px;
     overflow: hidden;
     height: 32px;
@@ -329,23 +336,23 @@ $borderRadius: #{var(--borderRadius)};
     }
 }
 
-.sb_result_svg {
+.sb-result-svg {
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-.sb_result_image_not_show {
+.sb-result-image-not-show {
     width: 44px;
     display: flex;
     justify-content: center;
 }
 
-.sb_result_image_show {
+.sb-result-image-show {
     margin: 0 7px 0 7px;
 }
 
-.sb_result_button {
+.sb-result-button {
     cursor: default;
     width: 100%;
     text-align: left;
@@ -357,11 +364,11 @@ $borderRadius: #{var(--borderRadius)};
     }
 }
 
-.upper_dropdown {
+.upper-dropdown {
     position: relative;
 }
 
-.sb_detail {
+.sb-detail {
     font-size: 13px;
     color: rgb(156, 163, 175);
     overflow: hidden;
@@ -369,30 +376,30 @@ $borderRadius: #{var(--borderRadius)};
     white-space: nowrap;
 }
 
-.sb_result_text {
+.sb-result-text {
     display: flex;
     flex-direction: column;
     line-height: 16px;
 }
 
-.sb_rounded_none {
+.sb-rounded-none {
     border-bottom-right-radius: 0px;
     border-bottom-left-radius: 0px;
 }
 
-.sb_shadow {
+.sb-shadow {
     box-shadow: $shadow;
 }
 
-.sb_shadow_dark {
+.sb-shadow-dark {
     box-shadow: $shadowDark;
 }
 
-.sb_border_none {
+.sb-border-none {
     border: 1px solid rgba(255, 255, 255, 0);
 }
 
-.sb_button_div {
+.sb-button-div {
     @include transition;
     display: flex;
     justify-content: space-evenly;
@@ -413,8 +420,8 @@ $borderRadius: #{var(--borderRadius)};
     }
 }
 
-.sb_button_div_dark {
-    @extend .sb_button_div;
+.sb-button-div-dark {
+    @extend .sb-button-div;
     & > * {
         @include transition;
         background-color: rgba(255, 255, 255, 0.2);
@@ -429,7 +436,7 @@ $borderRadius: #{var(--borderRadius)};
     }
 }
 
-.img_skeleton {
+.img-skeleton {
     width: 32px;
     height: 32px;
     border-radius: 6px;
@@ -437,7 +444,7 @@ $borderRadius: #{var(--borderRadius)};
     background-color: rgb(209 213 219);
 }
 
-.resp_bg {
+.resp-bg {
     position: absolute;
     top: 45px;
     left: 0;
@@ -448,12 +455,12 @@ $borderRadius: #{var(--borderRadius)};
     z-index: 30;
 }
 
-.resp_bg_light {
-    @extend .resp_bg;
+.resp-bg-light {
+    @extend .resp-bg;
     background-color: white;
 }
 
-.resp_bg_dark {
-    @extend .resp_bg;
+.resp-bg-dark {
+    @extend .resp-bg;
     background-color: $darkSecondary;
 }
