@@ -25,20 +25,26 @@ const SearchResults: React.FC<ISearchResultsProps> = (props) => {
     dropdownRef,
     active,
     isMobile,
-    sx,
+    sx = { },
     handleBtn,
     value
   } = props;
 
+  // set defaults
+  const {
+    textColor = '#1f2937',
+    highlightColor = '#1f2937'
+  } = sx;
+
   const highlighted = (title: string): JSX.Element => {
-    let span = <span className={'sb_highlight_span'} style={{ color: !darkMode ? sx?.textColor : '#ffffff' }}>{title}</span>;
+    let span = <span className={'sb-highlight-span'} style={{ color: !darkMode ? textColor : '#ffffff' }}>{title}</span>;
     const splitted = title.split(new RegExp(`(${value})`, 'gi'));
     if (splitted.length > 1) {
       span =
-      <div className={'sb_highlight_div'}>
-        <span style={{ color: !darkMode ? sx?.textColor : '#ffffff' }}>{splitted[0]}</span>
-        <span style={{ color: !darkMode ? sx?.highlightColor : '#ffffff', fontWeight: 700 }}>{splitted[1]}</span>
-        <span style={{ color: !darkMode ? sx?.textColor : '#ffffff' }}>{splitted[2]}</span>
+      <div className={'sb-highlight-div'}>
+        <span style={{ color: !darkMode ? textColor : '#ffffff' }}>{splitted[0]}</span>
+        <span style={{ color: !darkMode ? highlightColor : '#ffffff', fontWeight: 700 }}>{splitted[1]}</span>
+        <span style={{ color: !darkMode ? textColor : '#ffffff' }}>{splitted[2]}</span>
       </div>;
     }
     return span;
@@ -50,31 +56,31 @@ const SearchResults: React.FC<ISearchResultsProps> = (props) => {
         <div id='dropdown'
           ref={dropdownRef}
           style={{ padding: props.buttons === undefined ? '0 0 24px 0' : '0' }}
-          className={darkMode ? 'sb_dropdown_dark' : 'sb_dropdown_light'}>
+          className={darkMode ? 'sb-dropdown-dark' : 'sb-dropdown-light'}>
           <div id='shadowGhost'
-            className={ darkMode ? 'sb_ghost_dark' : 'sb_ghost_light'}>
-            <div className={'sb_ghost_border'} />
+            className={ darkMode ? 'sb-ghost-dark' : 'sb-ghost-light'}>
+            <div className={'sb-ghost-border'} />
           </div>
           <div>
             {arr?.map((data, index) => (
               <div
                 key={data.id.toString() + data.title}
-                className={[darkMode ? 'sb_result_dark' : 'sb_result_light', active === index ? (darkMode ? 'sb_result_active_dark' : 'sb_result_active') : ''].join(' ')}>
+                className={[darkMode ? 'sb-result-dark' : 'sb-result-light', active === index ? (darkMode ? 'sb-result-active-dark' : 'sb-result-active') : ''].join(' ')}>
                 <div
-                  className={'sb_result_image_div'}>
+                  className={'sb-result-image-div'}>
                   <ImageLoader {...{ showImage, data }} />
                 </div>
                 <button
                   type='button'
-                  className={'sb_result_button'}
+                  className={'sb-result-button'}
                   onClick={() => handleOnClick(data)}
                 >
                   <div
                     style={{ padding: data.detail ? '2px 0 2px 0' : 0 }}
-                    className={'sb_result_text'}>
+                    className={'sb-result-text'}>
                     {highlighted(data.title)}
                     {showDetail &&
-                  <span className={'sb_detail'}>
+                  <span className={'sb-detail'}>
                     {data.detail}
                   </span>}
                   </div>
@@ -82,7 +88,7 @@ const SearchResults: React.FC<ISearchResultsProps> = (props) => {
               </div>
             ))}
             {(props.buttons !== undefined && arr !== undefined && !isMobile) && (
-              <div className={!darkMode ? 'sb_button_div' : 'sb_button_div_dark'}>
+              <div className={!darkMode ? 'sb-button-div' : 'sb-button-div-dark'}>
                 {props.buttons.map((button) => (
                   <button type='button' onClick={() => handleBtn(button?.handler)} key={button?.label}> {button?.label} </button>
                 ))}
