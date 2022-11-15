@@ -1,17 +1,14 @@
-import React, { useState, memo, CSSProperties } from 'react';
+import React, { useState, memo, CSSProperties, useEffect } from 'react';
 import { useFetch } from 'hooks/useFetchMovies';
 import NightModeButton from 'components/NightModeButton';
-// import { IOnClickData, ISearchResults } from 'lib/components/SearchBox/types';
-// import SearchBox from 'lib';
-// import { IOnClickData, ISearchResults } from 'lib/components/SearchBox/types';
-import SearchBox, { ISearchResults, IOnClickData } from 'react-searchbox-like-google';
-
+import SearchBox from 'lib';
+import { IOnClickData, ISearchResults } from 'lib/components/SearchBox/types';
 const App = (): JSX.Element => {
   const [query, setQuery] = useState<string>();
   const [darkMode, setDarkMode] = useState(false);
 
   const { asyncResults, error, loading } = useFetch(query as string);
-  const [results, setResults] = useState<ISearchResults[] >(
+  const [results] = useState<ISearchResults[] >(
     [
       {
         id: 1,
@@ -44,8 +41,7 @@ const App = (): JSX.Element => {
       {
         id: 6,
         title: 'Python language',
-        detail: 'Lorem ipsum dolor sit amet.',
-        image: 'https://upload.wikimedia.org/wikipediasdsds/commons/7/74/Kotlin_Icon.png'
+        detail: 'Lorem ipsum dolor sit amet.'
       },
 
       {
@@ -57,26 +53,26 @@ const App = (): JSX.Element => {
     ]
   );
 
-  const handleOnclick = (onClickData: IOnClickData): void => {
-    // you can use react router in here
+  const handleOnclick = (onClickData: any): void => {
+    console.log(onClickData);
   };
 
   const handleOnChange = (onChangeData: string): void => {
     setQuery(onChangeData);
   };
 
-  const handleOnclick2 = (): void => {
-    // do something
+  const handleOnclick2 = (onClickData: any): void => {
+    console.log('Do something!');
+    console.log(onClickData);
   };
 
   const handleOnChange2 = (onChangeData: string): void => {
-    // you can also use with onChangeData parameter. it is presents click data.
+    // you can also use that with onChangeData parameter.
   };
 
   const btn1handler = (onClickData: IOnClickData): void => {
     console.log('Button 1 clicked!');
     console.log(onClickData);
-    //
   };
 
   const btn2handler = (): void => {
@@ -99,6 +95,9 @@ const App = (): JSX.Element => {
       <NightModeButton {...{ setDarkMode, darkMode }} />
       <div className='mt-56 flex md:flex-row flex-col gap-20 w-11/12 md:w-auto'>
         <div className='md:w-[400px] w-full'>
+          <div className='mb-5 font-semibold text-center text-sm'>
+            <p className={`transition-all ${darkMode ? 'text-white' : 'text-gray-600'}`}>Data from TMDb api</p>
+          </div>
           <SearchBox
             onChange={handleOnChange}
             onClick={handleOnclick}
@@ -114,6 +113,9 @@ const App = (): JSX.Element => {
           />
         </div>
         <div className='md:w-[400px] w-full'>
+          <div className='mb-5 font-semibold text-center text-sm'>
+            <p className={`transition-all ${darkMode ? 'text-white' : 'text-gray-600'}`}>Data from an array in the codebase</p>
+          </div>
           <SearchBox
             onChange={handleOnChange2}
             onClick={handleOnclick2}
