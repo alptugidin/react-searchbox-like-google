@@ -21,7 +21,7 @@ const ImageLoader: FunctionComponent<IImageLoader> = (props): JSX.Element => {
     (props.showImage && (props.data.image !== '' && props.data.image !== undefined))
       ? (
         <Fragment>
-          <div className={imgError ? 'sb_result_svg' : 'sb_result_image'}>
+          <div className={imgError ? 'sb-result-svg' : 'sb-result-image'}>
             <img
               onError={({ currentTarget }) => handleError(currentTarget)}
               onLoad={handleLoad}
@@ -30,11 +30,11 @@ const ImageLoader: FunctionComponent<IImageLoader> = (props): JSX.Element => {
               alt="poster" />
           </div>
           {imgError && <SearchSVG/>}
-          {!isLoad && !imgError && <div className={'img_skeleton'}></div>}
+          {!isLoad && !imgError && <div className={'img-skeleton'}></div>}
         </Fragment>
       )
       : (
-        <div className={'sb_result_svg'}>
+        <div className={'sb-result-svg'}>
           <SearchSVG/>
         </div>
       )
