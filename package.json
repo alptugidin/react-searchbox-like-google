@@ -3,7 +3,6 @@
   "version": "0.1.0",
   "author": "Alptuğ İdin",
   "description": "Customizable Searchbox with autocomplete and highlighted results.",
-  "homepage": "https://alptugidin.github.io/react-searchbox-like-google",
   "keywords": [
     "react",
     "searchbox",
