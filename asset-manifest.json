@@ -1,10 +1,10 @@
 {
   "files": {
-    "main.css": "/static/css/main.be9d1fd9.css",
-    "main.js": "/static/js/main.a904ae88.js",
-    "index.html": "/index.html",
-    "main.be9d1fd9.css.map": "/static/css/main.be9d1fd9.css.map",
-    "main.a904ae88.js.map": "/static/js/main.a904ae88.js.map"
+    "main.css": "/react-searchbox-like-google/static/css/main.be9d1fd9.css",
+    "main.js": "/react-searchbox-like-google/static/js/main.a904ae88.js",
+    "index.html": "/react-searchbox-like-google/index.html",
+    "main.be9d1fd9.css.map": "/react-searchbox-like-google/static/css/main.be9d1fd9.css.map",
+    "main.a904ae88.js.map": "/react-searchbox-like-google/static/js/main.a904ae88.js.map"
   },
   "entrypoints": [
     "static/css/main.be9d1fd9.css",
