@@ -1,3 +1,4 @@
+$mainBg: #{var(--mainBg)};
 $shadow: 0 1px 6px rgb(32 33 36 / 28%);
 $shadowDark: 0 1px 6px 0 #171717;
 $dropdownShadow: 0 4px 6px rgb(32 33 36 / 28%);
@@ -51,12 +52,12 @@ $borderRadius: #{var(--borderRadius)};
 }
 
 .sb-main-light {
+    background-color: $mainBg;
     border: 1px solid rgb(229 231 235);
-    background-color: white;
     @extend .sb-main;
     @media screen and (min-width: 768px) {
         &:hover {
-            border: 1px solid white;
+            border: 1px solid $mainBg;
             box-shadow: $shadow;
         }
     }
@@ -64,7 +65,7 @@ $borderRadius: #{var(--borderRadius)};
 
 .sb-main-focus-light {
     @media screen and (min-width: 768px) {
-        border-color: white;
+        border-color: $mainBg;
         box-shadow: $shadow;
     }
 }
@@ -182,7 +183,7 @@ $borderRadius: #{var(--borderRadius)};
 .input-light {
     @extend .input;
     input {
-        background-color: white;
+        background-color: $mainBg;
     }
 }
 
@@ -216,7 +217,6 @@ $borderRadius: #{var(--borderRadius)};
 }
 
 .sb-dropdown {
-    background-color: white;
     width: 100%;
     z-index: 40;
     position: absolute;
@@ -234,6 +234,7 @@ $borderRadius: #{var(--borderRadius)};
 
 .sb-dropdown-light {
     @extend .sb-dropdown;
+    background-color: $mainBg;
     box-shadow: $dropdownShadow;
     @media screen and (max-width: 768px) {
         box-shadow: none;
@@ -259,7 +260,7 @@ $borderRadius: #{var(--borderRadius)};
 
 .sb-ghost-light {
     @extend .sb-ghost;
-    background-color: white;
+    background-color: $mainBg;
 }
 
 .sb-ghost-dark {
@@ -280,7 +281,6 @@ $borderRadius: #{var(--borderRadius)};
 }
 
 .sb-result {
-    // @apply first:mt-1.5 flex md:last:pb-0 last:pb-3.5;
     display: flex;
     &:first-child {
         margin-top: 6px;
@@ -298,7 +298,7 @@ $borderRadius: #{var(--borderRadius)};
 .sb-result-light {
     @extend .sb-result;
     &:hover {
-        background-color: #eee;
+        background-color: #00000010;
     }
 }
 
@@ -405,7 +405,7 @@ $borderRadius: #{var(--borderRadius)};
     justify-content: space-evenly;
     padding: 12px 0 12px 0;
     & > * {
-        background-color: #f8f9fa;
+        background-color: #00000010;
         padding: 4px 12px 4px 12px;
         border-radius: 4px;
         border: 1px solid white;
@@ -424,8 +424,8 @@ $borderRadius: #{var(--borderRadius)};
     @extend .sb-button-div;
     & > * {
         @include transition;
-        background-color: rgba(255, 255, 255, 0.2);
-        border: 1px solid rgba(255, 255, 255, 0);
+        background-color: #ffffff20;
+        border: 1px solid #00000000;
         color: white;
         &:hover {
             border: 1px solid #ffffff50;
