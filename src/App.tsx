@@ -1,8 +1,9 @@
 import React, { useState, memo, CSSProperties, useEffect } from 'react';
 import { useFetch } from 'hooks/useFetchMovies';
 import NightModeButton from 'components/NightModeButton';
-import SearchBox from 'lib';
-import { IOnClickData, ISearchResults } from 'lib/components/SearchBox/types';
+// import SearchBox from 'lib';
+// import { IOnClickData, ISearchResults } from 'lib/components/SearchBox/types';
+import SearchBox, { ISearchResults, IOnClickData } from 'react-searchbox-like-google';
 const App = (): JSX.Element => {
   const [query, setQuery] = useState<string>();
   const [darkMode, setDarkMode] = useState(false);
