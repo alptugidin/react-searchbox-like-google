@@ -2,7 +2,7 @@
   "name": "react-searchbox-like-google",
   "version": "0.1.0",
   "author": "Alptuğ İdin",
-  "description": "Customizable Searchbox with autocomplete and highlighted results for React applications.",
+  "description": "Customizable Searchbox with autocomplete and highlighted results.",
   "keywords": [
     "react",
     "searchbox",
