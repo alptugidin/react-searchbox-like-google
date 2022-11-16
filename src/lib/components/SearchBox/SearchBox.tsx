@@ -1,5 +1,4 @@
 import React, { CSSProperties, Fragment, useEffect, useRef, useState, memo } from 'react';
-// import style from './SearchBox.module.scss';
 import './style.scss';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import addWhite from 'lib/utils/addWhite';
@@ -21,8 +20,8 @@ const SearchBox: React.FC<ISearchBoxProps> = ({
   thresHold = 1,
   sx = {}
 }) => {
-  // set defaults
   const {
+    mainBackground = '#ffffff',
     darkThemeColor = '#202124',
     borderRadius = 24,
     transitionDuraiton = 150
@@ -216,8 +215,7 @@ const SearchBox: React.FC<ISearchBoxProps> = ({
 
   return (
     <div ref={topRef} style={{
-      // '--text': darkMode ? '#ffffff' : textColor,
-      // '--highlightText': darkMode ? '#ffffff' : highlightColor,
+      '--mainBg': mainBackground,
       '--darkPrimary': darkThemeColor,
       '--darkSecondary': lightDark,
       '--duration': transitionDuraiton.toString().concat('ms'),
@@ -255,7 +253,6 @@ const SearchBox: React.FC<ISearchBoxProps> = ({
               onChange={handleOnChange}
               placeholder={placeHolder}
               type="text" />
-            {/* {showRespBg && <div className={"resp-bg"}></div>} */}
           </div>
           <div className={'clear'}>
             <button
