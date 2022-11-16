@@ -9,6 +9,7 @@ export interface ISearchBoxProps {
   darkMode?: boolean
   showDetail?: boolean
   sx?: {
+    mainBackground?: string
     textColor?: string
     highlightColor?: string
     darkThemeColor?: string
