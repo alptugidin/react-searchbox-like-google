@@ -6,8 +6,8 @@ export interface ISearchBoxProps {
   thresHold?: number
   placeHolder?: string
   showImage?: boolean
-  darkMode?: boolean
   showDetail?: boolean
+  darkMode?: boolean
   sx?: {
     mainBackground?: string
     textColor?: string
