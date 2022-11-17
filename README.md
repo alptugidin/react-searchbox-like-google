@@ -67,8 +67,8 @@ With all props.
 
 | Prop      | Type      | Description                |
 | :-------- | :------- | :------------------------- |
-|`onChange` |`(onChangeData: string) => void`  | A function that triggers when you typing. Callback function parameter provides input value.|
-|`onClick`|`(onClickData: IOnClickData) => void`| A function that triggers when you select any of results. Callback function parameter provides selected result's data. |
+|`onChange` |<code>(onChangeData:&nbsp;string)&nbsp;=>&nbsp;void</code>  | A function that triggers when you typing. Callback function parameter provides input value.|
+|`onClick`|<code>(onClickData:&nbsp;IOnClickData)&nbsp;=>&nbsp;void</code>| A function that triggers when you select any of results. Callback function parameter provides selected result's data. |
 |`results` | `ISearchResults[]` | Array of objects. [More details.](#results)|
 |`limit`|`number`| Limit of search results displayed at once. **Default is 10 (7 on mobile)**|
 |`thresHold`|`number`| onChange function works when length of value greater than threshold. **Default value is 1** |
@@ -76,7 +76,7 @@ With all props.
 |`showImage`|`boolean`| If true, images are displayed on search results. **Default value is false**|
 |`showDetail`|`boolean`|If true, details are displayed on search results. **Default value is false**|
 |`darkMode`|`boolean`| Dark mode state.|
-|`sx`|`object`| Contains style properties. [More details.](#styling)|
+|`sx`|`object`| Contains style properties. [More details.](#styling) |
 |`buttons`|`array`| Contains buttons. [More details.](#buttons) |
 
 ## Results
