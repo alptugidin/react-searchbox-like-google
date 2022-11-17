@@ -69,15 +69,15 @@ With all props.
 | :-------- | :------- | :------------------------- |
 |`onChange` |`(onChangeData: string) => void` | A function that triggers when you typing. Callback function parameter provides input value.|
 |`onClick`|`(onClickData: IOnClickData) => void`| A function that triggers when you select any of results. Callback function parameter provides selected result's data. |
-|`results` | `ISearchResults[]` | Array of objects. [More details.](#/Results)|
+|`results` | `ISearchResults[]` | Array of objects. [More details.](#results)|
 |`limit`|`number`| Limit of search results displayed at once. **Default is 10 (7 on mobile)**|
 |`thresHold`|`number`| onChange function works when length of value greater than threshold. **Default value is 1** |
 |`placeHolder`|`string`| Placeholder |
 |`showImage`|`boolean`| If true, images are displayed on search results. **Default value is false**|
 |`showDetail`|`boolean`|If true, details are displayed on search results. **Default value is false**|
 |`darkMode`|`boolean`| Dark mode state.|
-|`sx`|`object`| Contains style properties. [More details.](#/Styling)|
-|`buttons`|`array`| Contains buttons. [More details.](#/Buttons) |
+|`sx`|`object`| Contains style properties. [More details.](#styling)|
+|`buttons`|`array`| Contains buttons. [More details.](#buttons) |
 
 ## Results
 
