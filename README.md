@@ -4,7 +4,7 @@
 Fully customizable and responsive ready-to-use SearchBox component like Google.
 <br>
 <br>
-<a href="https://alptugidin.github.io/react-searchbox-like-google/">Demo</a>
+<a target="_blank" href="https://alptugidin.github.io/react-searchbox-like-google/">Demo</a>
 <br>
 <br>
 </p>
