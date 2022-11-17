@@ -27,7 +27,7 @@ import SearchBox { IOnClickData, ISearchResults } from 'react-searchbox-like-goo
 ## Usage
 
 
-With required props.
+### With required props.
 ```javascript
          <SearchBox
             onChange={handleOnChange}
@@ -36,7 +36,7 @@ With required props.
           />
 ```
 
-With all props.
+### With all props.
 
 ```jsx
           <SearchBox
@@ -61,6 +61,19 @@ With all props.
             ]}
           />
 ```
+### Handlers
+
+```jsx
+  //All parameters are optional.
+  const handleOnclick = (onClickData: IOnClickData): void => {
+    console.log(onClickData);
+  };
+
+  const handleOnChange = (onChangeData: string): void => {
+    setQuery(onChangeData);
+  };
+```
+
 
   
 ## Props
@@ -113,6 +126,20 @@ You can create one or two.
     btn1?: { label: string, handler: (onChangeData: IOnClickData) => void },
     btn2?: { label: string, handler: (onChangeData: IOnClickData) => void },
   ]
+```
+
+### Button Handlers
+
+```jsx
+  //All parameters are optional.
+  const btn1handler = (onClickData: IOnClickData): void => {
+    console.log('Button 1 clicked!');
+    console.log(onClickData);
+  };
+
+  const btn2handler = (): void => {
+    console.log('Button 2 clicked!');
+  };
 ```
 ## Licence
 
