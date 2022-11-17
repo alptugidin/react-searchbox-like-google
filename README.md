@@ -2,6 +2,7 @@
 <p align="center">
 Fully customizable and responsive ready-to-use SearchBox component like Google.
 <br>
+<br>
 <img width="400" src="https://user-images.githubusercontent.com/31244930/202501697-ab69e036-edbb-4607-a9d2-c4768f2ff5a8.gif"/>
 <br>
 <img width="400" src="https://user-images.githubusercontent.com/31244930/202501712-6712414a-9ea8-4cc5-887b-0678d4658cdc.gif"/>
