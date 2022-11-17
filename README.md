@@ -65,9 +65,9 @@ With all props.
   
 ## Props
 
-| Prop      | Type     | Description                |
+| Prop      | Type   <div style="width:270px">   | Description                |
 | :-------- | :------- | :------------------------- |
-|`onChange` |`(onChangeData: string) => void`| A function that triggers when you typing. Callback function parameter provides input value.|
+|`onChange` |`(onChangeData: string) => void` | A function that triggers when you typing. Callback function parameter provides input value.|
 |`onClick`|`(onClickData: IOnClickData) => void`| A function that triggers when you select any of results. Callback function parameter provides selected result's data. |
 |`results` | `ISearchResults[]` | Array of objects. [More details.](#/Results)|
 |`limit`|`number`| Limit of search results displayed at once. **Default is 10 (7 on mobile)**|
