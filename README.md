@@ -7,17 +7,18 @@ Fully customizable and responsive ready-to-use SearchBox component like Google.
 <br>
 </p>
 <p align="center">
+<a href="https://badge.fury.io/js/react-searchbox-like-google"> 
+<img src="https://badge.fury.io/js/react-searchbox-like-google.svg" />
+</a>
+</p>
+<p align="center">
 <img width="400" src="https://user-images.githubusercontent.com/31244930/202501697-ab69e036-edbb-4607-a9d2-c4768f2ff5a8.gif"/>
 <br>
 <img width="400" src="https://user-images.githubusercontent.com/31244930/202501712-6712414a-9ea8-4cc5-887b-0678d4658cdc.gif"/>
 </p>
 
 
-<p align="center">
-<a href="https://badge.fury.io/js/react-searchbox-like-google"> 
-<img src="https://badge.fury.io/js/react-searchbox-like-google.svg" />
-</a>
-</p>
+
 
 # Installation
 ```bash
