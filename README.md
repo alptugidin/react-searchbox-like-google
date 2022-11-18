@@ -1,5 +1,3 @@
-
-
 <p align="center">
 Fully customizable and responsive ready-to-use SearchBox component like Google.
 <br>
@@ -15,9 +13,13 @@ Fully customizable and responsive ready-to-use SearchBox component like Google.
 </p>
 
 
+<p align="center">
+<a href="https://badge.fury.io/js/react-searchbox-like-google"> 
+<img src="https://badge.fury.io/js/react-searchbox-like-google.svg" />
+</a>
+</p>
 
 # Installation
-
 ```bash
 npm install react-searchbox-like-google
 ```
