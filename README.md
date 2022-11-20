@@ -9,6 +9,7 @@ Fully customizable and responsive ready-to-use SearchBox component like Google.
 <p align="center">
 <a href="https://badge.fury.io/js/react-searchbox-like-google"> 
 <img src="https://badge.fury.io/js/react-searchbox-like-google.svg" />
+<img alt="npm" src="https://img.shields.io/npm/dm/react-searchbox-like-google">
 </a>
 </p>
 <p align="center">
