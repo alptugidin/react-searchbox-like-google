@@ -23,7 +23,7 @@ export interface ISearchBoxProps {
 }
 
 export interface ISearchResults {
-  id: number
+  id: number|string
   title: string
   image?: string
   href?: string
