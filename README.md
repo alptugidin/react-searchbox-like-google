@@ -121,7 +121,7 @@ Every single object in result array should have the following structure. id and 
 
 ```javascript
 interface ISearchResults {
-  id: number
+  id: number|string
   title: string
   image?: string
   detail?: string
